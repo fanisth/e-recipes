@@ -1,0 +1,80 @@
+<div class="d-flex align-self-center justify-content-center flex-column">
+    <div class="card p-5 align-self-center loginbox">
+<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div class="position-relative mb-3">
+        <span class="label">
+          Username
+        </span>
+        <input
+          type="text"
+          placeholder="username"
+          autocomplete="off"
+          formControlName="username"
+          class="form-control rounded"
+        />
+        <div
+          *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"
+          class="requiredUsername position-absolute text-left"
+        >
+          Username Is Required
+        </div>
+      </div>
+
+      <span class="label mt-3">
+        Password
+      </span>
+      <div class="input-wrapper position-relative">
+        <input
+          [type]="hidePassword ? 'text' : 'password'"
+          placeholder="password "
+          formControlName="password"
+          class="form-control rounded"
+          [ngClass]="
+            errorMessage.length > 0 && loginForm.untouched
+              ? 'invalidCredentials'
+              : 'validCredentials'
+          "
+        />
+        <span class="p-viewer position-absolute">
+          <a class="hide-button">
+            <i
+              [ngClass]="hidePassword ? 'fa fa-eye ' : 'fa fa-eye-slash'"
+              class="fa fa-eye"
+              id="eye"
+              (click)="passwordHide()"
+            ></i>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group align-self-end">
+      <div
+        class="mb-2 mt-2 d-flex align-items-center"
+        [ngClass]="
+          errorMessage.length > 0 && loginForm.untouched
+            ? 'message-Error-Container'
+            : 'message-Container'
+        "
+      >
+        <div class="ms-1">
+          <span
+            *ngIf="errorMessage.length > 0 && loginForm.untouched"
+            class="errorMessage text-left"
+            >{{ errorMessage }}
+          </span>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid && loginForm.dirty"
+        class="btn btn-primary w-100 mt-4"
+      >
+        Login 
+      </button>
+    </div>
+  </form>
+ </div> 
+</div>

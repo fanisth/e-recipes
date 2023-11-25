@@ -1,0 +1,46 @@
+
+  .Login-to-account {
+    font-size: 25px;
+    color: #131212;
+  }
+  .loginbox{
+    width: 380px;
+  }
+  .Enter-your-credentials-to-access-your-account {
+    font-size: 12px;
+    color: var(--korr-grey);
+  }
+  .form-control{
+    border: solid 1px #645394;
+    margin-top: 5px;
+  }
+  
+  .form input {
+    border: solid 1px #645394;
+    margin: 20px;
+  }
+  
+  .p-viewer {
+    z-index: 9999;
+    top: 15%;
+    right: 10px;
+  }
+  .fa-eye{
+    color: #949494;
+  }
+  
+  .label{
+    color: #000000;
+    font-size: 16px;
+  }
+  
+  .requiredUsername {
+    font-size: 12px;
+    color: #ec6161;
+  }
+  
+  .errorMessage {
+    font-size: 12px;
+    color: #ec6161;
+  }
+  
