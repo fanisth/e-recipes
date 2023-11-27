@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: My OpenAPI Server
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Check the health of the server
+      responses:
+        '200':
+          description: OK
+  /protected:
+    get:
+      summary: Access a protected route (requires authentication)
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              example: { "message": "This is a protected route", "userId": "123", "token": "your-token" }
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
