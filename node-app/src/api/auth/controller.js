@@ -26,7 +26,7 @@ async function login(body) {
     }
 
     const token = generateToken(user);
-    return ({ data: token });
+    return ({ data: { token, username } });
   } catch (error) {
     fLogger.warn('Unmapped error at user login', { error });
     return { error: errors.COULD_NOT_LOGIN_USER };

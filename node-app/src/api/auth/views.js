@@ -26,7 +26,7 @@ async function login(req, res) {
 
     const response = {
       payload: {
-        token: data,
+        data,
       },
       extraInfo: {},
     };
