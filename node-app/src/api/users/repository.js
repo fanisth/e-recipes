@@ -34,8 +34,14 @@ async function getUserByUsername(username) {
   return user;
 }
 
+async function getCountByCriteria(criteria) {
+  const user = await User.findOne(criteria);
+  return user;
+}
+
 module.exports = {
   createUser,
   getUserByUsername,
+  getCountByCriteria,
   getUserById,
 };
