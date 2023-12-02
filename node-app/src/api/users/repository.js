@@ -1,20 +1,24 @@
+/* eslint-disable no-console */
 const bcrypt = require('bcrypt');
+const User = require('../../models/userSchema');
 const mongoController = require('../../services/db/mongoController');
 
 const collectionName = 'users';
 
-async function createUser(username, password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+async function createUser(userRequest) {
+  try {
+    const hashedPassword = await bcrypt.hash(userRequest.password, 10);
 
-  const user = {
-    username,
-    password: hashedPassword,
-  };
+    const user = new User({
+      ...userRequest,
+      password: hashedPassword,
+    });
 
-  const collection = mongoController.getCollectionController(collectionName)();
-  const result = await collection.insertOne(user);
-
-  return result.ops[0];
+    return user.save();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 }
 
 async function getUserByUsername(username) {

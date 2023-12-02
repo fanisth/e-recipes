@@ -22,7 +22,7 @@ async function login(req, res) {
 }
 
 async function register(req, res) {
-  const { username, password } = req.body;
+  const { username } = req.body;
 
   const existingUser = await userController.getUserByUsername(username);
 
@@ -30,7 +30,9 @@ async function register(req, res) {
     return res.status(400).json({ error: 'Username already exists' });
   }
 
-  const newUser = await userController.createUser(username, password);
+  const newUser = await userController.createUser(req.body);
+  if (!newUser) return res.status(422).send();
+
   const token = generateToken(newUser);
   return res.json({ token });
 }

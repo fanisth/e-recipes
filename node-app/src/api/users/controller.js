@@ -1,7 +1,8 @@
 const repository = require('./repository');
 
-async function createUser(username, password) {
-  return repository.createUser(username, password);
+async function createUser(userRequest) {
+  const createdUser = await repository.createUser(userRequest);
+  return createdUser;
 }
 
 async function getUserByUsername(username) {
