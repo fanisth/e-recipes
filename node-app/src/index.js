@@ -10,7 +10,7 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect(config.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(config.mongo, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Routes
 app.use('/api/auth', require('./api/auth'));

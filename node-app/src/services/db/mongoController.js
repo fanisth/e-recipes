@@ -1,49 +1,40 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-underscore-dangle */
-const { MongoClient, Db } = require('mongodb');
-
+/* eslint-disable no-console */
+// const { MongoClient, Db } = require('mongodb');
 const events = require('events');
+const mongoose = require('mongoose');
 
 const eventEmitter = new events.EventEmitter();
 
-const mongoUrl = require('../../config/config').mongo;
-// const helperLog = require("../helpers/log");
+const config = require('../../config/config');
+// const helperLog = require('../helpers/log');
 
-let _db;
-let mongoClient;
+let db;
 
-MongoClient.connect(mongoUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}, (err, db) => {
-  if (err) {
-    // helperLog.log(mongoUrl + ": ", err);
-    return process.exit(-1);
-    // return helperLog.error(err);
-  }
+// Connect to MongoDB using Mongoose
+mongoose.connect(config.mongo, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  // helperLog.log(`mongoController > Connection Established @ ${ mongoUrl }`);
+const dbConnection = mongoose.connection;
 
-  if (db instanceof MongoClient) {
-    mongoClient = db;
-    _db = db.db();
-  }
-
-  if (db instanceof Db) {
-    _db = db;
-    mongoClient = new MongoClient();
-  }
-
-  eventEmitter.emit('MongoClientConnected', _db);
-
-  // _db.on('close', async () => {
-  //     helperLog.log(`mongoController > Connection Closed @ ${ mongoUrl }`);
-  //     eventEmitter.emit('MongoClientClosed');
-  //     // return process.exit(-1);
-  // });
+// Event handler when the Mongoose connection is successfully established
+dbConnection.on('connected', () => {
+  // helperLog.log(`mongoController > Connection Established @ ${config.mongo}`);
+  db = dbConnection.db;
+  eventEmitter.emit('MongoClientConnected', db);
 });
 
-const getCollectionController = (name) => (p, p1) => _db.collection(name);
+// Event handler for connection errors
+dbConnection.on('error', (err) => {
+  console.log(err);
+});
+
+// Event handler when the Mongoose connection is closed
+dbConnection.on('disconnected', () => {
+  // helperLog.log('mongoController > Connection Closed');
+  // You might want to handle this event if needed
+  // eventEmitter.emit('MongoClientClosed');
+});
+
+const getCollectionController = (name) => () => db.collection(name);
 
 const connectPromise = new Promise((res) => {
   eventEmitter.on('MongoClientConnected', () => {
@@ -57,10 +48,7 @@ const mongoController = {
   awaitConnection,
   eventEmitter,
   getCollectionController,
-  db: () => _db,
-  mongoClient: () => mongoClient,
-
-  // add your collection controllers
+  db: () => db,
 };
 
 module.exports = mongoController;
