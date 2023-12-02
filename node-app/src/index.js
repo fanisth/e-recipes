@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 const express = require('express');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongo = require('./services/db/mongoController');
 const config = require('./config/config');
@@ -9,6 +11,7 @@ const config = require('./config/config');
   try {
     await mongo.awaitConnection();
     const app = express();
+    app.use(cors());
     app.use(bodyParser.json());
     // Routes
     // eslint-disable-next-line global-require
