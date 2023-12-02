@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const bcrypt = require('bcrypt');
 const User = require('../../models/userSchema');
@@ -22,10 +23,19 @@ async function createUser(userRequest) {
   }
 }
 
+async function getUserById(id) {
+  const user = await User.findOne({ _id: id });
+  return user;
+}
+
 async function getUserByUsername(username) {
   const collection = mongoController.getCollectionController(collectionName)();
   const user = await collection.findOne({ username });
   return user;
 }
 
-module.exports = { createUser, getUserByUsername };
+module.exports = {
+  createUser,
+  getUserByUsername,
+  getUserById,
+};

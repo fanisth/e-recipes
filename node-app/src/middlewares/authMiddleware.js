@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const userController = require('../api/users/controller');
+const userRepo = require('../api/users/repository');
 
 // eslint-disable-next-line consistent-return
 async function authenticateToken(req, res, next) {
@@ -11,12 +11,13 @@ async function authenticateToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
-    req.user = await userController.getUserById(decoded.id);
+    const tokenVal = token.split(' ')[1];
+    const decoded = jwt.verify(tokenVal, config.jwtSecret);
+    req.user = await userRepo.getUserById(decoded.id);
     next();
   } catch (error) {
     res.status(401).json({ error: 'Invalid token.' });
   }
 }
 
-module.exports = authenticateToken;
+module.exports = { authenticateToken };
