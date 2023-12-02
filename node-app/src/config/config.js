@@ -1,4 +1,5 @@
 module.exports = {
   jwtSecret: 'your-secret-key',
-  mongo: 'mongodb://localhost:27017/eRecipes',
+  mongo: 'mongodb+srv://backendUser:7AFebCjZxNFgaqUm@cluster0.perazpr.mongodb.net/',
+  PORT: 3000,
 };

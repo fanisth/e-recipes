@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
-// const { MongoClient, Db } = require('mongodb');
 const events = require('events');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose').default;
 
 const eventEmitter = new events.EventEmitter();
 
 const config = require('../../config/config');
-// const helperLog = require('../helpers/log');
 
 let db;
 
@@ -17,7 +15,6 @@ const dbConnection = mongoose.connection;
 
 // Event handler when the Mongoose connection is successfully established
 dbConnection.on('connected', () => {
-  // helperLog.log(`mongoController > Connection Established @ ${config.mongo}`);
   db = dbConnection.db;
   eventEmitter.emit('MongoClientConnected', db);
 });
@@ -29,7 +26,6 @@ dbConnection.on('error', (err) => {
 
 // Event handler when the Mongoose connection is closed
 dbConnection.on('disconnected', () => {
-  // helperLog.log('mongoController > Connection Closed');
   // You might want to handle this event if needed
   // eventEmitter.emit('MongoClientClosed');
 });

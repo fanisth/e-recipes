@@ -1,21 +1,22 @@
 /* eslint-disable no-console */
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const mongo = require('./services/db/mongoController');
 const config = require('./config/config');
 
-const app = express();
-const PORT = 3000;
-
-app.use(bodyParser.json());
-
 // Connect to MongoDB
-mongoose.connect(config.mongo, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Routes
-app.use('/api/auth', require('./api/auth'));
-app.use('/api/users', require('./api/users'));
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+(async () => {
+  try {
+    await mongo.awaitConnection();
+    const app = express();
+    app.use(bodyParser.json());
+    // Routes
+    // eslint-disable-next-line global-require
+    app.use('/api/auth', require('./api/auth'));
+    // eslint-disable-next-line global-require
+    app.use('/api/users', require('./api/users'));
+    app.listen(config.PORT, () => console.log(`Server listening on port ${config.PORT}`));
+  } catch (e) {
+    console.error(`${e}`);
+  }
+})();
