@@ -1,40 +1,70 @@
 /* eslint-disable no-underscore-dangle */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const userRepo = require('../users/repository');
 const userController = require('../users/controller');
 const config = require('../../config/config');
+const logger = require('../../common/logger')();
+const errors = require('./errors');
 
 function generateToken(user) {
   return jwt.sign({ id: user._id }, config.jwtSecret, { expiresIn: '1h' });
 }
 
-async function login(req, res) {
-  const { username, password } = req.body;
+async function login(body) {
+  const fLogger = logger.child({ function: 'login' });
+  try {
+    const { username, password } = body;
 
-  const user = await userController.getUserByUsername(username);
+    const user = await userController.getUserByUsername(username);
+    if (!user) {
+      return { error: errors.USER_FINDONE_BY_USERNAME };
+    }
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ error: 'Invalid username or password' });
+    if (!(await bcrypt.compare(password, user.password))) {
+      return { error: errors.USER_WRONG_PASSWORD };
+    }
+
+    const token = generateToken(user);
+    return ({ data: token });
+  } catch (error) {
+    fLogger.warn('Unmapped error at user login', { error });
+    return { error: errors.COULD_NOT_LOGIN_USER };
   }
-
-  const token = generateToken(user);
-  return res.json({ token });
 }
 
-async function register(req, res) {
-  const { username } = req.body;
+async function register(body) {
+  const fLogger = logger.child({ function: 'register' });
+  try {
+    const {
+      username,
+      email,
+      phone,
+    } = body;
 
-  const existingUser = await userController.getUserByUsername(username);
+    // Check for existing credentials
+    const existingUsernames = await userRepo.getCountByCriteria({ username });
+    if (existingUsernames) {
+      return { error: errors.REGISTRATION_USERNAME_ALREADY_EXISTS };
+    }
+    const existingEmails = await userRepo.getCountByCriteria({ email });
+    if (existingEmails) {
+      return { error: errors.REGISTRATION_EMAIL_ALREADY_EXISTS };
+    }
+    const existingPhones = await userRepo.getCountByCriteria({ phone });
+    if (existingPhones) {
+      return { error: errors.REGISTRATION_MOBILE_ALREADY_EXISTS };
+    }
 
-  if (existingUser) {
-    return res.status(400).json({ error: 'Username already exists' });
+    const newUser = await userController.createUser(body);
+    if (!newUser) return { error: errors.COULD_NOT_REGISTER_USER };
+
+    const token = generateToken(newUser);
+    return ({ data: token });
+  } catch (error) {
+    fLogger.warn('Unmapped error at user login', { error });
+    return { error: errors.COULD_NOT_REGISTER_USER };
   }
-
-  const newUser = await userController.createUser(req.body);
-  if (!newUser) return res.status(422).send();
-
-  const token = generateToken(newUser);
-  return res.json({ token });
 }
 
 module.exports = { login, register, generateToken };
