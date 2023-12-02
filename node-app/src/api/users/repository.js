@@ -14,7 +14,8 @@ async function createUser(userRequest) {
       password: hashedPassword,
     });
 
-    return user.save();
+    const createdUser = await user.save();
+    return createdUser;
   } catch (err) {
     console.error(err);
     return null;
