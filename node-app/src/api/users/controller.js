@@ -47,4 +47,28 @@ async function getUserByUsername(username) {
   return repository.getUserByUsername(username);
 }
 
-module.exports = { createUser, updateUser, getUserByUsername };
+async function getUserById(id) {
+  const fLogger = logger.child({ function: 'getUserById' });
+  try {
+    const userInDB = await repository.getUserById(id);
+    return ({
+      data: {
+        username: userInDB.username,
+        name: userInDB.name,
+        surname: userInDB.surname,
+        email: userInDB.email,
+        phone: userInDB.phone,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('Unmapped error at user fetch', { error });
+    return { error: errors.COULD_NOT_UPDATE_USER };
+  }
+}
+
+module.exports = {
+  createUser,
+  updateUser,
+  getUserByUsername,
+  getUserById,
+};

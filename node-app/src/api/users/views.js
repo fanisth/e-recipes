@@ -9,6 +9,25 @@ const controller = require('./controller');
 const validations = require('./validation');
 const errors = require('./errors');
 
+async function userProfile(req, res) {
+  const fLogger = logger.child({ function: 'userProfile' });
+  try {
+    const { data, error } = await controller.getUserById(req.user._id.toString());
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        ...data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get user', { error });
+    return ErrorHandler.send(req, res, errors.COULD_NOT_UPDATE_USER);
+  }
+}
+
 async function update(req, res) {
   const fLogger = logger.child({ function: 'update user' });
   try {
@@ -29,11 +48,12 @@ async function update(req, res) {
       },
     });
   } catch (error) {
-    fLogger.warn('could not register user', { error });
+    fLogger.warn('could not update user', { error });
     return ErrorHandler.send(req, res, errors.COULD_NOT_UPDATE_USER);
   }
 }
 
 module.exports = {
+  userProfile,
   update,
 };
