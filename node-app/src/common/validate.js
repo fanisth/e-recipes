@@ -1,6 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const Ajv = require('ajv');
 
 const ajv = new Ajv({ allErrors: true, coerceTypes: true, format: 'full' });
+// eslint-disable-next-line import/no-extraneous-dependencies
 require('ajv-errors')(ajv);
 
 function getValidationErrorResponseObject(validationErrors) {
