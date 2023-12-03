@@ -27,8 +27,15 @@ const RECIPE = {
     type: 1,
     userMessage: 'Η συνταγή δεν μπόρεσε να αποθηκευθεί.',
   },
-  GENERAL_RECIPE_ERROR: {
+  RECIPE_UNAUT_USER: {
     code: 'RECIPE005',
+    status: 401,
+    technicalDescription: 'Unauthorized user. Please try again later.',
+    type: 1,
+    userMessage: 'Δεν έχετε δικαίωμα να επεξεργαστείτε την συνταγή.',
+  },
+  GENERAL_RECIPE_ERROR: {
+    code: 'RECIPE006',
     status: 500,
     technicalDescription: 'Could not access recipes. Please try again later.',
     type: 1,

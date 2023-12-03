@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
@@ -12,7 +13,7 @@ async function getRecipe(params) {
       return { error: errors.RECIPE_FINDONE_BY_ID };
     }
 
-    return ({ data: recipe.id });
+    return ({ data: recipe });
   } catch (error) {
     fLogger.warn('Unmapped error at getRecipe', { error });
     return { error: errors.GENERAL_RECIPE_ERROR };
@@ -37,7 +38,8 @@ async function getAllRecipes() {
 async function createRecipe(body, user) {
   const fLogger = logger.child({ function: 'createRecipe' });
   try {
-    const recipe = await recipeRepository.createRecipe(body, user.id);
+    // eslint-disable-next-line no-underscore-dangle
+    const recipe = await recipeRepository.createRecipe(body, user._id);
     if (!recipe) {
       return { error: errors.RECIPE_CREATE };
     }
@@ -50,22 +52,19 @@ async function createRecipe(body, user) {
 }
 
 async function updateRecipe(body, params, user) {
-  // const { recipeId } = req.params;
-  // console.log('controller');
-  // const recipe = await recipeRepository.updateRecipe(req.body, req.user.id, recipeId);
-  //
-  // if (!recipe) return res.status(500).json({ error: 'An error occured' });
-  // // not-owner user
-  // if (recipe === 'Invalid user') return res.status(401).json({ error: 'Access denied' });
-  //
-  // return res.status(203).json({ message: 'Success' });
   const fLogger = logger.child({ function: 'updateRecipe' });
   try {
     const { recipeId } = params;
-    const recipe = await recipeRepository.updateRecipe(body, user.id, recipeId);
-    if (!recipe) {
-      return { error: errors.RECIPE_UPDATE };
-    }
+    const recipeInDB = await recipeRepository.getRecipeById(recipeId);
+
+    if (!recipeInDB) return { error: errors.RECIPE_FINDONE_BY_ID };
+    // eslint-disable-next-line max-len
+    if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
+
+    const updatedRecipe = { ...recipeInDB, ...body };
+    const savedRecipe = await recipeRepository.updateRecipe(updatedRecipe);
+
+    if (!savedRecipe) return { error: errors.RECIPE_UPDATE };
 
     return ({ data: 'Success' });
   } catch (error) {

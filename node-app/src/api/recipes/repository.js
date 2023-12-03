@@ -19,7 +19,7 @@ async function createRecipe(recipeRequest, userId) {
 async function getRecipeById(id) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
-    const recipe = Recipe.findOne({ _id: id });
+    const recipe = Recipe.findOne({ _id: id }).lean();
     return recipe;
   } catch (e) {
     console.error(e);
@@ -38,20 +38,12 @@ async function getAllRecipes() {
   }
 }
 
-async function updateRecipe(recipeRequest, userId, recipeId) {
+async function updateRecipe(updatedRecipe) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
-    const recipe = await Recipe.findOne({ _id: recipeId });
-    console.log(recipe);
-    console.log(recipeRequest);
-
-    if (!recipe) return null;
-    if (recipe.user_id.toString() !== userId) return 'Invalid user';
-
-    /* eslint-disable prefer-object-spread */
-    // Update the document using `updateOne()`
-    await recipe.updateOne(recipeRequest);
-    return null;
+    // eslint-disable-next-line no-underscore-dangle
+    const recipe = await Recipe.updateOne({ _id: updatedRecipe._id }, { ...updatedRecipe });
+    return recipe;
   } catch (e) {
     console.error(e);
     return null;

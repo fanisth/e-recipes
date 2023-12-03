@@ -6,5 +6,6 @@ router.get('/:recipeId', views.getRecipe);
 router.post('/', auth.authenticateToken, views.createRecipe);
 router.get('/', views.getAllRecipes);
 router.put('/:recipeId', auth.authenticateToken, views.updateRecipe);
+router.get('/my-recipes', auth.authenticateToken, views.getAllRecipes);
 
 module.exports = router;

@@ -74,7 +74,7 @@ async function createRecipe(req, res) {
       },
     };
     fLogger.info({ response });
-    res.status(200).json(response);
+    res.status(201).json(response);
   } catch (error) {
     fLogger.warn('could not create recipe', { error });
     return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
@@ -96,7 +96,7 @@ async function updateRecipe(req, res) {
       return ErrorHandler.send(req, res, error);
     }
 
-    res.status(200).json({
+    res.status(204).json({
       payload: {
         msg: data,
       },
