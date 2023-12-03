@@ -19,7 +19,7 @@ const config = require('./config/config');
     app.use('/api/auth', require('./api/auth'));
     app.use('/api/users', require('./api/users'));
     app.use('/api/categories', require('./api/categories'));
-
+    app.use('/api/recipes', require('./api/recipes'));
     app.listen(config.PORT, () => console.log(`Server listening on port ${config.PORT}`));
   } catch (e) {
     console.error(`${e}`);
