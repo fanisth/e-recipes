@@ -50,6 +50,21 @@ async function updateRecipe(updatedRecipe) {
   }
 }
 
+async function getUserRecipes(userId) {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = Recipe.find({ user_id: userId });
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 module.exports = {
-  createRecipe, getRecipeById, getAllRecipes, updateRecipe,
+  createRecipe,
+  getRecipeById,
+  getAllRecipes,
+  updateRecipe,
+  getUserRecipes,
 };

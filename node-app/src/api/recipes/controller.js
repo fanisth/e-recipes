@@ -73,6 +73,25 @@ async function updateRecipe(body, params, user) {
   }
 }
 
+async function getUserRecipes(userId) {
+  const fLogger = logger.child({ function: 'getUserRecipes' });
+  try {
+    const recipes = await recipeRepository.getUserRecipes(userId);
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at getUserRecipes', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
 module.exports = {
-  getRecipe, createRecipe, getAllRecipes, updateRecipe,
+  getRecipe,
+  createRecipe,
+  getAllRecipes,
+  updateRecipe,
+  getUserRecipes,
 };

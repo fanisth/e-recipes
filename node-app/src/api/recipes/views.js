@@ -1,4 +1,4 @@
-/* eslint-disable consistent-return */
+/* eslint-disable */
 const validate = require('../../common/validate');
 const logger = require('../../common/logger')();
 
@@ -47,7 +47,7 @@ async function getAllRecipes(req, res) {
       },
     });
   } catch (error) {
-    fLogger.warn('could get all recipes', { error });
+    fLogger.warn('could not get all recipes', { error });
     return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
   }
 }
@@ -107,9 +107,31 @@ async function updateRecipe(req, res) {
   }
 }
 
+async function getUserRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getUserRecipes' });
+  try {
+    const userId = req.user._id;
+    fLogger.info('Going to get user recipes', { userId });
+    const { data, error } = await controller.getUserRecipes(userId);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get getUserRecipes recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 module.exports = {
   getRecipe,
   getAllRecipes,
   createRecipe,
   updateRecipe,
+  getUserRecipes,
 };
