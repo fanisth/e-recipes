@@ -24,7 +24,7 @@ async function createUser(userRequest) {
 }
 
 async function getUserById(id) {
-  const user = await User.findOne({ _id: id });
+  const user = await User.findOne({ _id: id }).lean();
   return user;
 }
 
@@ -35,8 +35,18 @@ async function getUserByUsername(username) {
 }
 
 async function getCountByCriteria(criteria) {
-  const user = await User.findOne(criteria);
-  return user;
+  const users = await User.find(criteria);
+  return users.length;
+}
+
+async function saveUser(userRequest) {
+  try {
+    const user = await User.updateOne({ _id: userRequest._id }, { ...userRequest });
+    return user;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 }
 
 module.exports = {
@@ -44,4 +54,5 @@ module.exports = {
   getUserByUsername,
   getCountByCriteria,
   getUserById,
+  saveUser,
 };
