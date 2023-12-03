@@ -1,4 +1,5 @@
 /* eslint-disable prefer-object-spread */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const moment = require('moment-timezone');
 const logger = require('../common/logger')();
 
