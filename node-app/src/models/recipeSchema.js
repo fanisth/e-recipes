@@ -13,6 +13,13 @@ const recipeSchema = new mongoose.Schema({
   preperation_time: { type: Number, required: true },
   cooking_time: { type: Number, required: true },
   difficulty: { type: String, enum: ['easy', 'medium', 'hard'], required: true },
+  searchTerms: {
+    title: { type: String, trim: true },
+    categories: { type: String, trim: true },
+    equipment: { type: String, trim: true },
+    ingredients: { type: String, trim: true },
+    tags: { type: String, trim: true },
+  },
   created_at: { type: Date, default: Date.now, required: true },
 });
 

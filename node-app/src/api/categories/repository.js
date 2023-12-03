@@ -11,4 +11,14 @@ async function getCategories() {
   }
 }
 
-module.exports = { getCategories };
+async function getCategoriesByCriteria(criteria) {
+  try {
+    const allCategories = await Category.find(criteria).lean();
+    return allCategories;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+module.exports = { getCategories, getCategoriesByCriteria };
