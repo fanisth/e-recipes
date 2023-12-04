@@ -2,6 +2,7 @@
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
+const searchUtils = require('./searchUtils');
 
 async function getRecipe(params) {
   const fLogger = logger.child({ function: 'getRecipe' });
@@ -39,7 +40,11 @@ async function createRecipe(body, user) {
   const fLogger = logger.child({ function: 'createRecipe' });
   try {
     // eslint-disable-next-line no-underscore-dangle
-    const recipe = await recipeRepository.createRecipe(body, user._id);
+    const searchTerms = await searchUtils.getSearchTerms(body);
+    const recipe = await recipeRepository.createRecipe({
+      ...body,
+      searchTerms,
+    }, user._id);
     if (!recipe) {
       return { error: errors.RECIPE_CREATE };
     }
@@ -62,6 +67,7 @@ async function updateRecipe(body, params, user) {
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
     const updatedRecipe = { ...recipeInDB, ...body };
+    updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
     const savedRecipe = await recipeRepository.updateRecipe(updatedRecipe);
 
     if (!savedRecipe) return { error: errors.RECIPE_UPDATE };
@@ -88,10 +94,44 @@ async function getUserRecipes(userId) {
   }
 }
 
+async function search(keyword) {
+  const fLogger = logger.child({ function: 'getAllRecipes' });
+  try {
+    const normalizedKeyword = searchUtils.getTerm(keyword);
+    const recipes = await recipeRepository.search(normalizedKeyword);
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at search', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function searchSuggestions(keyword) {
+  const fLogger = logger.child({ function: 'getAllRecipes' });
+  try {
+    const normalizedKeyword = searchUtils.getTerm(keyword);
+    const recipes = await recipeRepository.searchSuggestions(normalizedKeyword);
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at search', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
 module.exports = {
   getRecipe,
   createRecipe,
   getAllRecipes,
   updateRecipe,
   getUserRecipes,
+  search,
+  searchSuggestions,
 };
