@@ -55,15 +55,14 @@ async function getAllRecipes(req, res) {
 async function createRecipe(req, res) {
   const fLogger = logger.child({ function: 'createRecipe' });
   try {
-    const { body, user } = req;
+    const { body, user, file, thumbnailPath } = req;
     fLogger.info('Going to create a recipe', { body, user });
 
     const validationError = validate(body, validations.RECIPE);
     if (validationError) {
       return ErrorHandler.send(req, res, validationError);
     }
-
-    const { data, error } = await controller.createRecipe(body, user);
+    const { data, error } = await controller.createRecipe(body, user, file.path, thumbnailPath);
     if (error) {
       return ErrorHandler.send(req, res, error);
     }
