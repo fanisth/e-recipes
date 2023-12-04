@@ -94,10 +94,44 @@ async function getUserRecipes(userId) {
   }
 }
 
+async function search(keyword) {
+  const fLogger = logger.child({ function: 'getAllRecipes' });
+  try {
+    const normalizedKeyword = searchUtils.getTerm(keyword);
+    const recipes = await recipeRepository.search(normalizedKeyword);
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at search', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function searchSuggestions(keyword) {
+  const fLogger = logger.child({ function: 'getAllRecipes' });
+  try {
+    const normalizedKeyword = searchUtils.getTerm(keyword);
+    const recipes = await recipeRepository.searchSuggestions(normalizedKeyword);
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at search', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
 module.exports = {
   getRecipe,
   createRecipe,
   getAllRecipes,
   updateRecipe,
   getUserRecipes,
+  search,
+  searchSuggestions,
 };

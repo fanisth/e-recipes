@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-console */
 const Recipe = require('../../models/recipeSchema');
 
@@ -61,10 +62,90 @@ async function getUserRecipes(userId) {
   }
 }
 
+async function search(keyword) {
+  try {
+    const recipes = await Recipe.aggregate([
+      {
+        $search: {
+          index: 'default',
+          text: {
+            query: keyword,
+            path: {
+              wildcard: '*'
+            }
+          }
+        }
+      }
+    ]).exec();
+
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function searchSuggestions(keyword) {
+  try {
+    const recipes = await Recipe.aggregate([
+      {
+        $search: {
+          index: 'autocomplete',
+          compound: {
+            must: [
+              {
+                compound: {
+                  should: [
+                    {
+                      autocomplete: {
+                        query: keyword,
+                        path: 'searchTerms.title',
+                        fuzzy: {
+                          maxEdits: 1,
+                          maxExpansions: 50,
+                          prefixLength: 2,
+                        },
+                        score: {
+                          boost: {
+                            value: 2,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  minimumShouldMatch: 1,
+                },
+              },
+            ],
+          },
+          highlight: {
+            path: [
+              'searchTerms.title',
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1
+        }
+      }
+    ]).exec();
+
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 module.exports = {
   createRecipe,
   getRecipeById,
   getAllRecipes,
   updateRecipe,
   getUserRecipes,
+  search,
+  searchSuggestions,
 };
