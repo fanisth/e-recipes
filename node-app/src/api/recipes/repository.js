@@ -1,11 +1,15 @@
 /* eslint-disable no-console */
 const Recipe = require('../../models/recipeSchema');
 
-async function createRecipe(recipeRequest, userId) {
+async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
   try {
     const recipe = new Recipe({
       ...recipeRequest,
       user_id: userId,
+      photo_url: {
+        imagePath,
+        thumbnailPath,
+      },
     });
 
     const createdRecipe = await recipe.save();

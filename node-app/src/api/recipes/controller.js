@@ -35,11 +35,11 @@ async function getAllRecipes() {
   }
 }
 
-async function createRecipe(body, user) {
+async function createRecipe(body, user, imagePath, thumbnailPath) {
   const fLogger = logger.child({ function: 'createRecipe' });
   try {
     // eslint-disable-next-line no-underscore-dangle
-    const recipe = await recipeRepository.createRecipe(body, user._id);
+    const recipe = await recipeRepository.createRecipe(body, user._id, imagePath, thumbnailPath);
     if (!recipe) {
       return { error: errors.RECIPE_CREATE };
     }

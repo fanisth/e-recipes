@@ -2,6 +2,7 @@
 const express = require('express');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
 const mongo = require('./services/db/mongoController');
 const config = require('./config/config');
@@ -13,6 +14,7 @@ const config = require('./config/config');
     const app = express();
     app.use(cors());
     app.use(bodyParser.json());
+    app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
     // Routes
     // eslint-disable-next-line global-require
     app.use('/api/auth', require('./api/auth'));
