@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable no-console */
 const express = require('express');
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -20,7 +21,7 @@ const config = require('./config/config');
     app.use('/api/auth', require('./api/auth'));
     // eslint-disable-next-line global-require
     app.use('/api/users', require('./api/users'));
-    // eslint-disable-next-line global-require
+    app.use('/api/categories', require('./api/categories'));
     app.use('/api/recipes', require('./api/recipes'));
     app.listen(config.PORT, () => console.log(`Server listening on port ${config.PORT}`));
   } catch (e) {

@@ -127,10 +127,56 @@ async function getUserRecipes(req, res) {
   }
 }
 
+async function search(req, res) {
+  const fLogger = logger.child({ function: 'search' });
+  try {
+    fLogger.info('Going to search for recipes');
+    if(!req.query.keyword) throw new Error(); 
+    const keyword = req.query.keyword;
+    const { data, error } = await controller.search(keyword);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get all recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
+async function searchSuggestions(req, res) {
+  const fLogger = logger.child({ function: 'searchSuggestions' });
+  try {
+    fLogger.info('Going to get search suggestions for recipes');
+    if(!req.query.keyword) throw new Error(); 
+    const keyword = req.query.keyword;
+    const { data, error } = await controller.searchSuggestions(keyword);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get search suggestions', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 module.exports = {
   getRecipe,
   getAllRecipes,
   createRecipe,
   updateRecipe,
   getUserRecipes,
+  search,
+  searchSuggestions,
 };
