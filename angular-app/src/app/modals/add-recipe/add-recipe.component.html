@@ -111,6 +111,16 @@
         <button type="button" class="btn btn-primary" [disabled]="tags.length === 0" (click)="addTags()">Add tags</button>
       </div>
     </div>
+    <div class="mb-3">
+      <label>Tags</label>
+      <div formArrayName="tags">
+        <div *ngFor="let tag of tags.controls; let i=index" class="input-group mb-3">
+          <input [id]="'tag' + i" [formControlName]="i" type="text" class="form-control" placeholder="Tag name">
+          <button class="btn btn-danger" (click)="removeTags(i)">Remove</button>
+        </div>
+        <button type="button" class="btn btn-primary" [disabled]="tags.length === 0" (click)="addTags()">Add tags</button>
+      </div>
+    </div>
   
     <div class="mb-3">
       <label for="preparationTime" class="form-label">Preparation Time</label>

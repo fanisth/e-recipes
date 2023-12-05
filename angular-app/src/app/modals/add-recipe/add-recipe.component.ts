@@ -17,6 +17,7 @@ export class AddRecipeComponent implements OnInit {
 public recipeForm: FormGroup = this.fb.group({
   title: ['', [Validators.required, Validators.maxLength(50)]],
   ingredients: this.fb.array([]),
+  instructions: this.fb.array([]),
   equipments: this.fb.array(['', [Validators.required]]),
   tags: this.fb.array([]),
   preperation_time: [0, [Validators.required, Validators.min(0)]],
@@ -31,6 +32,7 @@ public recipeForm: FormGroup = this.fb.group({
     this.recipeForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       ingredients: this.fb.array([]),
+      instructions: this.fb.array([]),
       equipments: this.fb.array([['', [Validators.required]]]),
       tags: this.fb.array([]),
       preperation_time: [0, [Validators.required, Validators.min(0)]],
@@ -40,7 +42,7 @@ public recipeForm: FormGroup = this.fb.group({
     });
   }
 
-  get instructionForms() {
+  get instructions() {
     return this.recipeForm?.get('instructions') as FormArray;
   }
 
@@ -76,6 +78,10 @@ public recipeForm: FormGroup = this.fb.group({
     this.tags.push(new FormControl());
   }
 
+  addInsrtuctons() {
+    this.instructions.push(new FormControl());
+  }
+
   addIngredients() {
     this.ingredients.push(new FormControl());
   }
@@ -104,11 +110,11 @@ public recipeForm: FormGroup = this.fb.group({
   }
 
   addInstruction() {
-    this.instructionForms.push(this.createInstruction());
+    this.instructions.push(this.createInstruction());
   }
 
   removeInstruction(index: number) {
-    this.instructionForms.removeAt(index);
+    this.instructions.removeAt(index);
   }
 
   onSubmit() {
