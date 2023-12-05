@@ -3,7 +3,18 @@
     font-size: 25px;
     color: #131212;
   }
+
+  .container-fluid {
+    height: 100vh; /* Set container height to 100% of viewport height */
+  }
+
+  .row{
+    height: 100%;
+  }
+
   .loginbox{
+    margin-top: 5%;
+    margin-bottom: 20%;
     width: 380px;
   }
   .Enter-your-credentials-to-access-your-account {
