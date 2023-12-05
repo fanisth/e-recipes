@@ -1,0 +1,26 @@
+<!-- app.component.html -->
+
+<div class="container mt-5">
+    <h1>Recipe Header</h1>
+  
+    <!-- Carousel for recipes -->
+    <ngb-carousel *ngIf="recipes.length > 0">
+      <ng-template ngbSlide *ngFor="let recipe of recipes">
+        <img [src]="recipe.photos_urls" class="d-block w-100" alt="{{ recipe.title }}">
+        <div class="carousel-caption">
+          <h3>{{ recipe.title }}</h3>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  
+  
+  <div class="mt-5">
+    <h2>Other Section Header</h2>
+    <div class="row mt-3">
+        <div class="col-md-4" *ngFor="let recipe of recipes">
+            <button type="button" class="btn btn-outline-primary">
+            <img [src]="recipe.photos_urls" class="d-block w-100" alt="{{ recipe.title }}">
+            </button>
+          </div>
+    </div>
+  </div>

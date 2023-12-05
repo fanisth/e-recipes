@@ -12,31 +12,49 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
+        
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
+        <div ngbDropdown class="dropdown">
+          <button ngbDropdownToggle class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false">
+        Dropdown button
+        </button>
+          <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+            <li *ngFor="let cat of categories">
+              <!-- <button ngbDropdownItem > -->
+                <a *ngIf="cat.subcategory != undefined && cat.subcategory[0] != '' " ngbDropdown class="dropdown">
+                  <!-- <a *ngIf="cat.subcategory == ''" class="dropdown"> -->
+                  <button  ngbDropdownToggle class="btn btn-secondary" type="button" id="dropdownMenuButton2" aria-expanded="false">
+                  {{cat.category}}
+                  </button>
+                  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton2" *ngIf="cat.subcategory != undefined && cat.subcategory[0] != ''">
+                    <li *ngFor="let sub of cat.subcategory"><a ngbDropdownItem href="#">{{sub}}
+                      </a>
+                    </li>
+                  </ul>      
+                </a>
+                <a *ngIf="cat.subcategory != undefined && cat.subcategory[0] == ''" >
+                  <button   class="btn btn-secondary" type="button" id="dropdownMenuButton2" aria-expanded="false">
+                  {{cat.category}}
+                  </button>      
+                </a>
+            </li>
+          </ul>
+        </div>
+      </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li>
-        <li class="nav-item" *ngIf="!this.loggedIn">
+        <li class="nav-item" *ngIf="!(this.loggedIn |async)">
           <a class="nav-link" routerLink="login" >Log in</a>
         </li>
-        <li class="nav-item" *ngIf="!this.loggedIn">
+        <li class="nav-item" *ngIf="!(this.loggedIn |async)">
           <a class="nav-link" routerLink="register" >Sign up</a>
         </li>
+        <li class="nav-item" *ngIf="(this.loggedIn |async)">
+          <a class="nav-link" routerLink="profile" >My Profile</a>
+        </li>
       </ul>
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
+      
     </div>
   </nav>
   <router-outlet></router-outlet>
