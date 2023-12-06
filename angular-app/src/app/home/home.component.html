@@ -13,23 +13,20 @@
 
         <li class="nav-item dropdown">
           <div ngbDropdown class="dropdown">
-            <button ngbDropdownToggle class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <button ngbDropdownToggle  class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               ΦΑΓΗΤΑ
             </button>
-            <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
-              <li class="dropend">
+            <ul ngbDropdownMenu #dropdown class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+              <li *ngFor="let cat of categories" class="dropend">
                 <div ngbDropdown class="dropend">
                   <button ngbDropdownToggle class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                    ΑΛΜΥΡΑ
+                    {{cat.name}}
                   </button>
                   <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li *ngFor="let sub of cat['subCategory']" ><a class="dropdown-item" href="categories/:{{sub._id}}">{{sub.name}}</a></li>
                   </ul>
                 </div>
               </li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </div>
         </li>

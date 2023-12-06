@@ -28,6 +28,9 @@ const routes: Routes = [
       {
         path: 'catalogue', component: CatalogueComponent
       },
+      {
+        path: 'categories/:id', component: RecipesComponent
+      },
 
     ] },
   { path: '**', redirectTo : '' },
