@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-const Rating = require('../../models/reviewSchema');
+const Review = require('../../models/reviewSchema');
 
 async function getRecipeReviews(recipeId) {
   try {
-    const reviews = await Rating.find({ recipeId }).lean();
+    const reviews = await Review.find({ recipeId }).lean();
     return reviews;
   } catch (err) {
     console.error(err);
@@ -11,4 +11,14 @@ async function getRecipeReviews(recipeId) {
   }
 }
 
-module.exports = { getRecipeReviews };
+async function postRecipeReview(review) {
+  try {
+    const reviews = await Review.create(review);
+    return reviews;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+module.exports = { getRecipeReviews, postRecipeReview };

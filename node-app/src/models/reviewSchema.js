@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-const categorySchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
   recipeId: { type: mongoose.Schema.ObjectId, required: true },
   userId: { type: mongoose.Schema.ObjectId, required: true },
   rating: {
-    type: String,
+    type: Number,
     required: true,
-    trim: true,
-    enum: ['Άριστο', 'Πολυ Καλό', 'Καλό', 'Μέτριο', 'Κακό'],
+    min: 1,
+    max: 5,
   },
   text: [{ type: String }],
 });
 
-const Category = mongoose.model('Category', categorySchema);
+const Review = mongoose.model('Review', reviewSchema);
 
-module.exports = Category;
+module.exports = Review;

@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const ratingSchema = new mongoose.Schema({
+  sum: { type: Number },
+  counter: { type: Number },
+});
+
 const recipeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   instructions: { type: Array, required: true },
@@ -20,6 +25,7 @@ const recipeSchema = new mongoose.Schema({
     ingredients: { type: String, trim: true },
     tags: { type: String, trim: true },
   },
+  rating: ratingSchema,
   created_at: { type: Date, default: Date.now, required: true },
 });
 
