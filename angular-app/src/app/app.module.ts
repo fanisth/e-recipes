@@ -17,6 +17,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { EditUserComponent } from './modals/edit-user/edit-user.component';
 import { CommonModule } from '@angular/common';
 import { AddRecipeComponent } from './modals/add-recipe/add-recipe.component';
+import { CatalogueComponent } from './catalogue/catalogue.component';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { AddRecipeComponent } from './modals/add-recipe/add-recipe.component';
     RecipesComponent,
     UserProfileComponent,
     EditUserComponent,
-    AddRecipeComponent
+    AddRecipeComponent,
+    CatalogueComponent,
   ],
   imports: [
     CommonModule,
