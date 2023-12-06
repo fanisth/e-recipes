@@ -8,7 +8,7 @@ const categorySchema = new mongoose.Schema({
     trim: true,
     enum: ['food', 'desserts'],
   },
-  subcategories: [{ type: mongoose.Schema.ObjectId }],
+  parentCategory: { type: mongoose.Schema.ObjectId },
 });
 
 const Category = mongoose.model('Category', categorySchema);
