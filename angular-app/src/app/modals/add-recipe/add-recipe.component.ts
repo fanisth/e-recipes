@@ -9,11 +9,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddRecipeComponent implements OnInit {
 
-
+  public subcategories: Subcategory[] | undefined = [] ;
+  
   public fileToUpload: File | null = null;
 
+  category: Category[] = [
+    { id: '1', name: 'Category 1', subcategories: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },
+    { id: '2', name: 'Category 2', subcategories: [{ id: '21', name: 'Subcategory 2A' }, { id: '22', name: 'Subcategory 2B' }] },
+    { id: '3', name: 'Category 3', subcategories: [{ id: '31', name: 'Subcategory 3A' }, { id: '32', name: 'Subcategory 3B' }] },
+  ];
   
-
 public recipeForm: FormGroup = this.fb.group({
   title: ['', [Validators.required, Validators.maxLength(50)]],
   ingredients: this.fb.array([]),
