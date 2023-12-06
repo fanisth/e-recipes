@@ -15,14 +15,14 @@ import { RecipesService } from 'src/app/services/recipes.service';
 })
 export class AddRecipeComponent implements OnInit {
 
-  subcategories: Subcategory[] = [];
+  public subcategories: Subcategory[] = [] ;
   
   public fileToUpload: File | null = null;
 
   category: Category[] = [
-    { id: 1, name: 'Category 1', subcategories: [{ id: 11, name: 'Subcategory 1A' }, { id: 12, name: 'Subcategory 1B' }] },
-    { id: 2, name: 'Category 2', subcategories: [{ id: 21, name: 'Subcategory 2A' }, { id: 22, name: 'Subcategory 2B' }] },
-    { id: 3, name: 'Category 3', subcategories: [{ id: 31, name: 'Subcategory 3A' }, { id: 32, name: 'Subcategory 3B' }] },
+    { id: '1', name: 'Category 1', subcategories: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },
+    { id: '2', name: 'Category 2', subcategories: [{ id: '21', name: 'Subcategory 2A' }, { id: '22', name: 'Subcategory 2B' }] },
+    { id: '3', name: 'Category 3', subcategories: [{ id: '31', name: 'Subcategory 3A' }, { id: '32', name: 'Subcategory 3B' }] },
   ];
   
 public recipeForm: FormGroup = this.fb.group({
@@ -147,7 +147,10 @@ public recipeForm: FormGroup = this.fb.group({
 
     if (selectedCategory) {
       this.recipeForm.get('subcategory')?.setValue(''); // Clear subcategory when category changes
-      this.subcategories = selectedCategory.subcategories;
+      if(selectedCategory.subcategories){
+        this.subcategories = selectedCategory.subcategories;
+      }
+      
     }
   }
 

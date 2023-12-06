@@ -1,8 +1,6 @@
 export interface Subcategory {
-    id: number;
+    id: string;
   name: string;
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> main
+
