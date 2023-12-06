@@ -53,7 +53,10 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     if(reason.includes("expiration")){
       const modalRef = this.modalService.open(ExpirationModalComponent,this.ngbModalOptions);
     modalRef.componentInstance.modalMessage = "Your login session has expired. You should login again";
-    modalRef.result.then((result) => {
+    modalRef.result.then(() => {
+      sessionStorage.removeItem(this.TOKEN_KEY);
+    sessionStorage.removeItem(this.USERNAME_KEY);
+    this.router.navigate([''])
     });
     }
     sessionStorage.removeItem(this.TOKEN_KEY);
