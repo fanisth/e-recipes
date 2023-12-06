@@ -1,6 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Category } from 'src/app/interfaces/category';
+import { Subcategory } from 'src/app/interfaces/subcategory';
 
 @Component({
   selector: 'app-add-recipe',
