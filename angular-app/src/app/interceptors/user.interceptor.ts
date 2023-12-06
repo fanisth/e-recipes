@@ -27,7 +27,9 @@ export class UserInterceptor implements HttpInterceptor {
 
     // If a token is present, add it to the Authorization header
    // Create a new request and Add Authorization Headers
-   const newRequest = this.addAccessToken(request, token);
+    const newRequest = this.addAccessToken(request, token);
+   
+   
 
    return next.handle(newRequest).pipe(
      catchError(error => {
