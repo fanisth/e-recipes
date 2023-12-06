@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { categories } from '../models/categories.model';
 import { RecipesService } from '../services/recipes.service';
@@ -11,21 +11,24 @@ import { Dictionary } from '../models/dictionary.model';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  
+
 
   public loggedIn :Observable<boolean> = of(false);
-  public categories :categories[] = [{
-    category : 'gluka',
-    subcategory: ['kok','negraki'] 
-  },
-  {
-    category : 'almyra',
-    subcategory: ['krepes'] 
-  },
-  {
-    category : 'poytsa',
-    subcategory: ['']
-  }
-]
+  public categories: any[] | undefined;
+//   public categories :categories[] = [{
+//     category : 'gluka',
+//     subcategory: ['kok','negraki'] 
+//   },
+//   {
+//     category : 'almyra',
+//     subcategory: ['krepes'] 
+//   },
+//   {
+//     category : 'poytsa',
+//     subcategory: ['']
+//   }
+// ]
   constructor(public authService:AuthService,private recipesService:RecipesService) { 
     this.loggedIn = this.authService.isLoggenIn
   }
@@ -34,13 +37,14 @@ export class HomeComponent implements OnInit {
       this.authService.isUserLoggedIn();
       
        
-    // this.recipesService.getCategories().subscribe(
-    //   (cat => {
-    //     if(cat){
-    //       this.categories = cat;
-    //     }
-    //   })
-    // )
+    this.recipesService.getCategories().subscribe(
+      (cat => {
+        if(cat){
+          this.categories = cat;
+        }
+      })
+    )
   }
 
+  
 }

@@ -59,9 +59,14 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </form> -->
 
+<div class="modal-header">
+    <h4 class="modal-title">Add Recipe</h4>
+</div>
+
+<div class="modal-body">
   <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="container mt-5">
 
-    <div class="mb-3">
+    <div class="mb-3 mt-1">
       <label for="title" class="form-label">Title</label>
       <input formControlName="title" type="text" class="form-control" id="title" placeholder="Title">
       <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="text-danger">
@@ -85,8 +90,8 @@
   
     <div class="mb-3">
       <label>Equipments</label>
-      <div formArrayName="equipments">
-        <div *ngFor="let equip of equipments.controls; let i=index" class="input-group mb-3">
+      <div formArrayName="equipment">
+        <div *ngFor="let equip of equipment.controls; let i=index" class="input-group mb-3">
           <input [id]="'equipment' + i" [formControlName]="i" type="text" class="form-control"
             placeholder="Equipment name">
           <button class="btn btn-danger" (click)="removeEquipments(i)">Remove</button>
@@ -108,17 +113,37 @@
           <input [id]="'tag' + i" [formControlName]="i" type="text" class="form-control" placeholder="Tag name">
           <button class="btn btn-danger" (click)="removeTags(i)">Remove</button>
         </div>
-        <button type="button" class="btn btn-primary" [disabled]="tags.length === 0" (click)="addTags()">Add tags</button>
+        <button type="button" class="btn btn-primary"  (click)="addTags()">Add tags</button>
       </div>
     </div>
+
     <div class="mb-3">
-      <label>Tags</label>
-      <div formArrayName="tags">
-        <div *ngFor="let tag of tags.controls; let i=index" class="input-group mb-3">
-          <input [id]="'tag' + i" [formControlName]="i" type="text" class="form-control" placeholder="Tag name">
-          <button class="btn btn-danger" (click)="removeTags(i)">Remove</button>
+      <label>Instructions</label>
+      <div formArrayName="instructions">
+        <div *ngFor="let instruction of instructionForms.controls; let i = index" [formGroupName]="i" class="card mb-3">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="key">Key</label>
+              <input formControlName="key" class="form-control" id="key" placeholder="Key">
+            </div>
+            
+            <div formArrayName="value">
+              <div *ngFor="let val of getValues(instruction); let j = index" class="form-group">
+                <label for="value">Value</label>
+                <div class="input-group">
+                  <input [formControlName]="j" class="form-control" id="value" placeholder="Value">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-danger" (click)="removeValue(instruction, j)">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary" (click)="addValue(instruction)">Add Value</button>
+            </div>
+            
+            <button type="button" class="btn btn-outline-danger" (click)="removeInstruction(i)">Remove Instruction</button>
+          </div>
         </div>
-        <button type="button" class="btn btn-primary" [disabled]="tags.length === 0" (click)="addTags()">Add tags</button>
+        <button type="button" class="btn btn-outline-primary" (click)="addInstruction()">Add Instruction</button>
       </div>
     </div>
   
@@ -144,6 +169,14 @@
     </div>
   
     <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input formControlName="description" type="text" class="form-control" id="description" placeholder="description">
+      <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="text-danger">
+        <div *ngIf="description?.hasError('required')">Description is required.</div>
+      </div>
+    </div>
+
+    <div class="mb-3">
       <label for="difficulty" class="form-label">Difficulty</label>
       <input formControlName="difficulty" type="text" class="form-control" id="difficulty" placeholder="Difficulty">
       <div *ngIf="difficulty?.invalid && (difficulty?.dirty || difficulty?.touched)" class="text-danger">
@@ -156,5 +189,35 @@
         <input formControlName="image"   type="file" id="file" (change)="onFileChange($event)" accept=".jpg, .jpeg, .png" class="form-control">
       </div>
   
+      <div>
+        <label for="category">Category</label>
+        <select id="category" formControlName="category" (change)="onCategoryChange()">
+          <option *ngFor="let cat of category" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+      
+      <!-- Subcategory Dropdown -->
+      <div *ngIf="subcategories.length > 0">
+        <label for="subcategory">Subcategory</label>
+        <select id="subcategory" formControlName="subcategory">
+          <option *ngFor="let subcat of subcategories" [value]="subcat.id">{{ subcat.name }}</option>
+        </select>
+      </div>
+      
     <button type="submit" class="btn btn-primary" [disabled]="!recipeForm.valid">Submit</button>
   </form>
+</div>
+  <!-- <form [formGroup]="recipeForm">
+    
+  
+    <div formArrayName="instructions">
+      <div *ngFor="let instruction of instructionForms.controls; let i = index" [formGroupName]="i">
+        <input formControlName="key" placeholder="Key">
+        <input formControlName="value" placeholder="Value">
+        <button type="button" (click)="removeInstruction(i)">Remove</button>
+      </div>
+      <button type="button" (click)="addInstruction()">Add Instruction</button>
+    </div>
+  
+    <button type="submit">Submit</button>
+  </form> -->
