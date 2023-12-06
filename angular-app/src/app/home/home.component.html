@@ -1,60 +1,75 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">E-Recipes</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item active">
           <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        
+
         <li class="nav-item dropdown">
-        <div ngbDropdown class="dropdown">
-          <button ngbDropdownToggle class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false">
-        Dropdown button
-        </button>
-          <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
-            <li *ngFor="let cat of categories">
-              <!-- <button ngbDropdownItem > -->
-                <a *ngIf="cat.subcategory != undefined && cat.subcategory[0] != '' " ngbDropdown class="dropdown">
-                  <!-- <a *ngIf="cat.subcategory == ''" class="dropdown"> -->
-                  <button  ngbDropdownToggle class="btn btn-secondary" type="button" id="dropdownMenuButton2" aria-expanded="false">
-                  {{cat.category}}
+          <div ngbDropdown class="dropdown">
+            <button ngbDropdownToggle  class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              ΦΑΓΗΤΑ
+            </button>
+            <ul ngbDropdownMenu #dropdown class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+              <li *ngFor="let cat of categories" class="dropend">
+                <div ngbDropdown class="dropend">
+                  <button ngbDropdownToggle class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{cat.name}}
                   </button>
-                  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton2" *ngIf="cat.subcategory != undefined && cat.subcategory[0] != ''">
-                    <li *ngFor="let sub of cat.subcategory"><a ngbDropdownItem href="#">{{sub}}
-                      </a>
-                    </li>
-                  </ul>      
-                </a>
-                <a *ngIf="cat.subcategory != undefined && cat.subcategory[0] == ''" >
-                  <button   class="btn btn-secondary" type="button" id="dropdownMenuButton2" aria-expanded="false">
-                  {{cat.category}}
-                  </button>      
-                </a>
-            </li>
-          </ul>
-        </div>
-      </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
+                  <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                    <li *ngFor="let sub of cat['subCategory']" ><a class="dropdown-item" href="categories/:{{sub._id}}">{{sub.name}}</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
         </li>
-        <li class="nav-item" *ngIf="!(this.loggedIn |async)">
-          <a class="nav-link" routerLink="login" >Log in</a>
-        </li>
-        <li class="nav-item" *ngIf="!(this.loggedIn |async)">
-          <a class="nav-link" routerLink="register" >Sign up</a>
-        </li>
-        <li class="nav-item" *ngIf="(this.loggedIn |async)">
-          <a class="nav-link" routerLink="profile" >My Profile</a>
+
+        <li class="nav-item dropdown">
+          <div ngbDropdown class="dropdown">
+            <button ngbDropdownToggle class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+              ΓΛΥΚΑ
+            </button>
+            <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton3">
+              <li class="dropend">
+                <div ngbDropdown class="dropend">
+                  <button ngbDropdownToggle class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                    ΑΛΜΥΡΑ
+                  </button>
+                  <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton4">
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
         </li>
       </ul>
-      
+      <form class="d-flex me-auto">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><span class="btn-label"><i class="fa fa-cutlery" aria-hidden="true"></i></span></button>
+      </form>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngIf="!(this.loggedIn | async)">
+          <a class="nav-link" routerLink="login"><span class="btn-label"><i class="fa fa-sign-in" aria-hidden="true"></i></span>Log in</a>
+        </li>
+        <li class="nav-item" *ngIf="!(this.loggedIn | async)">
+          <a class="nav-link" routerLink="register"><span class="btn-label"><i class="fa fa-user-plus" aria-hidden="true"></i></span>Sign up</a>
+        </li>
+        <li class="nav-item" *ngIf="(this.loggedIn | async)">
+          <a class="nav-link" routerLink="profile"><span class="btn-label"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>My Profile</a>
+        </li>
+      </ul>
     </div>
-  </nav>
-  <router-outlet></router-outlet>
+  </div>
+</nav>
+<router-outlet></router-outlet>

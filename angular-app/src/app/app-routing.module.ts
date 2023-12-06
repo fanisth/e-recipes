@@ -24,6 +24,9 @@ const routes: Routes = [
       {
         path: 'profile', component: UserProfileComponent
       },
+      {
+        path: 'categories/:id', component: RecipesComponent
+      },
 
     ] },
   { path: '**', redirectTo : '' },
