@@ -11,4 +11,8 @@ export class Recipes{
     preperation_time?: number;
     cooking_time?: number;
     difficulty?: string;
+    rating?: {
+        sum: number,
+        counter: number
+    }
 }

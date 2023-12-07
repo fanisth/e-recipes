@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { CatalogueComponent } from './catalogue/catalogue.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -23,6 +24,9 @@ const routes: Routes = [
       },
       {
         path: 'profile', component: UserProfileComponent
+      },
+      {
+        path: 'catalogue', component: CatalogueComponent
       },
       {
         path: 'categories/:id', component: RecipesComponent

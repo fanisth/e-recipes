@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Recipes } from '../models/recipes.model';
-import { RecipesService } from '../services/recipes.service';
+import { RecipesService } from '../services/recipes.service' 
 
 @Component({
-  selector: 'app-recipes',
-  templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css']
+  selector: 'app-catalogue',
+  templateUrl: './catalogue.component.html',
+  styleUrls: ['./catalogue.component.css']
 })
-export class RecipesComponent implements OnInit {
+export class CatalogueComponent implements OnInit {
 
   popularRecipes = []
 
@@ -25,11 +24,15 @@ export class RecipesComponent implements OnInit {
       ingredients: ['Ingredient 1', 'Ingredient 2', 'Ingredient 3'],
       equipment: ['Equipment 1', 'Equipment 2'],
       tags: ['Tag 1', 'Tag 2'],
-      photos_urls: '../../assets/recipe1.jpg',
+      photos_urls: '../../assets/taper.jpg',
       video_url: 'https://www.youtube.com/watch?v=your-video-id',
       preperation_time: 30,
       cooking_time: 60,
       difficulty: 'Intermediate',
+      rating: {
+        sum: 40,
+        counter: 10
+      }
     },
     {
       title: 'Recipe 2',
@@ -41,11 +44,15 @@ export class RecipesComponent implements OnInit {
       ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C'],
       equipment: ['Equipment X', 'Equipment Y'],
       tags: ['Tag X', 'Tag Y'],
-      photos_urls: '../../assets/recipe2.jpg',
+      photos_urls: '../../assets/taper.jpg',
       video_url: 'https://www.youtube.com/watch?v=your-video-id',
       preperation_time: 45,
       cooking_time: 75,
       difficulty: 'Advanced',
+      rating: {
+        sum: 32,
+        counter: 10
+      }
     },
     {
       title: 'Recipe 3',
@@ -57,18 +64,24 @@ export class RecipesComponent implements OnInit {
       ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
       equipment: ['Equipment A', 'Equipment B'],
       tags: ['Tag A', 'Tag B'],
-      photos_urls: '../../assets/recipe3.jpg',
+      photos_urls: '../../assets/taper.jpg',
       video_url: 'https://www.youtube.com/watch?v=your-video-id',
       preperation_time: 60,
       cooking_time: 90,
       difficulty: 'Beginner',
+      rating: {
+        sum: 25,
+        counter: 10
+      }
     },
   ];; // Assuming your recipe objects have a structure, adjust accordingly
 
-  constructor(private recipesService:RecipesService, private carouselConfig: NgbCarouselConfig) {
-    carouselConfig.interval = 5000; // Carousel interval in milliseconds
-    carouselConfig.wrap = true; // Wrap the carousel items
-    carouselConfig.keyboard = true; // Allow keyboard navigation
+
+  calculateAverageRating(recipe: Recipes): number {
+    if (!recipe.rating || recipe.rating.counter === 0) {
+      return 0;
+    }
+    return recipe.rating.sum / recipe.rating.counter;
   }
 
   ngOnInit() {
