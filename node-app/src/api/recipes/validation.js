@@ -3,11 +3,11 @@ module.exports = Object.freeze({
     type: 'object',
     properties: {
       title: { type: 'string', minLength: 3 },
+      description: { type: 'string', minLength: 15 },
       instructions: { type: 'array', items: { type: 'object' } },
       ingredients: { type: 'array', items: { type: 'string' } },
       equipment: { type: 'array', items: { type: 'string' } },
       tags: { type: 'array', items: { type: 'string' } },
-      description: { type: 'string', minLength: 15 },
       categories: { type: 'array', items: { type: 'string' } },
       preperation_time: { type: 'number' },
       cooking_time: { type: 'number' },

@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-console */
+const mongoose = require('mongoose');
 const Recipe = require('../../models/recipeSchema');
 
 async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
@@ -24,8 +25,34 @@ async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
 async function getRecipeById(id) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
-    const recipe = Recipe.findOne({ _id: id }).lean();
+    const recipe = await Recipe.findOne({ _id: id }).lean();
     return recipe;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function getCategoryRecipes(categoryId) {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.find({
+      categories: mongoose.Types.ObjectId(categoryId)
+    });
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function getTagRecipes(tag) {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.find({
+      tags: tag
+    });
+    return recipes;
   } catch (e) {
     console.error(e);
     return null;
@@ -35,7 +62,7 @@ async function getRecipeById(id) {
 async function getAllRecipes() {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
-    const recipes = Recipe.find({});
+    const recipes = await Recipe.find({});
     return recipes;
   } catch (e) {
     console.error(e);
@@ -58,7 +85,7 @@ async function updateRecipe(updatedRecipe) {
 async function getUserRecipes(userId) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
-    const recipes = Recipe.find({ user_id: userId });
+    const recipes = await Recipe.find({ user_id: userId });
     return recipes;
   } catch (e) {
     console.error(e);
@@ -152,4 +179,6 @@ module.exports = {
   getUserRecipes,
   search,
   searchSuggestions,
+  getCategoryRecipes,
+  getTagRecipes,
 };
