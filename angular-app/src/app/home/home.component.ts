@@ -13,7 +13,7 @@ import { Dictionary } from '../models/dictionary.model';
 export class HomeComponent implements OnInit {
   
 
-
+  public currentRoute = "home"
   public loggedIn :Observable<boolean> = of(false);
   public categories: any[] | undefined;
 //   public categories :categories[] = [{

@@ -35,6 +35,11 @@ export class RecipesService {
     return this.http.get<Recipes[]>(this.Recipe_URL + '/userRecipes' )
   }
 
+  getRecipeCategories(categoryId:string): Observable<Recipes[]>{
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/recipes/' + categoryId )
+  }
+
+
   addReceipe(recipe : PostRecipes): Observable<PostRecipes>{
     return this.http.post(this.Recipe_URL + '/recipes',recipe )
   }

@@ -7,7 +7,6 @@ export class Recipes{
     equipment?: string[];
     tags?: string[];
     photos_urls?: string;
-    video_url?: string;
     preperation_time?: number;
     cooking_time?: number;
     difficulty?: string;

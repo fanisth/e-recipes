@@ -8,8 +8,8 @@
   <div class="d-flex justify-content-center row">
       <div class="col-md-10">
         <!-- Recipes catalogue item -->
-        <div class="row p-2 bg-white border rounded mt-2" *ngFor="let recipe of recipes">
-            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.imgur.com/HO8e9b8.jpg"></div>
+        <div class="row p-2 bg-white border rounded mt-2" *ngFor="let recipe of myRecipes">
+            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" [src]="recipe.photos_urls"></div>
             <div class="col-md-6 mt-1">
               <h4>{{ recipe.title }}</h4>
               <div class="d-flex flex-row">

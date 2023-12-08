@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -29,7 +30,7 @@ const routes: Routes = [
         path: 'catalogue', component: CatalogueComponent
       },
       {
-        path: 'categories/:id', component: RecipesComponent
+        path: 'categories/:id', component: CategoriesComponent
       },
 
     ] },

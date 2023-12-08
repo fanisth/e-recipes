@@ -18,6 +18,7 @@ import { EditUserComponent } from './modals/edit-user/edit-user.component';
 import { CommonModule } from '@angular/common';
 import { AddRecipeComponent } from './modals/add-recipe/add-recipe.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
     EditUserComponent,
     AddRecipeComponent,
     CatalogueComponent,
+    CategoriesComponent,
   ],
   imports: [
     CommonModule,
