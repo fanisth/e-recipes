@@ -4,6 +4,8 @@ const uploader = require('../../middlewares/uploadMiddleware');
 const views = require('./views');
 
 router.get('/my-recipes', auth.authenticateToken, views.getUserRecipes);
+router.get('/categories/:categoryId', views.getCategoryRecipes);
+router.get('/tags/:tag', views.getTagRecipes);
 router.get('/search', views.search);
 router.get('/search-suggestions', views.searchSuggestions);
 router.get('/:recipeId', views.getRecipe);

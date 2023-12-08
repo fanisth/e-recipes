@@ -32,6 +32,48 @@ async function getRecipe(req, res) {
   }
 }
 
+async function getCategoryRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getCategoryRecipes' });
+  try {
+    const { categoryId } = req.params;
+    fLogger.info('Going to get category recipes', { categoryId });
+    const { data, error } = await controller.getCategoryRecipes(categoryId);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get getCategoryRecipes recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
+async function getTagRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getTagRecipes' });
+  try {
+    const { tag } = req.params;
+    fLogger.info('Going to get tag recipes', { tag });
+    const { data, error } = await controller.getTagRecipes(tag);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get getTagRecipes recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 async function getAllRecipes(req, res) {
   const fLogger = logger.child({ function: 'getAllRecipes' });
   try {
@@ -179,4 +221,6 @@ module.exports = {
   getUserRecipes,
   search,
   searchSuggestions,
+  getCategoryRecipes,
+  getTagRecipes,
 };
