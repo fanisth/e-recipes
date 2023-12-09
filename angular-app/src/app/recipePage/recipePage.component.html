@@ -1,0 +1,57 @@
+<!-- recipePage.component.html -->
+<div class="holder d-flex align-items-center justify-content-center">
+    <div class="container-lg">
+      <!-- Recipe Title, Image, and Rating -->
+      <div class="row mb-4">
+        <div class="col-lg-12">
+          <img src="{{ recipe.photos_urls }}" alt="{{ recipe.title }}" class="img-fluid rounded">
+          <h2 class="text-uppercase fw-weight-bold mt-3">{{ recipe.title }}</h2>
+          <div class="recipe-rating">
+            <span class="star">&#9733;</span>
+            <span>{{ calculateAverageRating(recipe) }}</span>
+          </div>
+          <div class="recipe-difficulty">
+            <span>{{ recipe.difficulty }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Ingredients and Instructions -->
+      <div class="row">
+        <div class="col-lg-5">
+          <!-- Ingredients List (aligned to the left) -->
+          <div class="card rounded border-0 shadow-sm position-relative mb-4">
+            <div class="card-body p-5">
+              <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
+                <i class="far fa-calendar-alt fa-3x"></i>
+                <div class="ms-3">
+                  <h4 class="text-uppercase fw-weight-bold mb-0">Υλικά</h4>
+                </div>
+              </div>
+              <div class="form-check mb-3" *ngFor="let ingredient of recipe.ingredients; let i = index">
+                <input class="form-check-input" [id]="'flexCheck' + i" type="checkbox">
+                <label class="form-check-label" [for]="'flexCheck' + i">
+                  <span class="fst-italic pl-1">{{ ingredient }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-lg-7">
+          <!-- Instructions -->
+          <div *ngFor="let instructionSector of extendedInstructions" class="mb-4">
+            <h5 class="fw-weight-bold cursor-pointer" (click)="toggleSector(instructionSector)" style="cursor: pointer;">{{ instructionSector.key }}</h5>
+  
+            <!-- Instructions within the sector (expanded by default) -->
+            <div *ngIf="instructionSector.show" class="instructions">
+              <ol>
+                <li *ngFor="let instruction of instructionSector.value">{{ instruction }}</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

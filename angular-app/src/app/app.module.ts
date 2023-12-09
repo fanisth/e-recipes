@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { AddRecipeComponent } from './modals/add-recipe/add-recipe.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { RecipePageComponent } from './recipePage/recipePage.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { CategoriesComponent } from './categories/categories.component';
     AddRecipeComponent,
     CatalogueComponent,
     CategoriesComponent,
+    RecipePageComponent,
   ],
   imports: [
     CommonModule,
