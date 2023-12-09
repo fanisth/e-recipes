@@ -11,6 +11,6 @@ router.get('/search-suggestions', views.searchSuggestions);
 router.get('/:recipeId', views.getRecipe);
 router.post('/', auth.authenticateToken, uploader, views.createRecipe);
 router.get('/', views.getAllRecipes);
-router.put('/:recipeId', auth.authenticateToken, views.updateRecipe);
+router.put('/:recipeId', auth.authenticateToken, uploader, views.updateRecipe);
 
 module.exports = router;

@@ -1,4 +1,5 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle,camelcase */
+const fs = require('fs');
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
@@ -86,7 +87,7 @@ async function createRecipe(body, user, imagePath, thumbnailPath) {
   }
 }
 
-async function updateRecipe(body, params, user) {
+async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
   const fLogger = logger.child({ function: 'updateRecipe' });
   try {
     const { recipeId } = params;
@@ -96,8 +97,15 @@ async function updateRecipe(body, params, user) {
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
-    const updatedRecipe = { ...recipeInDB, ...body };
-    updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
+    fs.unlinkSync(recipeInDB.photo_url.imagePath);
+    fs.unlinkSync(recipeInDB.photo_url.thumbnailPath);
+
+    const photo_url = {
+      imagePath,
+      thumbnailPath,
+    };
+    const updatedRecipe = { ...recipeInDB, ...body, photo_url };
+    // updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
     const savedRecipe = await recipeRepository.updateRecipe(updatedRecipe);
 
     if (!savedRecipe) return { error: errors.RECIPE_UPDATE };

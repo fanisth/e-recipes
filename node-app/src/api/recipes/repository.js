@@ -1,6 +1,5 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-console */
-const mongoose = require('mongoose');
 const Recipe = require('../../models/recipeSchema');
 
 async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
@@ -37,7 +36,7 @@ async function getCategoryRecipes(categoryId) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
     const recipes = await Recipe.find({
-      categories: mongoose.Types.ObjectId(categoryId)
+      categories: categoryId
     });
     return recipes;
   } catch (e) {

@@ -41,8 +41,9 @@ const uploadMiddleware = (req, res, next) => {
 
     // Use Sharp to resize the image
     const thumbnailPath = `uploads/thumbnail-${file.filename}`;
+    file.path = `uploads/${file.filename}`;
     await sharp(file.path)
-      .resize({ width: 100, height: 100 })
+      .resize({ width: 200, height: 200 })
       .toFile(thumbnailPath);
 
     // Attach files and thumbnail path to the request object
