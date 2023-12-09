@@ -148,6 +148,27 @@ async function updateRecipe(req, res) {
   }
 }
 
+async function deleteRecipe(req, res) {
+  const fLogger = logger.child({ function: 'deleteRecipe' });
+  try {
+    const { params, user } = req;
+    fLogger.info('Going to delete recipe', { params, user });
+    const { data, error } = await controller.deleteRecipe(params, user);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(204).json({
+      payload: {
+        msg: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not delete recipe', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 async function getUserRecipes(req, res) {
   const fLogger = logger.child({ function: 'getUserRecipes' });
   try {
@@ -223,4 +244,5 @@ module.exports = {
   searchSuggestions,
   getCategoryRecipes,
   getTagRecipes,
+  deleteRecipe,
 };

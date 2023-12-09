@@ -15,7 +15,7 @@ const config = require('./config/config');
     const app = express();
     app.use(cors());
     app.use(bodyParser.json());
-    app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+    app.use('/uploads', express.static(path.join(path.resolve(__dirname, '..'), '/uploads')));
     // Routes
     // eslint-disable-next-line global-require
     app.use('/api/auth', require('./api/auth'));
