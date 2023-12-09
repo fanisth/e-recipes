@@ -123,16 +123,16 @@ async function createRecipe(req, res) {
 }
 
 async function updateRecipe(req, res) {
-  const fLogger = logger.child({ function: 'register' });
+  const fLogger = logger.child({ function: 'updateRecipe' });
   try {
     const validationError = validate(req.body, validations.RECIPE);
     if (validationError) {
       return ErrorHandler.send(req, res, validationError);
     }
 
-    const { body, params, user } = req;
+    const { body, params, user, file, thumbnailPath } = req;
     fLogger.info('Going to update recipe', { body, params, user });
-    const { data, error } = await controller.updateRecipe(body, params, user);
+    const { data, error } = await controller.updateRecipe(body, params, user, file.path, thumbnailPath);
     if (error) {
       return ErrorHandler.send(req, res, error);
     }
