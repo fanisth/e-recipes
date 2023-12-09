@@ -40,8 +40,8 @@ export class RecipesService {
   }
 
 
-  addReceipe(recipe : PostRecipes): Observable<PostRecipes>{
-    return this.http.post(this.Recipe_URL + '/recipes',recipe )
+  addReceipe(recipe : any): Observable<any>{
+    return this.http.post<any>(this.Recipe_URL + '/recipes',recipe )
   }
 
   getCategories(): Observable<any[]> {

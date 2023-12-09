@@ -4,7 +4,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from 'src/app/interfaces/category';
 import { Subcategory } from 'src/app/interfaces/subcategory';
 import { categories } from 'src/app/models/categories.model';
-//import { Subcategory } from 'src/app/interfaces/subcategory';
 import { PostRecipes } from 'src/app/models/postRecipes.model';
 import { RecipesService } from 'src/app/services/recipes.service';
 
@@ -191,52 +190,62 @@ public recipeForm: FormGroup = this.fb.group({
     values.removeAt(index);
   }
 
-  // addInstruction() {
-  //   this.instructions.push(this.createInstruction());
-  // }
-
-  // removeInstruction(index: number) {
-  //   this.instructions.removeAt(index);
-  // }
+  
 
   onSubmit() {
     // Handle form submission logic here
-    console.log(this.recipeForm?.value);
+    console.log(this.recipeForm.value.tags);
+    console.log(this.recipeForm?.get('tags')?.value);
     if (!this.fileToUpload) {
       console.error('No file selected.');
       return;
     }
 
     if (this.recipeForm.valid) {
-      const formData = this.recipeForm.value;
-      console.log('!!!!!!!!!!!!!',formData)
-      // const formData = new FormData();
-      // formData.append('image', this.selectedImage);
-      // Extract category and subcategory IDs
-      // const categoryId = <string>formData.category;
-      // const subcategoryId = <string>formData.subcategory;
-
       const categoryId  = "656ca9e7cdcf57bb01675a87";
       const subcategoryId = "656caa28cdcf57bb01675a89";
+
+      console.log(this.recipeForm.value);
       // Prepare the data to send to the server
+      this.recipeForm.value.categories= [categoryId, subcategoryId]
+      const formData = new FormData()
+     
       
-      const postData:PostRecipes = {
-        title: formData.title,
-        instructions: formData.instructions,
-        ingredients: formData.ingredients,
-        equipment: formData.equipment,
-        description: formData.description,
-        tags: formData.tags,
-        photos_url: formData.image,
-        categories: [categoryId, subcategoryId],
-        preperation_time: formData.preperation_time,
-        cooking_time: formData.cooking_time,
-        difficulty: formData.difficulty    
-      };
+      
+      formData.append('title', this.recipeForm.value.title)
+      
+      this.recipeForm.value.instructions.forEach((item: { key: string | Blob; value: any[]; }, index: any) => {
+        formData.append(`instructions[${index}][key]`, item.key);
+  
+        item.value.forEach((value, valueIndex) => {
+          formData.append(`instructions[${index}][value][${valueIndex}]`, value);
+        });
+      });
+      
+
+      this.recipeForm.value.ingredients.forEach((element: string , index: any ) => {
+        formData.append(`ingredients[${index}]`,element)
+      });
+      this.recipeForm.value.equipment.forEach((element: string , index: any ) => {
+        formData.append(`equipment[${index}]`,element)
+      });
+      formData.append('description', (this.recipeForm.value.description))
+      this.recipeForm.value.tags.forEach((element: string , index: any ) => {
+        formData.append(`tags[${index}]`,element)
+      });
+       formData.append('file', this.fileToUpload)
+       this.recipeForm.value.categories.forEach((element: string , index: any ) => {
+        formData.append(`categories[${index}]`,element)
+      });
+      formData.append('preperation_time', (this.recipeForm.value.preperation_time))
+      formData.append('cooking_time', this.recipeForm.value.cooking_time)
+      formData.append('difficulty', this.recipeForm.value.difficulty)
+
+
 
       // Log or send the data to the server as needed
-      console.log('Form data to be submitted:', postData);
-      this.recipeService.addReceipe(postData).subscribe(
+       console.log('Form data to be submitted:', formData.forEach(key => console.log(key)));
+      this.recipeService.addReceipe(formData).subscribe(
         (response:any) => console.log(response)
       )
     }
@@ -251,12 +260,10 @@ public recipeForm: FormGroup = this.fb.group({
     const fileList: FileList | null = event.target.files;
     if (fileList && fileList.length > 0) {
       this.fileToUpload = fileList[0];
-      //console.log(this.fileToUpload)
       if(!this.fileToUpload){
         const formData = new FormData();
         formData.append('file', this.fileToUpload );
         this.recipeForm.get('image')?.setValue(formData);
-        //console.log(formData.getAll('file'))
       }
     }
     
