@@ -12,5 +12,6 @@ router.get('/:recipeId', views.getRecipe);
 router.post('/', auth.authenticateToken, uploader, views.createRecipe);
 router.get('/', views.getAllRecipes);
 router.put('/:recipeId', auth.authenticateToken, uploader, views.updateRecipe);
+router.delete('/:recipeId', auth.authenticateToken, views.deleteRecipe);
 
 module.exports = router;

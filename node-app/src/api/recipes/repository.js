@@ -81,6 +81,19 @@ async function updateRecipe(updatedRecipe) {
   }
 }
 
+async function deleteRecipe(recipeId) {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    // eslint-disable-next-line no-underscore-dangle
+    const result = await Recipe.deleteOne({ _id: recipeId });
+    console.log(result);
+    return result;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 async function getUserRecipes(userId) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
@@ -180,4 +193,5 @@ module.exports = {
   searchSuggestions,
   getCategoryRecipes,
   getTagRecipes,
+  deleteRecipe,
 };
