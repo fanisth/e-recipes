@@ -5,7 +5,7 @@ const sharp = require('sharp');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, '../angular-app/src/assets/uploads');
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -40,13 +40,15 @@ const uploadMiddleware = (req, res, next) => {
     }
 
     // Use Sharp to resize the image
-    const thumbnailPath = `uploads/thumbnail-${file.filename}`;
-    file.path = `uploads/${file.filename}`;
+    let thumbnailPath = `../angular-app/src/assets/uploads/thumbnail-${file.filename}`;
+    file.path = `../angular-app/src/assets/uploads/${file.filename}`;
     await sharp(file.path)
       .resize({ width: 200, height: 200 })
       .toFile(thumbnailPath);
 
     // Attach files and thumbnail path to the request object
+    thumbnailPath = `assets/uploads/thumbnail-${file.filename}`;
+    file.path = `assets/uploads/${file.filename}`;
     req.file = file;
     req.thumbnailPath = thumbnailPath;
 

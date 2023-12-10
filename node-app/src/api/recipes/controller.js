@@ -98,8 +98,8 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
     if (recipeInDB?.photo_url?.imagePath) {
-      fs.unlinkSync(recipeInDB.photo_url.imagePath);
-      fs.unlinkSync(recipeInDB.photo_url.thumbnailPath);
+      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.imagePath}`);
+      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.thumbnailPath}`);
     }
 
     const photo_url = {
@@ -130,8 +130,8 @@ async function deleteRecipe(params, user) {
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
     if (recipeInDB?.photo_url?.imagePath) {
-      fs.unlinkSync(recipeInDB.photo_url.imagePath);
-      fs.unlinkSync(recipeInDB.photo_url.thumbnailPath);
+      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.imagePath}`);
+      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.thumbnailPath}`);
     }
 
     const result = await recipeRepository.deleteRecipe(recipeId);
