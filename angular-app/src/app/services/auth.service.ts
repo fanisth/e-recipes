@@ -57,7 +57,7 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
       sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USERNAME_KEY);
     this.isLoggedInSubject.next(false)
-    this.router.navigate([''])
+    this.router.navigate(['/login'])
     });
     }
     sessionStorage.removeItem(this.TOKEN_KEY);
@@ -68,7 +68,6 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
 
   // Method to authenticate the user and retrieve a JWT token
   login(credentials: { username: string, password: string }): Observable<any> {
-    console.log("send loggin")
     return this.http.post(this.LOGIN_URL + '/login', credentials).pipe(
       tap((response:any) => {
         if (response) {
