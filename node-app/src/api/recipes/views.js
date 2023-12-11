@@ -32,6 +32,46 @@ async function getRecipe(req, res) {
   }
 }
 
+async function getTopRatedRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getTopRatedRecipes' });
+  try {
+    fLogger.info('Going to get top-rated recipes');
+    const { data, error } = await controller.getTopRatedRecipes();
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get top-rated recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
+async function getLatestRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getLatestRecipes' });
+  try {
+    fLogger.info('Going to get latest recipes');
+    const { data, error } = await controller.getLatestRecipes();
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get latest recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 async function getCategoryRecipes(req, res) {
   const fLogger = logger.child({ function: 'getCategoryRecipes' });
   try {
@@ -245,4 +285,6 @@ module.exports = {
   getCategoryRecipes,
   getTagRecipes,
   deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };

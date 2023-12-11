@@ -22,6 +22,36 @@ async function getRecipe(params) {
   }
 }
 
+async function getTopRatedRecipes() {
+  const fLogger = logger.child({ function: 'getTopRatedRecipes' });
+  try {
+    const recipes = await recipeRepository.getTopRatedRecipes();
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at getTopRatedRecipes', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function getLatestRecipes() {
+  const fLogger = logger.child({ function: 'getLatestRecipes' });
+  try {
+    const recipes = await recipeRepository.getLatestRecipes();
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at getLatestRecipes', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
 async function getCategoryRecipes(categoryId) {
   const fLogger = logger.child({ function: 'getCategoryRecipes' });
   try {
@@ -203,4 +233,6 @@ module.exports = {
   getCategoryRecipes,
   getTagRecipes,
   deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };

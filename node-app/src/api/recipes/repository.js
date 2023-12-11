@@ -32,6 +32,42 @@ async function getRecipeById(id) {
   }
 }
 
+async function getTopRatedRecipes() {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.aggregate([
+      {
+        $addFields: {
+          averageRating: { $divide: ['$rating.sum', '$rating.counter'] }
+        }
+      },
+      {
+        $sort: { averageRating: -1 } // Sort in descending order based on averageRating
+      },
+      {
+        $limit: 3 // Limit the result to the top 3 documents
+      }
+    ]);
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function getLatestRecipes() {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.find()
+      .sort({ created_at: -1 }) // Sort in descending order based on created_at
+      .limit(3); // Limit the result to the latest 3 documents;
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 async function getCategoryRecipes(categoryId) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
@@ -194,4 +230,6 @@ module.exports = {
   getCategoryRecipes,
   getTagRecipes,
   deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };
