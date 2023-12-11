@@ -56,6 +56,7 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     modalRef.result.then(() => {
       sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USERNAME_KEY);
+    this.isLoggedInSubject.next(false)
     this.router.navigate([''])
     });
     }

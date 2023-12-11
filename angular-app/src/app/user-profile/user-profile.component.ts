@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit {
     this.openEditProfileModal(this.userProfile,this.ngbModalOption)
     this.modalRef?.result.then((user: UserRegistration) => {
       if(user){
-        ////na krathsw to updated user gia to ui
+        this.userProfile = user;
       }
     })
 
@@ -59,8 +59,8 @@ export class UserProfileComponent implements OnInit {
     };
     
     this.createRecipe(this.ngbModalOption)
-    this.modalRef?.result.then((user: UserRegistration) => {
-      if(user){
+    this.modalRef?.result.then((result: any) => {
+      if(result.contains('add')){
         ////na krathsw to updated user gia to ui
       }
     })

@@ -34,13 +34,20 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit(){
+    if(!this.userForm?.valid){
+      return;
+    }
     const user: UserRegistration = this.userForm?.value;
+    this.userService.updateProfile(user).subscribe((response:any)=>{
+      console.log(response);
+      this.activeModal.close(user);
+    })
+    console.log(user);
   }
 
   private createUserForm(user: UserRegistration | undefined): FormGroup{
     return this.formBuilder.group({
-      username: [user?.username,
-      Validators.compose([Validators.required,Validators.minLength(3)])],
+      username: [{value:user?.username,disabled: true}],
       name: [user?.name,
         Validators.compose([Validators.required,Validators.minLength(3)])],
       surname: [user?.surname,
