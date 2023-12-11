@@ -7,6 +7,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { AuthGuard } from './guards/authguard.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -24,7 +25,7 @@ const routes: Routes = [
         path: 'register', component: RegisterComponent
       },
       {
-        path: 'profile', component: UserProfileComponent
+        path: 'profile', component: UserProfileComponent,canActivate:[AuthGuard]
       },
       {
         path: 'catalogue', component: CatalogueComponent
