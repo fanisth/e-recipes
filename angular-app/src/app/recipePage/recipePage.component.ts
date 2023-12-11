@@ -1,6 +1,7 @@
 import { Component, OnInit,  ElementRef, AfterViewInit, Renderer2  } from '@angular/core';
 import { ExtendedDictionary } from '../models/extended-dictionary.model';
 import { Recipes } from '../models/recipes.model';
+import { Reviews } from '../models/reviews.model';
 import { RecipesService } from '../services/recipes.service';
 
 @Component({
@@ -89,6 +90,31 @@ export class RecipePageComponent implements AfterViewInit {
       difficulty: 'Intermediate',
     };;
 
+    reviews: Reviews[] = [{
+      user: { 
+        name: 'Vasilis',
+        lastname: 'Iliopoulos'
+       },
+      rating: 4,
+      text: "Τέλεια συνταγή, χεζόμασταν 3 μέρες",
+    },
+    {
+      user: { 
+        name: 'Lefteris',
+        lastname: 'Ziwris'
+       },
+      rating: 5,
+      text: "Το έφτιαξα στο αγόρι μου για την επετειο μας και εμεινε πολυ ευχαριστημενος, και στο τραπεζι και στο κρεβατι ;)",
+    },
+    {
+      user: { 
+        name: 'Φάνης',
+        lastname: 'Θεοδούλου'
+       },
+      rating: 2,
+      text: "Αγόρι του Λευτέρη εδω, το φάι καλό ηταν, στο κρεβάτι μετρια πραγματα, απο χοιρινο σε μπαμιες",
+    }]
+
     extendedInstructions: ExtendedDictionary[] = [];
 
   calculateAverageRating(recipe: Recipes): number {
@@ -96,6 +122,15 @@ export class RecipePageComponent implements AfterViewInit {
       return 0;
     }
     return recipe.rating.sum / recipe.rating.counter;
+  }
+
+  getReviewerFullName(review: Reviews){
+    return `${review?.user?.name} ${review?.user?.lastname}`
+  }
+
+  generateRange(review: Reviews): number[] {
+    const length = review.rating ? review.rating : 0;
+    return Array.from({ length }, (_, index) => index);
   }
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}

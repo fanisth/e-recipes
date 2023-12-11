@@ -28,7 +28,7 @@ async function postRecipeReview(req, res) {
   const fLogger = logger.child({ function: 'postRecipeReview' });
   try {
     const { recipeId } = req.params;
-    const data = await controller.postReview(req.body, req.user._id, recipeId);
+    const data = await controller.postReview(req.body, req.user, recipeId);
 
     res.status(200).json({
       payload: {
