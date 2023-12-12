@@ -1,0 +1,8 @@
+.custom-background {
+    background-image: url("../../assets/addRecipe_bg.jpg");
+    background-size: 100%;
+}
+
+.container {
+    background-color: whitesmoke;
+}

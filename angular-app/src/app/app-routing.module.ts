@@ -7,6 +7,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -32,6 +33,9 @@ const routes: Routes = [
       {
         path: 'categories/:id', component: CategoriesComponent
       },
+      {
+        path: 'profile/add-recipe', component: AddRecipeComponent
+      }
 
     ] },
   { path: '**', redirectTo : '' },
