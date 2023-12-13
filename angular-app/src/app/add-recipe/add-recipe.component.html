@@ -194,17 +194,24 @@
         <hr class="my-4">
 
         <!-- Tags -->
-        <div class="mb-4">
+        <div class="mb-12">
             <label class="form-label fw-bold fs-5">Ετικέτες</label>
             <!-- Tags section here -->
-            <div formArrayName="tags">
-                <div *ngFor="let tag of tags.controls; let i=index" class="input-group mb-4 col-md-5">
-                    <input [id]="'tag' + i" [formControlName]="i" type="text" class="form-control"
-                        placeholder="Tag name">
-                    <button class="btn btn-danger" (click)="removeTags(i)">-</button>
-                </div>
-                <button type="button" class="btn btn-primary" (click)="addTags()">+</button>
-            </div>
+            <mat-form-field class="example-chip-list" appearance="fill">
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                  <mat-chip *ngFor="let tag of tagsArray" (removed)="remove(tag)">
+                    {{tag.name}}
+                    <button matChipRemove>
+                      <mat-icon>x</mat-icon>
+                    </button>
+                  </mat-chip>
+                  <input placeholder="Προσθέστε Ετικέτα..."
+                         [matChipInputFor]="chipList"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+              </mat-form-field>
         </div>
         
         <button type="submit" class="btn btn-primary btn-lg d-block mx-auto mt-5">Υποβολή</button>

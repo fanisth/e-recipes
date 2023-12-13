@@ -5,6 +5,12 @@ import { Subcategory } from 'src/app/interfaces/subcategory';
 import { categories } from 'src/app/models/categories.model';
 import { PostRecipes } from 'src/app/models/postRecipes.model';
 import { RecipesService } from 'src/app/services/recipes.service';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+
+class TagArrayItem {
+  constructor(public name: string) {}
+}
 
 @Component({
   selector: 'app-add-recipe',
@@ -16,6 +22,32 @@ export class AddRecipeComponent implements OnInit {
   public subcategories: Subcategory[] = [] ;
   
   public fileToUpload: File | null = null;
+
+  addOnBlur = true;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+
+  
+  tagsArray: TagArrayItem[] = [];
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.tagsArray.push({name: value});
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  remove(fruit: any): void {
+    const index = this.tagsArray.indexOf(fruit);
+
+    if (index >= 0) {
+      this.tagsArray.splice(index, 1);
+    }
+  }
 
   category: Category[] = [
     { id: '1', name: 'Category 1', subcategories: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },

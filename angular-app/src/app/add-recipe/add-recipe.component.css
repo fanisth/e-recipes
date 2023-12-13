@@ -6,3 +6,7 @@
 .container {
     background-color: whitesmoke;
 }
+
+.example-chip-list {
+    width: 100%;
+  }
