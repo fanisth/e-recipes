@@ -32,6 +32,42 @@ async function getRecipeById(id) {
   }
 }
 
+async function getTopRatedRecipes() {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.aggregate([
+      {
+        $addFields: {
+          averageRating: { $divide: ['$rating.sum', '$rating.counter'] }
+        }
+      },
+      {
+        $sort: { averageRating: -1 } // Sort in descending order based on averageRating
+      },
+      {
+        $limit: 3 // Limit the result to the top 3 documents
+      }
+    ]);
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function getLatestRecipes() {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    const recipes = await Recipe.find()
+      .sort({ created_at: -1 }) // Sort in descending order based on created_at
+      .limit(3); // Limit the result to the latest 3 documents;
+    return recipes;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
 async function getCategoryRecipes(categoryId) {
   // const collection = mongoController.getCollectionController(collectionName);
   try {
@@ -75,6 +111,19 @@ async function updateRecipe(updatedRecipe) {
     // eslint-disable-next-line no-underscore-dangle
     const recipe = await Recipe.updateOne({ _id: updatedRecipe._id }, { ...updatedRecipe });
     return recipe;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function deleteRecipe(recipeId) {
+  // const collection = mongoController.getCollectionController(collectionName);
+  try {
+    // eslint-disable-next-line no-underscore-dangle
+    const result = await Recipe.deleteOne({ _id: recipeId });
+    console.log(result);
+    return result;
   } catch (e) {
     console.error(e);
     return null;
@@ -180,4 +229,7 @@ module.exports = {
   searchSuggestions,
   getCategoryRecipes,
   getTagRecipes,
+  deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };

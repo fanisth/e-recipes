@@ -8,6 +8,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { RecipePageComponent } from './recipePage/recipePage.component';
+import { AddRecipeComponent } from './add-recipe/add-recipe.component';
+import { AuthGuard } from './guards/authguard.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -25,7 +27,7 @@ const routes: Routes = [
         path: 'register', component: RegisterComponent
       },
       {
-        path: 'profile', component: UserProfileComponent
+        path: 'profile', component: UserProfileComponent,canActivate:[AuthGuard]
       },
       {
         path: 'catalogue', component: CatalogueComponent
@@ -35,6 +37,9 @@ const routes: Routes = [
       },
       {
         path: 'recipes/:id', component: RecipePageComponent
+      },
+      {
+        path: 'profile/add-recipe', component: AddRecipeComponent
       }
 
     ] },

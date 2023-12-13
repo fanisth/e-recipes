@@ -2,7 +2,7 @@
     <!-- Carousel for recipes -->
     <ngb-carousel *ngIf="recipes.length > 0">
       <ng-template ngbSlide *ngFor="let recipe of recipes">
-        <img [src]="recipe.photos_urls" class="h-100 inline d-block" alt="{{ recipe.title }}">
+        <img src="{{recipe.photo_url?.imagePath}}" class="h-100 inline d-block" alt="{{ recipe.title }}">
         <div class="carousel-caption">
           <h3>{{ recipe.title }}</h3>
         </div>
@@ -13,9 +13,9 @@
   <div class="recommended mt-5">
     <h3 class="text-center text-danger">Προτάσεις για σήμερα</h3>
     <div class="row mt-3">
-        <div class="col-md-4" *ngFor="let recipe of recipes">
+        <div class="col-md-4" *ngFor="let recipe of topRecipes">
             <button type="button" class="btn">
-            <img [src]="recipe.photos_urls" class="d-block w-100 shadow-5g" alt="{{ recipe.title }}">
+            <img [src]="recipe.photo_url?.thumbnailPath" class="d-block w-100 shadow-5g" alt="{{ recipe.title }}">
             </button>
           </div>
     </div>

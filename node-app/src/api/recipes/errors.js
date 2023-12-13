@@ -27,15 +27,22 @@ const RECIPE = {
     type: 1,
     userMessage: 'Η συνταγή δεν μπόρεσε να αποθηκευθεί.',
   },
-  RECIPE_UNAUT_USER: {
+  RECIPE_DELETE: {
     code: 'RECIPE005',
+    status: 422,
+    technicalDescription: 'Could not delete recipe. Please try again later.',
+    type: 1,
+    userMessage: 'Η συνταγή δεν μπόρεσε να διαγραφεί.',
+  },
+  RECIPE_UNAUT_USER: {
+    code: 'RECIPE006',
     status: 401,
     technicalDescription: 'Unauthorized user. Please try again later.',
     type: 1,
     userMessage: 'Δεν έχετε δικαίωμα να επεξεργαστείτε την συνταγή.',
   },
   GENERAL_RECIPE_ERROR: {
-    code: 'RECIPE006',
+    code: 'RECIPE007',
     status: 500,
     technicalDescription: 'Could not access recipes. Please try again later.',
     type: 1,

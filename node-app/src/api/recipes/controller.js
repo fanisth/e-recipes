@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle,camelcase */
-const fs = require('fs');
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
@@ -18,6 +17,36 @@ async function getRecipe(params) {
     return ({ data: recipe });
   } catch (error) {
     fLogger.warn('Unmapped error at getRecipe', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function getTopRatedRecipes() {
+  const fLogger = logger.child({ function: 'getTopRatedRecipes' });
+  try {
+    const recipes = await recipeRepository.getTopRatedRecipes();
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at getTopRatedRecipes', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function getLatestRecipes() {
+  const fLogger = logger.child({ function: 'getLatestRecipes' });
+  try {
+    const recipes = await recipeRepository.getLatestRecipes();
+    if (!recipes) {
+      return { error: errors.RECIPES_FINDALL };
+    }
+
+    return ({ data: recipes });
+  } catch (error) {
+    fLogger.warn('Unmapped error at getLatestRecipes', { error });
     return { error: errors.GENERAL_RECIPE_ERROR };
   }
 }
@@ -97,9 +126,6 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
-    fs.unlinkSync(recipeInDB.photo_url.imagePath);
-    fs.unlinkSync(recipeInDB.photo_url.thumbnailPath);
-
     const photo_url = {
       imagePath,
       thumbnailPath,
@@ -113,6 +139,27 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
     return ({ data: 'Success' });
   } catch (error) {
     fLogger.warn('Unmapped error at updateRecipe', { error });
+    return { error: errors.GENERAL_RECIPE_ERROR };
+  }
+}
+
+async function deleteRecipe(params, user) {
+  const fLogger = logger.child({ function: 'deleteRecipe' });
+  try {
+    const { recipeId } = params;
+    const recipeInDB = await recipeRepository.getRecipeById(recipeId);
+
+    if (!recipeInDB) return { error: errors.RECIPE_FINDONE_BY_ID };
+    // eslint-disable-next-line max-len
+    if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
+
+    const result = await recipeRepository.deleteRecipe(recipeId);
+
+    if (!result || result?.deletedCount !== 1) return { error: errors.RECIPE_DELETE };
+
+    return ({ data: 'Success' });
+  } catch (error) {
+    fLogger.warn('Unmapped error at deleteRecipe', { error });
     return { error: errors.GENERAL_RECIPE_ERROR };
   }
 }
@@ -174,4 +221,7 @@ module.exports = {
   searchSuggestions,
   getCategoryRecipes,
   getTagRecipes,
+  deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };

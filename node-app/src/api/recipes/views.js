@@ -32,6 +32,46 @@ async function getRecipe(req, res) {
   }
 }
 
+async function getTopRatedRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getTopRatedRecipes' });
+  try {
+    fLogger.info('Going to get top-rated recipes');
+    const { data, error } = await controller.getTopRatedRecipes();
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get top-rated recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
+async function getLatestRecipes(req, res) {
+  const fLogger = logger.child({ function: 'getLatestRecipes' });
+  try {
+    fLogger.info('Going to get latest recipes');
+    const { data, error } = await controller.getLatestRecipes();
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(200).json({
+      payload: {
+        recipes: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not get latest recipes', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 async function getCategoryRecipes(req, res) {
   const fLogger = logger.child({ function: 'getCategoryRecipes' });
   try {
@@ -56,7 +96,7 @@ async function getCategoryRecipes(req, res) {
 async function getTagRecipes(req, res) {
   const fLogger = logger.child({ function: 'getTagRecipes' });
   try {
-    const { tag } = req.params;
+    const { tag } = req.query;
     fLogger.info('Going to get tag recipes', { tag });
     const { data, error } = await controller.getTagRecipes(tag);
     if (error) {
@@ -148,6 +188,27 @@ async function updateRecipe(req, res) {
   }
 }
 
+async function deleteRecipe(req, res) {
+  const fLogger = logger.child({ function: 'deleteRecipe' });
+  try {
+    const { params, user } = req;
+    fLogger.info('Going to delete recipe', { params, user });
+    const { data, error } = await controller.deleteRecipe(params, user);
+    if (error) {
+      return ErrorHandler.send(req, res, error);
+    }
+
+    res.status(204).json({
+      payload: {
+        msg: data,
+      },
+    });
+  } catch (error) {
+    fLogger.warn('could not delete recipe', { error });
+    return ErrorHandler.send(req, res, errors.GENERAL_RECIPE_ERROR);
+  }
+}
+
 async function getUserRecipes(req, res) {
   const fLogger = logger.child({ function: 'getUserRecipes' });
   try {
@@ -223,4 +284,7 @@ module.exports = {
   searchSuggestions,
   getCategoryRecipes,
   getTagRecipes,
+  deleteRecipe,
+  getTopRatedRecipes,
+  getLatestRecipes,
 };
