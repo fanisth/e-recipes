@@ -28,32 +28,27 @@ export class AddRecipeComponent implements OnInit {
 
   
   tagsArray: TagArrayItem[] = [];
-  activeModal: any;
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    // Add our fruit
     if (value) {
       this.tagsArray.push({name: value});
     }
-
-    // Clear the input value
     event.chipInput!.clear();
   }
 
-  remove(fruit: any): void {
-    const index = this.tagsArray.indexOf(fruit);
+  remove(tag: any): void {
+    const index = this.tagsArray.indexOf(tag);
 
     if (index >= 0) {
       this.tagsArray.splice(index, 1);
     }
   }
 
-  category: Category[] = [
-    { id: '1', name: 'Category 1', subcategories: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },
-    { id: '2', name: 'Category 2', subcategories: [{ id: '21', name: 'Subcategory 2A' }, { id: '22', name: 'Subcategory 2B' }] },
-    { id: '3', name: 'Category 3', subcategories: [{ id: '31', name: 'Subcategory 3A' }, { id: '32', name: 'Subcategory 3B' }] },
+  categories: Category[] = [
+    { id: '1', name: 'Category 1', subCategory: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },
+    { id: '2', name: 'Category 2', subCategory: [{ id: '21', name: 'Subcategory 2A' }, { id: '22', name: 'Subcategory 2B' }] },
+    { id: '3', name: 'Category 3', subCategory: [{ id: '31', name: 'Subcategory 3A' }, { id: '32', name: 'Subcategory 3B' }] },
   ];
   
 public recipeForm: FormGroup = this.fb.group({
@@ -68,13 +63,22 @@ public recipeForm: FormGroup = this.fb.group({
   difficulty: ['', Validators.required],
   image: new FormControl(null),
   category: ['', Validators.required],
-      subcategory: ['', Validators.required],
+  subcategory: ['', Validators.required],
 });
 
   
   constructor(private fb: FormBuilder, private recipeService:RecipesService) { }
 
   ngOnInit(): void {
+    // Fetch categories
+    this.recipeService.getCategories().subscribe(
+      (cat => {
+        if(cat){
+          this.categories = cat;
+        }
+      })
+    )
+    
     this.recipeForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       ingredients: this.fb.array([['', [Validators.required]]]),
@@ -88,21 +92,7 @@ public recipeForm: FormGroup = this.fb.group({
       cooking_time: [0, [Validators.required, Validators.min(0)]],
       difficulty: ['', Validators.required],
       image: new FormControl(null)
-    });
-
-    
-      // this.recipeForm.get('category.categoryId')?.valueChanges.subscribe(categoryId => {
-      //   const selectedCategory = this.category.find(category => category.id === categoryId);
-      // const subcategoryControl = this.recipeForm.get('subcategory');
-
-      // // Reset and update subcategory options based on the selected category
-      // subcategoryControl?.setValue('');
-      // subcategoryControl?.setValidators([Validators.required]);
-      // subcategoryControl?.patchValue(selectedCategory ? selectedCategory.subcategories[0]?.id : null);
-      // subcategoryControl?.updateValueAndValidity();
-      // });
-    
-    
+    });    
     
   }
 
@@ -171,15 +161,14 @@ public recipeForm: FormGroup = this.fb.group({
   }
 
   onCategoryChange() {
+    console.log('BEFORE:',this.recipeForm.value, this.recipeForm.value.category, this.recipeForm.value.subcategory)
     const selectedCategoryId = this.recipeForm.get('category')?.value;
-    const selectedCategory = this.category.find((cat) =>  cat.id == selectedCategoryId)
-    console.log('@@@@@@@@',selectedCategory  )
-    console.log('>>>>>>>>',selectedCategoryId  )
+    const selectedCategory = this.categories.find((cat) =>  cat.id == selectedCategoryId)
 
     if (selectedCategory) {
       this.recipeForm.get('subcategory')?.setValue(''); // Clear subcategory when category changes
-      if(selectedCategory.subcategories){
-        this.subcategories = selectedCategory.subcategories;
+      if(selectedCategory.subCategory){
+        this.subcategories = selectedCategory.subCategory;
       }
       
     }
@@ -226,20 +215,15 @@ public recipeForm: FormGroup = this.fb.group({
 
   onSubmit() {
     // Handle form submission logic here
-    console.log(this.recipeForm.value.tags);
-    console.log(this.recipeForm?.get('tags')?.value);
     if (!this.fileToUpload) {
       console.error('No file selected.');
       return;
     }
 
     if (this.recipeForm.valid) {
-      const categoryId  = "656ca9e7cdcf57bb01675a87";
-      const subcategoryId = "656caa28cdcf57bb01675a89";
 
       console.log(this.recipeForm.value);
       // Prepare the data to send to the server
-      this.recipeForm.value.categories= [categoryId, subcategoryId]
       const formData = new FormData()
      
       
@@ -262,10 +246,16 @@ public recipeForm: FormGroup = this.fb.group({
         formData.append(`equipment[${index}]`,element)
       });
       formData.append('description', (this.recipeForm.value.description))
+
+      this.recipeForm.value.tags = this.tagsArray.map((tag) => tag.name)
       this.recipeForm.value.tags.forEach((element: string , index: any ) => {
         formData.append(`tags[${index}]`,element)
       });
        formData.append('file', this.fileToUpload)
+
+       const categoryId = this.recipeForm.value.category;
+       const subcategoryId = this.recipeForm.value.subcategory
+       this.recipeForm.value.categories = [categoryId, subcategoryId]
        this.recipeForm.value.categories.forEach((element: string , index: any ) => {
         formData.append(`categories[${index}]`,element)
       });
@@ -280,13 +270,12 @@ public recipeForm: FormGroup = this.fb.group({
       this.recipeService.addReceipe(formData).subscribe(
         (response:any) => console.log(response)
       )
-      this.activeModal.close('add')
     }
   }
 
   getSelectedCategory(): Category | undefined {
     const categoryId = this.recipeForm.get('category.categoryId')?.value;
-    return this.category.find(category => category.id === categoryId);
+    return this.categories.find(category => category.id === categoryId);
   }
 
   onFileChange(event: any) {

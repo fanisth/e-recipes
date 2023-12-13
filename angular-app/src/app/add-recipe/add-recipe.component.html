@@ -4,7 +4,7 @@
   </div>
   
   <div class="modal-body">
-    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="container mt-5 p-5">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="container p-5">
   
         <!-- Title -->
         <div class="mb-4">
@@ -177,7 +177,7 @@
             <div class="col-5">
                 <label for="category" class="form-label fw-bold fs-5">Κατηγορία Συνταγής</label>
                 <select id="category" formControlName="category" class="form-select" (change)="onCategoryChange()">
-                    <option *ngFor="let cat of category" [value]="cat.id">{{ cat.name }}</option>
+                    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
                 </select>
             </div>
         

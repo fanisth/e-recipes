@@ -23,6 +23,7 @@ import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chi
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {NoopAnimationsModule } from '@angular/platform-browser/animations'
 
 
 
@@ -51,6 +52,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
+    NoopAnimationsModule
   ],
   providers: [
     {
