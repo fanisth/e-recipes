@@ -1,6 +1,6 @@
 <!-- app.component.html -->
 
-<div class="container mt-5"> 
+<div class="container mt-5 pt-2"> 
   
 
   <!-- Container for recipes catalogue -->
@@ -9,9 +9,9 @@
       <div class="col-md-10">
         <!-- Recipes catalogue item -->
         <div class="row p-2 bg-white border rounded mt-2" *ngFor="let recipe of myRecipes">
-            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" [src]="recipe.photos_urls"></div>
+            <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" [src]="recipe.photo_url?.thumbnailPath"></div>
             <div class="col-md-6 mt-1">
-              <h4>{{ recipe.title }}</h4>
+              <h4>{{ recipe?.title }}</h4>
               <div class="d-flex flex-row">
                   <div class="ratings mr-2"><i class="fa fa-star"></i></div>
                   <span>{{ calculateAverageRating(recipe) }}</span>

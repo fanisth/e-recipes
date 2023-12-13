@@ -18,7 +18,7 @@ export class UserService {
     return this.http.get<UserProfile>(this.USER_URL + '/profile')
   }
 
-  updateProfile(user: UserRegistration):Observable<UserRegistration>{
-    return this.http.put<UserRegistration>(this.USER_URL + 'profile',user)
+  updateProfile(user: UserRegistration){
+    return this.http.put<UserRegistration>(this.USER_URL + '/profile',user)
   }
 }

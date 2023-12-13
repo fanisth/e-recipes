@@ -23,9 +23,9 @@ export class CategoriesComponent implements OnInit {
   
   ngOnInit(): void {
     this.recipeService.getRecipeCategories(this.param).subscribe((recipes:any) =>{
-      this.recipes.push(recipes.payload.recipe)
-      this.recipes.push(recipes.payload.recipe)
-      console.log(']]]]]]',recipes)
+      this.recipes.push(recipes.payload.recipes)
+      
+      console.log(']]]]]]',recipes.payload.recipes)
     })
   }
 

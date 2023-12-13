@@ -1,4 +1,5 @@
 import { Dictionary } from "./dictionary.model";
+import { PhotoUrlDict } from "./photourl-dict.model";
 
 export class Recipes{
     title?: string;
@@ -6,7 +7,7 @@ export class Recipes{
     ingredients?: string[];
     equipment?: string[];
     tags?: string[];
-    photos_urls?: string;
+    photo_url?: PhotoUrlDict;
     preperation_time?: number;
     cooking_time?: number;
     difficulty?: string;

@@ -23,7 +23,7 @@
                     {{cat.name}}
                   </button>
                   <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                    <li *ngFor="let sub of cat['subCategory']" ><a class="dropdown-item" href="categories/:{{sub._id}}">{{sub.name}}</a></li>
+                    <li *ngFor="let sub of cat['subCategory']" ><a class="dropdown-item" href="categories/{{sub._id}}">{{sub.name}}</a></li>
                   </ul>
                 </div>
               </li>
@@ -73,5 +73,8 @@
   </div>
 </nav>
 
-<router-outlet></router-outlet>
-<app-catalogue [previousRoute]="currentRoute"></app-catalogue>
+<div class="router bgImage">
+<router-outlet ></router-outlet>
+<app-catalogue [previousRoute]="currentRoute"></app-catalogue> 
+</div>
+
