@@ -16,9 +16,15 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { EditUserComponent } from './modals/edit-user/edit-user.component';
 import { CommonModule } from '@angular/common';
-import { AddRecipeComponent } from './modals/add-recipe/add-recipe.component';
+import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {NoopAnimationsModule } from '@angular/platform-browser/animations'
+
 
 
 @NgModule({
@@ -42,7 +48,11 @@ import { CategoriesComponent } from './categories/categories.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    NoopAnimationsModule
   ],
   providers: [
     {
@@ -50,6 +60,12 @@ import { CategoriesComponent } from './categories/categories.component';
       useClass: UserInterceptor,
       multi: true,
     },
+    {
+      provide: MAT_CHIPS_DEFAULT_OPTIONS,
+      useValue: {
+        separatorKeyCodes: [ENTER, COMMA]
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })
