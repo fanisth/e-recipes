@@ -96,7 +96,7 @@ async function getCategoryRecipes(req, res) {
 async function getTagRecipes(req, res) {
   const fLogger = logger.child({ function: 'getTagRecipes' });
   try {
-    const { tag } = req.params;
+    const { tag } = req.query;
     fLogger.info('Going to get tag recipes', { tag });
     const { data, error } = await controller.getTagRecipes(tag);
     if (error) {
