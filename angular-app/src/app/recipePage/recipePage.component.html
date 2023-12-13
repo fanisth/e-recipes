@@ -4,7 +4,7 @@
       <!-- Recipe Title, Image, and Rating -->
       <div class="row mb-4">
         <div class="col-lg-12">
-          <img src="{{ recipe.photos_urls }}" alt="{{ recipe.title }}" class="img-fluid rounded">
+          <img src="{{ getRecipePhoto(recipe) }}" alt="{{ recipe.title }}" class="img-fluid rounded">
           <h2 class="text-uppercase fw-weight-bold mt-3">{{ recipe.title }}</h2>
           <div class="recipe-rating">
             <span class="star">&#9733;</span>

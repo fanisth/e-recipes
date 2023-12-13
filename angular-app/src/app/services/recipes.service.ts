@@ -22,6 +22,9 @@ export class RecipesService {
   getRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL)
   }
+  getRecipe(recipeId: string): Observable<Recipes>{
+    return this.http.get<Recipes>(this.Recipe_URL + `/${recipeId}`)
+  }
   getLatestRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL + '/latest')
   }
