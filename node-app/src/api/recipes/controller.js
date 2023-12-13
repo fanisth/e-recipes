@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle,camelcase */
-const fs = require('fs');
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
@@ -127,11 +126,6 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
-    if (recipeInDB?.photo_url?.imagePath) {
-      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.imagePath}`);
-      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.thumbnailPath}`);
-    }
-
     const photo_url = {
       imagePath,
       thumbnailPath,
@@ -158,11 +152,6 @@ async function deleteRecipe(params, user) {
     if (!recipeInDB) return { error: errors.RECIPE_FINDONE_BY_ID };
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
-
-    if (recipeInDB?.photo_url?.imagePath) {
-      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.imagePath}`);
-      fs.unlinkSync(`../angular-app/src/${recipeInDB.photo_url.thumbnailPath}`);
-    }
 
     const result = await recipeRepository.deleteRecipe(recipeId);
 
