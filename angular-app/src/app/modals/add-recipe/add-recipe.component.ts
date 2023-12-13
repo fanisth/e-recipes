@@ -248,6 +248,7 @@ public recipeForm: FormGroup = this.fb.group({
       this.recipeService.addReceipe(formData).subscribe(
         (response:any) => console.log(response)
       )
+      this.activeModal.close('add')
     }
   }
 

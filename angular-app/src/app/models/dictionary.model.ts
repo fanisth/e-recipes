@@ -1,4 +1,4 @@
-export class Dictionary{
-    key?: string;
-    value?: string[]
+export interface Dictionary{
+    key: string;
+    value: string[]
 }

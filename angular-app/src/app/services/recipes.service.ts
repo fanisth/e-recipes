@@ -11,7 +11,7 @@ import { PostRecipes } from '../models/postRecipes.model';
 export class RecipesService {
 
   Categories_URL = "http://localhost:3000/api"
-  Recipe_URL = "http://localhost:3000/api"
+  Recipe_URL = "http://localhost:3000/api/recipes"
 
   constructor(private http: HttpClient) { }
 
@@ -20,11 +20,14 @@ export class RecipesService {
   // }
 
   getRecipes(): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/recipes' )
+    return this.http.get<Recipes[]>(this.Recipe_URL)
+  }
+  getLatestRecipes(): Observable<Recipes[]>{
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/latest')
   }
 
   getPopularRecipes(): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/popularRecipes' )
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/top-rated' )
   }
 
   getSectionRecipes(): Observable<Recipes[]>{
@@ -36,12 +39,12 @@ export class RecipesService {
   }
 
   getRecipeCategories(categoryId:string): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/recipes/' + categoryId )
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/recipes/categories/' + categoryId )
   }
 
 
   addReceipe(recipe : any): Observable<any>{
-    return this.http.post<any>(this.Recipe_URL + '/recipes',recipe )
+    return this.http.post<any>(this.Recipe_URL ,recipe )
   }
 
   getCategories(): Observable<any[]> {
@@ -50,7 +53,7 @@ export class RecipesService {
         const transformedData: any[] = [];
         const payload: categories[] = receivedData.payload.data;
 
-        console.log('######', receivedData)
+        //console.log('######', receivedData)
         // Helper function to find a category by ID
         
         payload.forEach((category:categories) => {
