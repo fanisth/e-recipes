@@ -7,7 +7,7 @@ router.get('/my-recipes', auth.authenticateToken, views.getUserRecipes);
 router.get('/top-rated', views.getTopRatedRecipes);
 router.get('/latest', views.getLatestRecipes);
 router.get('/categories/:categoryId', views.getCategoryRecipes);
-router.get('/tags/:tag', views.getTagRecipes);
+router.get('/tags', views.getTagRecipes);
 router.get('/search', views.search);
 router.get('/search-suggestions', views.searchSuggestions);
 router.get('/:recipeId', views.getRecipe);
