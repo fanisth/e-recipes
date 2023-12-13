@@ -28,6 +28,7 @@ export class AddRecipeComponent implements OnInit {
 
   
   tagsArray: TagArrayItem[] = [];
+  activeModal: any;
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
