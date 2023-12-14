@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -24,6 +24,8 @@ export class RegisterComponent implements OnInit {
   constructor(private router: Router,
     private authService: AuthService) {}
 
+ 
+
   ngOnInit() {
     this.userForm = new UntypedFormGroup({
         username: new UntypedFormControl( '', [Validators.required, Validators.minLength(3)]),
@@ -40,14 +42,19 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.userForm.value).subscribe({
         next : () => {this.router.navigate(['home/login'])},
         error :(responseError: HttpErrorResponse) => {
-          if(responseError.error.error.userMessage.toLowerCase().trim().includes('username'))
-          this.errorMessage = "User name already exist";
-          console.log(this.errorMessage)
-        }
-        
+          if(responseError.error.error.userMessage){
+            this.errorhandle(responseError.error.error.userMessage)
+          }  
+        }  
     })
       // Process the form data
       console.log(this.userForm.value);
     }
+  }
+
+  errorhandle(message:string){
+            this.userForm.disable;
+            console.log(message)
+            this.errorMessage = message;
   }
 }

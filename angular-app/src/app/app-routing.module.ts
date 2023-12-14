@@ -9,6 +9,7 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { AuthGuard } from './guards/authguard.guard';
+import { AllReceipesComponent } from './all-receipes/all-receipes.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -36,7 +37,10 @@ const routes: Routes = [
       },
       {
         path: 'profile/add-recipe', component: AddRecipeComponent
-      }
+      },
+      {
+        path: 'allReceipes', component: AllReceipesComponent
+      },
 
     ] },
   { path: '**', redirectTo : '' },

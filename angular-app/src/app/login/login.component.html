@@ -16,7 +16,7 @@
                       />
                       <div *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"
                           class="requiredUsername position-absolute text-left">
-                          Username Is Required
+                          Το όνομα είναι απαραίτητο 
                       </div>
                   </div>
 
@@ -29,12 +29,17 @@
                           class="form-control rounded"
                           [ngClass]="errorMessage.length > 0 && loginForm.untouched ? 'invalidCredentials' : 'validCredentials'"
                       />
+                      <div *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched"
+                          class="requiredUsername position-absolute text-left">
+                          Ο κωδικός είναι απαραίτητος
+                      </div>
                       <span class="p-viewer position-absolute">
                           <a class="hide-button">
                               <i [ngClass]="hidePassword ? 'fa fa-eye ' : 'fa fa-eye-slash'" class="fa fa-eye"
                                   id="eye" (click)="passwordHide()"></i>
                           </a>
                       </span>
+
                   </div>
               </div>
 

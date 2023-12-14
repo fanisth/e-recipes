@@ -7,10 +7,17 @@ import { PostRecipes } from 'src/app/models/postRecipes.model';
 import { RecipesService } from 'src/app/services/recipes.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
+import { Router } from '@angular/router';
+import {  NgbModal, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
+import { HttpErrorResponse } from '@angular/common/http';
+import { WaitingComponent } from '../modals/waiting/waiting.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 class TagArrayItem {
   constructor(public name: string) {}
 }
+
+
 
 @Component({
   selector: 'app-add-recipe',
@@ -19,15 +26,19 @@ class TagArrayItem {
 })
 export class AddRecipeComponent implements OnInit {
 
+  public modalRef: NgbModalRef | undefined;
   public subcategories: Subcategory[] = [] ;
   
   public fileToUpload: File | null = null;
 
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-
+ 
   
   tagsArray: TagArrayItem[] = [];
+
+  private closeWitingMOdalSubject = new BehaviorSubject(false);
+  public closeWitingMOdal:Observable<boolean> = this.closeWitingMOdalSubject.asObservable();
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -46,9 +57,6 @@ export class AddRecipeComponent implements OnInit {
   }
 
   categories: Category[] = [
-    { id: '1', name: 'Category 1', subCategory: [{ id: '11', name: 'Subcategory 1A' }, { id: '12', name: 'Subcategory 1B' }] },
-    { id: '2', name: 'Category 2', subCategory: [{ id: '21', name: 'Subcategory 2A' }, { id: '22', name: 'Subcategory 2B' }] },
-    { id: '3', name: 'Category 3', subCategory: [{ id: '31', name: 'Subcategory 3A' }, { id: '32', name: 'Subcategory 3B' }] },
   ];
   
 public recipeForm: FormGroup = this.fb.group({
@@ -63,11 +71,11 @@ public recipeForm: FormGroup = this.fb.group({
   difficulty: ['', Validators.required],
   image: new FormControl(null),
   category: ['', Validators.required],
-  subcategory: ['', Validators.required],
+  subcategory: [''],
 });
 
   
-  constructor(private fb: FormBuilder, private recipeService:RecipesService) { }
+  constructor(private fb: FormBuilder, private recipeService:RecipesService,private router:Router, private modalService:NgbModal) { }
 
   ngOnInit(): void {
     // Fetch categories
@@ -86,7 +94,7 @@ public recipeForm: FormGroup = this.fb.group({
       equipment: this.fb.array([['', [Validators.required]]]),
       description: ['',Validators.maxLength(150)],
       category: ['', Validators.required],
-      subcategory: ['', Validators.required],
+      subcategory: [''],
       tags: this.fb.array([]),
       preperation_time: [0, [Validators.required, Validators.min(0)]],
       cooking_time: [0, [Validators.required, Validators.min(0)]],
@@ -161,7 +169,7 @@ public recipeForm: FormGroup = this.fb.group({
   }
 
   onCategoryChange() {
-    console.log('BEFORE:',this.recipeForm.value, this.recipeForm.value.category, this.recipeForm.value.subcategory)
+    
     const selectedCategoryId = this.recipeForm.get('category')?.value;
     const selectedCategory = this.categories.find((cat) =>  cat.id == selectedCategoryId)
 
@@ -169,9 +177,11 @@ public recipeForm: FormGroup = this.fb.group({
       this.recipeForm.get('subcategory')?.setValue(''); // Clear subcategory when category changes
       if(selectedCategory.subCategory){
         this.subcategories = selectedCategory.subCategory;
+        console.log('BEFORE:',this.recipeForm.value, this.recipeForm.value.category, this.subcategories)
       }
       
     }
+    
   }
 
   createInstruction(): FormGroup {
@@ -214,15 +224,17 @@ public recipeForm: FormGroup = this.fb.group({
   
 
   onSubmit() {
+
     // Handle form submission logic here
     if (!this.fileToUpload) {
       console.error('No file selected.');
       return;
     }
 
+    
     if (this.recipeForm.valid) {
 
-      console.log(this.recipeForm.value);
+      
       // Prepare the data to send to the server
       const formData = new FormData()
      
@@ -264,15 +276,32 @@ public recipeForm: FormGroup = this.fb.group({
       formData.append('difficulty', this.recipeForm.value.difficulty)
 
 
-
+      this.openWaitingModal(formData);
       // Log or send the data to the server as needed
-       console.log('Form data to be submitted:', formData.forEach(key => console.log(key)));
       this.recipeService.addReceipe(formData).subscribe(
-        (response:any) => console.log(response)
+        {next:() => {
+          this.modalRef?.close();
+          this.router.navigate(['/profile'])
+          
+          
+        },
+        error:(response:HttpErrorResponse)=> {
+          console.log(response)
+        }
+        
+      }
       )
+    
     }
   }
 
+  openWaitingModal(formdata:FormData ){
+    this.modalRef = this.modalService.open(WaitingComponent);
+    
+    this.modalRef?.result.then(() => {
+    
+    })
+  }
   getSelectedCategory(): Category | undefined {
     const categoryId = this.recipeForm.get('category.categoryId')?.value;
     return this.categories.find(category => category.id === categoryId);

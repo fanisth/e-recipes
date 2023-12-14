@@ -1,4 +1,4 @@
-<div class="custom-background">
+<div  class="custom-background">
   <div class="header">
     <h4 class="modal-title">Προσθήκη Συνταγής</h4>
   </div>
@@ -185,7 +185,7 @@
             <div *ngIf="subcategories.length > 0" class="col-5">
                 <label for="subcategory" class="form-label fw-bold fs-5">Υποκατηγορία Συνταγής</label>
                 <select id="subcategory" formControlName="subcategory" class="form-select">
-                    <option *ngFor="let subcat of subcategories" [value]="subcat.id">{{ subcat.name }}</option>
+                    <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{ subcat.name }}</option>
                 </select>
             </div>
         </div>
