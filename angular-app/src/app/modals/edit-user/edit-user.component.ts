@@ -37,7 +37,9 @@ export class EditUserComponent implements OnInit {
     if(!this.userForm?.valid){
       return;
     }
+
     const user: UserRegistration = this.userForm?.value;
+    user.username = this.user?.username;
     this.userService.updateProfile(user).subscribe((response:any)=>{
       console.log(response);
       this.activeModal.close(user);

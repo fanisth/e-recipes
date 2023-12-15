@@ -26,6 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {NoopAnimationsModule } from '@angular/platform-browser/animations'
 
+import { AllReceipesComponent } from './all-receipes/all-receipes.component';
+import { WaitingComponent } from './modals/waiting/waiting.component';
 
 
 @NgModule({
@@ -42,6 +44,8 @@ import {NoopAnimationsModule } from '@angular/platform-browser/animations'
     CatalogueComponent,
     CategoriesComponent,
     RecipePageComponent,
+    AllReceipesComponent,
+    WaitingComponent,
   ],
   imports: [
     CommonModule,

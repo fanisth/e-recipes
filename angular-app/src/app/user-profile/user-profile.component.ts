@@ -6,7 +6,8 @@ import { RecipesService } from '../services/recipes.service';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditUserComponent } from '../modals/edit-user/edit-user.component';
 import { UserProfile } from '../models/userProfile.model';
-import { AddRecipeComponent } from '../add-recipe/add-recipe.component';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -18,7 +19,7 @@ export class UserProfileComponent implements OnInit {
   public modalRef: NgbModalRef | undefined;
   public ngbModalOption? : NgbModalOptions; 
 
-  constructor(private userService : UserService, private recipeService:RecipesService, private modalService:NgbModal) { }
+  constructor(private userService : UserService, private recipeService:RecipesService, private modalService:NgbModal,private router:Router) { }
 
   public userRecipes : Recipes[] = []
   public userProfile : UserRegistration = {}; 
@@ -30,11 +31,11 @@ export class UserProfileComponent implements OnInit {
       } 
     )
 
-    // this.recipeService.getUserRecipes().subscribe(
-    //   (recipes: Recipes[]) =>{
-    //     this.userRecipes = recipes; 
-    //   }
-    // )
+    this.recipeService.getUserRecipes().subscribe(
+      (recipes: any) =>{
+        this.userRecipes = recipes.payload.recipes; 
+      }
+    )
   }
 
   editProfile(){
@@ -53,17 +54,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   addRecipe(){
-    this.ngbModalOption = {
-      backdrop: false,
-      keyboard: false,
-    };
-    
-    this.createRecipe(this.ngbModalOption)
-    this.modalRef?.result.then((result: any) => {
-      if(result.contains('add')){
-        ////na krathsw to updated user gia to ui
-      }
-    })
+    this.router.navigate(['/profile/add-recipe'])
 
   }
 
@@ -81,8 +72,6 @@ export class UserProfileComponent implements OnInit {
     this.modalRef.componentInstance.user = user;
   }
 
-  createRecipe( options: NgbModalOptions ){
-    this.modalRef = this.modalService.open(AddRecipeComponent, options);
-  }
+
 
 }

@@ -34,14 +34,14 @@ export class RecipesComponent implements OnInit {
     this.recipesService.getLatestRecipes()
     .subscribe(
       (dataRecipes:any) => {
-        console.log('>>>>>>>>>>',dataRecipes.payload.recipes)
+        console.log('getLatest',dataRecipes.payload.recipes)
         this.recipes = dataRecipes.payload.recipes
       }
     )
 
     this.recipesService.getPopularRecipes().subscribe(
       (dataRecipes:any) => {
-        console.log('##############',dataRecipes.payload.recipes)
+        console.log('getPopular',dataRecipes.payload.recipes)
         this.topRecipes = dataRecipes.payload.recipes
       }
     )

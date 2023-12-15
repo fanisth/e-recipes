@@ -16,10 +16,10 @@
               <div>
                 <label for="username">Username:*</label>
                 <input type="text" id="username" class="form-control" formControlName="username">
-                <div *ngIf="userForm?.get('username')?.hasError('required') && userForm?.get('username')?.touched">
+                <div *ngIf="userForm?.get('username')?.hasError('required') && userForm?.get('username')?.touched" class="errorMessage">
                   Username is required
                 </div>
-                <div *ngIf="userForm?.get('username')?.hasError('minlength') && userForm?.get('username')?.touched">
+                <div *ngIf="userForm?.get('username')?.hasError('minlength') && userForm?.get('username')?.touched" class="errorMessage">
                   Username must be at least 3 characters
                 </div>
               </div>
@@ -27,10 +27,10 @@
               <div>
                 <label for="name">Name:*</label>
                 <input type="text" id="name" class="form-control" formControlName="name">
-                <div *ngIf="userForm?.get('name')?.hasError('required') && userForm?.get('name')?.touched">
+                <div *ngIf="userForm?.get('name')?.hasError('required') && userForm?.get('name')?.touched" class="errorMessage">
                   Username is required
                 </div>
-                <div *ngIf="userForm?.get('username')?.hasError('minlength') && userForm?.get('name')?.touched">
+                <div *ngIf="userForm?.get('name')?.hasError('minlength') && userForm?.get('name')?.touched" class="errorMessage">
                   Username must be at least 3 characters
                 </div>
               </div>
@@ -38,10 +38,10 @@
               <div>
                 <label for="surname">Surname:*</label>
                 <input type="text" id="surname" class="form-control" formControlName="surname">
-                <div *ngIf="userForm?.get('surname')?.hasError('required') && userForm?.get('surname')?.touched">
+                <div *ngIf="userForm?.get('surname')?.hasError('required') && userForm?.get('surname')?.touched" class="errorMessage">
                   Username is required
                 </div>
-                <div *ngIf="userForm?.get('surname')?.hasError('minlength') && userForm?.get('surname')?.touched">
+                <div *ngIf="userForm?.get('surname')?.hasError('minlength') && userForm?.get('surname')?.touched" class="errorMessage">
                   Username must be at least 3 characters
                 </div>
               </div>
@@ -49,10 +49,10 @@
               <div>
                 <label for="email">Email:*</label>
                 <input type="email" id="email" class="form-control" formControlName="email">
-                <div *ngIf="userForm?.get('email')?.hasError('required') && userForm?.get('email')?.touched">
+                <div *ngIf="userForm?.get('email')?.hasError('required') && userForm?.get('email')?.touched" class="errorMessage">
                   Email is required
                 </div>
-                <div *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched">
+                <div *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched" class="errorMessage">
                   Please enter a valid email address
                 </div>
               </div>
@@ -60,10 +60,10 @@
               <div>
                 <label for="phone">Phone:</label>
                 <input type="tel" id="phone" class="form-control" formControlName="phone">
-                <div *ngIf="userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched">
+                <div *ngIf="userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched" class="errorMessage">
                   Phone number is required
                 </div>
-                <div *ngIf="userForm.get('phone')?.hasError('pattern') && userForm.get('phone')?.touched">
+                <div *ngIf="userForm.get('phone')?.hasError('pattern') && userForm.get('phone')?.touched" class="errorMessage">
                   Please enter a valid 10-digit phone number
                 </div>
               </div>
@@ -71,16 +71,20 @@
               <div>
                 <label for="password">Password:*</label>
                 <input type="password" id="password" class="form-control" formControlName="password">
-                <div *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+                <div *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched" class="errorMessage">
                   Password is required
                 </div>
-                <div *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.touched">
+                <div *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.touched" class="errorMessage">
                   Password must be at least 6 characters
                 </div>
               </div>
+              
 
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid">Submit</button>
+              </div>
+              <div *ngIf="errorMessage.length && userForm.invalid " class=" mt-2 errorMessage">
+                {{errorMessage}}
               </div>
             </div>
           </form>

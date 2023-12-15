@@ -1,10 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies,consistent-return */
 const multer = require('multer');
 const fs = require('fs');
-const sharp = require('sharp');
-const { Dropbox } = require('dropbox');
+// SDK initialization
+const ImageKit = require('imagekit');
 
-const dbx = new Dropbox({ accessToken: 'sl.BroxC7637PVn_8j53w6Ig8VqrulhTfefl0MqIIwm85UHOHOcDqLDtLZD1KbgabXpP1Ly9xDuuPzheL9LfwFYVLKhgYoOmebH6psPJGqTub38EZsbDCHagpkvOIy6-PoCPQLv7zxy38qP6zE' });
+const imagekit = new ImageKit({
+  publicKey: 'public_qgv+8znrGNc3MUtvl2/qPPc9VOk=',
+  privateKey: 'private_cc0WxP94NgJULOttjJbifRBKf38=',
+  urlEndpoint: 'https://ik.imagekit.io/jhzf44xh6',
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -43,33 +47,17 @@ const uploadMiddleware = (req, res, next) => {
         return res.status(400).json(error);
       }
 
-      // Use Sharp to resize the image
-      let thumbnailPath = `uploads/thumbnail-${file.filename}`;
-      file.path = `uploads/${file.filename}`;
-      await sharp(file.path)
-        .resize({ width: 200, height: 200 })
-        .toFile(thumbnailPath);
-
       // upload image
-      let data = fs.readFileSync(file.path);
-      let dbxResponse = await dbx.filesUpload({ contents: data, path: `/${file.filename}` });
-      dbxResponse = await dbx.sharingCreateSharedLinkWithSettings({
-        path: `/${req.file.filename}`,
-        settings: { requested_visibility: 'public' },
+      const data = fs.readFileSync(file.path);
+      const response = await imagekit.upload({
+        file: data,
+        fileName: file.filename,
       });
-      file.path = `${dbxResponse.result.url.split('dl')[0]}raw=1`;
-
-      // upload thumbnail
-      data = fs.readFileSync(thumbnailPath);
-      dbxResponse = await dbx.filesUpload({ contents: data, path: `/thumbnail-${file.filename}` });
-      dbxResponse = await dbx.sharingCreateSharedLinkWithSettings({
-        path: `/thumbnail-${file.filename}`,
-        settings: { requested_visibility: 'public' },
-      });
-      thumbnailPath = `${dbxResponse.result.url.split('dl')[0]}raw=1`;
       // Attach files and thumbnail path to the request object
+      file.path = response.url;
       req.file = file;
-      req.thumbnailPath = thumbnailPath;
+      req.thumbnailPath = response.thumbnailUrl;
+      req.fileId = response.fileId;
 
       // Proceed to the next middleware or route handler
       next();

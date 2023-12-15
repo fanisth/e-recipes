@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 const Recipe = require('../../models/recipeSchema');
 
-async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
+async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath, fileId) {
   try {
     const recipe = new Recipe({
       ...recipeRequest,
@@ -10,6 +10,7 @@ async function createRecipe(recipeRequest, userId, imagePath, thumbnailPath) {
       photo_url: {
         imagePath,
         thumbnailPath,
+        fileId,
       },
     });
 
@@ -122,7 +123,6 @@ async function deleteRecipe(recipeId) {
   try {
     // eslint-disable-next-line no-underscore-dangle
     const result = await Recipe.deleteOne({ _id: recipeId });
-    console.log(result);
     return result;
   } catch (e) {
     console.error(e);
