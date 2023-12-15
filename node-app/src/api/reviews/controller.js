@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const repository = require('./repository');
 const recipeRepo = require('../recipes/repository');
 const logger = require('../../common/logger')();
@@ -14,7 +15,7 @@ async function getRecipeReviews(recipeId) {
   }
 }
 
-async function postReview(reviewBody, userId, recipeId) {
+async function postReview(reviewBody, user, recipeId) {
   const fLogger = logger.child({ function: 'postReview' });
   try {
     // get recipe
@@ -25,7 +26,11 @@ async function postReview(reviewBody, userId, recipeId) {
     const review = await repository.postRecipeReview({
       ...reviewBody,
       recipeId,
-      userId,
+      userId: user._id,
+      user: {
+        name: user.name,
+        lastname: user.surname,
+      },
     });
 
     // update recipe rating

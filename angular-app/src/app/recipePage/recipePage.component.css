@@ -1,0 +1,42 @@
+  .holder {
+    background: #f0efe9;
+    min-height: 100vh;
+  }
+  
+  .rounded {
+    border-radius: 1rem !important;
+  }
+  
+  .text-gray {
+    color: #aaa;
+  }
+  
+  input:checked + label {
+    text-decoration: line-through;
+    color: #adb5bd;
+  }
+  
+  label {
+    cursor: pointer;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+
+  .star {
+    color: gold; /* Set the color of the stars */
+    font-size: 24px; /* Set the font size of the stars */
+  }
+
+  .rating-form-container {
+    padding: 1%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rating-form-container form {
+    margin-top: 2%;
+  }
+  

@@ -24,7 +24,7 @@
                 <h5><i class="fa-solid fa-list" aria-hidden="true"></i> {{recipe.difficulty}}</h5>
               </div>
               <h5><i class="fa-solid fa-timer"></i> {{recipe.cooking_time}} '</h5>
-              <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm mt-2" type="button" [routerLink]="['/home']">Δες τη συνταγή</button></div>
+              <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm mt-2" type="button" [routerLink]="['/recipes/' + recipe._id]">Δες τη συνταγή</button></div>
             </div>
         </div>
       </div>
