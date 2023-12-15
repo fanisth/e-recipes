@@ -1,8 +1,16 @@
 /* eslint-disable no-underscore-dangle,camelcase */
+// eslint-disable-next-line import/no-extraneous-dependencies
+const ImageKit = require('imagekit');
 const recipeRepository = require('./repository');
 const logger = require('../../common/logger')();
 const errors = require('./errors');
 const searchUtils = require('./searchUtils');
+
+const imagekit = new ImageKit({
+  publicKey: 'public_qgv+8znrGNc3MUtvl2/qPPc9VOk=',
+  privateKey: 'private_cc0WxP94NgJULOttjJbifRBKf38=',
+  urlEndpoint: 'https://ik.imagekit.io/jhzf44xh6',
+});
 
 async function getRecipe(params) {
   const fLogger = logger.child({ function: 'getRecipe' });
@@ -96,7 +104,7 @@ async function getAllRecipes() {
   }
 }
 
-async function createRecipe(body, user, imagePath, thumbnailPath) {
+async function createRecipe(body, user, imagePath, thumbnailPath, fileId) {
   const fLogger = logger.child({ function: 'createRecipe' });
   try {
     // eslint-disable-next-line no-underscore-dangle
@@ -104,7 +112,7 @@ async function createRecipe(body, user, imagePath, thumbnailPath) {
     const recipe = await recipeRepository.createRecipe({
       ...body,
       searchTerms,
-    }, user._id, imagePath, thumbnailPath);
+    }, user._id, imagePath, thumbnailPath, fileId);
     if (!recipe) {
       return { error: errors.RECIPE_CREATE };
     }
@@ -116,7 +124,7 @@ async function createRecipe(body, user, imagePath, thumbnailPath) {
   }
 }
 
-async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
+async function updateRecipe(body, params, user, imagePath, thumbnailPath, fileId) {
   const fLogger = logger.child({ function: 'updateRecipe' });
   try {
     const { recipeId } = params;
@@ -126,9 +134,15 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath) {
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
+    // delete images
+    if (recipeInDB?.photo_url?.imagePath) {
+      await imagekit.deleteFile(recipeInDB.photo_url.fileId);
+    }
+
     const photo_url = {
       imagePath,
       thumbnailPath,
+      fileId,
     };
     const updatedRecipe = { ...recipeInDB, ...body, photo_url };
     // updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
@@ -152,6 +166,11 @@ async function deleteRecipe(params, user) {
     if (!recipeInDB) return { error: errors.RECIPE_FINDONE_BY_ID };
     // eslint-disable-next-line max-len
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
+
+    // delete images
+    if (recipeInDB?.photo_url?.imagePath) {
+      await imagekit.deleteFile(recipeInDB.photo_url.fileId);
+    }
 
     const result = await recipeRepository.deleteRecipe(recipeId);
 
