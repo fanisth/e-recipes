@@ -83,16 +83,15 @@
         <div class="rating-form-container mt-4">
           <form (ngSubmit)="submitReview()">
             <div class="form-group">
-              <label for="rating">Rating:</label>
+              <label for="rating">Βαθμολογία: </label>
               <ngb-rating [(rate)]="selectedRating" [max]="5"></ngb-rating>
             </div>
     
             <div class="form-group">
-              <label for="comments">Comments:</label>
               <textarea [(ngModel)]="comments" name="comments" class="form-control"></textarea>
             </div>
     
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
           </form>
         </div>
       </div>

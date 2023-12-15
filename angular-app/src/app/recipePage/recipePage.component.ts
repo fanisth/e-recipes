@@ -38,7 +38,7 @@ export class RecipePageComponent implements AfterViewInit {
     if (!recipe.rating || recipe.rating.counter === 0) {
       return 0;
     }
-    return recipe.rating.sum / recipe.rating.counter;
+    return Math.round((recipe.rating.sum / recipe.rating.counter) * 10) / 10;
   }
 
   getReviewerFullName(review: Reviews): string {
