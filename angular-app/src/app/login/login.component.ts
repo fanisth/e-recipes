@@ -45,7 +45,12 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['']);
       }),
       error: (error =>{
-        console.log("@@@@@@@@@",error)
+        
+        if(error.error.error.userMessage){
+          console.log("@@@@@@@@@",error.error.error.userMessage)
+          this.errorMessage = error.error.error.userMessage;
+        }
+        this.handleError(error.error.error.userMessage)
       }),
     });
     console.log(username, password)
@@ -58,8 +63,9 @@ export class LoginComponent implements OnInit {
   
 
 
-  private handleError() {
-    this.errorMessage = "Incorrect username or password. Please try again.";
-    this.loginForm?.markAsUntouched();
+  private handleError(message:string) {
+    this.errorMessage = message;
+    //this.loginForm?.markAsUntouched();
+    this.loginForm?.reset()
   }
 }

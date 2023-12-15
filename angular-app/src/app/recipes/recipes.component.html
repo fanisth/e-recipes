@@ -2,7 +2,7 @@
     <!-- Carousel for recipes -->
     <ngb-carousel *ngIf="recipes.length > 0">
       <ng-template ngbSlide *ngFor="let recipe of recipes">
-        <img src="{{recipe.photo_url?.imagePath}}" class="h-100 inline d-block" alt="{{ recipe.title }}">
+        <img [src]="recipe.photo_url?.imagePath" class="h-100 inline d-block" alt="{{ recipe.title }}">
         <div class="carousel-caption">
           <h3>{{ recipe.title }}</h3>
         </div>

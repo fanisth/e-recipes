@@ -1,0 +1,221 @@
+<div  class="custom-background">
+  <div class="header">
+    <h4 class="modal-title">Προσθήκη Συνταγής</h4>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="container p-5">
+  
+        <!-- Title -->
+        <div class="mb-4">
+            <label for="title" class="form-label fw-bold fs-5">Τίτλος</label>
+            <input formControlName="title" type="text" class="form-control" id="title" placeholder="Title">
+            <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="text-danger">
+                <div *ngIf="title?.hasError('required')">Title is required.</div>
+                <div *ngIf="title?.hasError('maxLength')">Title cannot exceed 50 characters.</div>
+            </div>
+        </div>
+  
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+  
+        <!-- Ingredients and Equipment -->
+        <div class="row mb-4">
+            <div class="col-md-5">
+                <label class="form-label fw-bold fs-5">Υλικά</label>
+                <!-- Ingredients section here -->
+                <div formArrayName="ingredients">
+                    <div *ngFor="let ing of ingredients.controls; let i=index" class="input-group mb-4">
+                        <input [id]="'ingredient' + i" [formControlName]="i" type="text" class="form-control"
+                            placeholder="Υλικό {{i+1}}">
+                        <button class="btn btn-danger" (click)="removeIngredients(i)">-</button>
+                    </div>
+                    <button type="button" class="btn btn-primary" [disabled]="ingredients.length == 20"
+                        (click)="addIngredients()">+</button>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <label class="form-label fw-bold fs-5">Σκεύη</label>
+                <!-- Equipment section here -->
+                <div formArrayName="equipment">
+                    <div *ngFor="let equip of equipment.controls; let i=index" class="input-group mb-4">
+                        <input [id]="'equipment' + i" [formControlName]="i" type="text" class="form-control"
+                            placeholder="Σκεύος {{i+1}}">
+                        <button class="btn btn-danger" (click)="removeEquipments(i)">-</button>
+                        <div *ngIf="equip[i]?.invalid && (equip[i]?.dirty || equip[i]?.touched)"
+                            class="text-danger">
+                            <div *ngIf="equip[i]?.hasError('required')">Preparation Time is required.</div>
+                        </div>
+                    </div>
+  
+                    <button type="button" class="btn btn-primary" (click)="addEquipments()">+</button>
+                </div>
+            </div>
+        </div>
+  
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+
+        <!-- Instructions -->
+        <div class="mb-4">
+            <label class="form-label fw-bold fs-5">Οδηγίες</label>
+            <!-- Instructions section here -->
+            <div formArrayName="instructions">
+                <div *ngFor="let instruction of instructionForms.controls; let i = index" [formGroupName]="i"
+                    class="card mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="key" class="form-label">Παρασκευή</label>
+                            <input formControlName="key" class="form-control" id="key" placeholder="π.χ. Για τη σάλτσα">
+                        </div>
+        
+                        <div formArrayName="value">
+                            <div *ngFor="let val of getValues(instruction); let j = index" class="form-group">
+                                <label for="value" class="form-label">Βήματα</label>
+                                <div class="input-group mb-4">
+                                    <input [formControlName]="j" class="form-control" id="value"
+                                        placeholder="Βήμα {{j+1}}">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="removeValue(instruction, j)">-</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary"
+                                (click)="addValue(instruction)">+</button>
+                        </div>
+                    </div>
+                    <!-- Move the removeInstruction button to the same row as the addValue button -->
+                    <div class="row">
+                        <div class="col">
+                            <!-- Keep the addValue button in its own column -->
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-danger"
+                                (click)="removeInstruction(i)">Αφαίρεση Παρασκευής</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" (click)="addInstruction()">Προσθήκη Παρασκευής
+                </button>
+            </div>
+        </div>
+
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+  
+        <!-- Preparation Time, Cooking Time, and Difficulty on the same row -->
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <label for="preparationTime" class="form-label fw-bold fs-5">Χρόνος Προετοιμασίας</label>
+            <div class="input-group">
+              <input formControlName="preperation_time" type="number" class="form-control" id="preparationTime"
+                  placeholder="Preparation Time">
+              <span class="input-group-text">λεπτά</span>
+            </div>
+            <div *ngIf="preperation_time?.invalid && (preperation_time?.dirty || preperation_time?.touched)"
+                class="text-danger">
+                <div *ngIf="preperation_time?.hasError('required')">Preparation Time is required.</div>
+                <div *ngIf="preperation_time?.hasError('min')">Preparation Time must be greater than or equal to
+                    0.</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="cookingTime" class="form-label fw-bold fs-5">Χρόνος Μαγειρέματος</label>
+            <div class="input-group">
+              <input formControlName="cooking_time" type="number" class="form-control" id="cookingTime"
+                  placeholder="Cooking Time">
+              <span class="input-group-text">λεπτά</span>
+            </div>
+            <div *ngIf="cooking_time?.invalid && (cooking_time?.dirty || cooking_time?.touched)"
+                class="text-danger">
+                <div *ngIf="cooking_time?.hasError('required')">Cooking Time is required.</div>
+                <div *ngIf="cooking_time?.hasError('min')">Cooking Time must be greater than or equal to 0.</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="difficulty" class="form-label fw-bold fs-5">Επίπεδο Δυσκολίας</label>
+            <div class="input-group">
+              <select formControlName="difficulty" class="form-select">
+                  <option value="easy">Εύκολο</option>
+                  <option value="medium">Μέτριο</option>
+                  <option value="hard">Δύσκολο</option>
+              </select>
+            </div>
+            <div *ngIf="difficulty?.invalid && (difficulty?.dirty || difficulty?.touched)" class="text-danger">
+                <div *ngIf="difficulty?.hasError('required')">Difficulty is required.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+  
+        <!-- Description -->
+        <div class="mb-4">
+            <label for="description" class="form-label fw-bold fs-5">Περιγραφή</label>
+            <textarea formControlName="description" class="form-control" id="description" rows="4" placeholder="Description"></textarea>
+            <div *ngIf="description?.invalid && (description?.dirty || description?.touched)"
+                class="text-danger">
+                <div *ngIf="description?.hasError('required')">Description is required.</div>
+            </div>
+        </div>
+
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+  
+        <div class="mb-4">
+            <label for="file" class="form-label fw-bold fs-5">Επιλογή Φωτογραφίας</label>
+            <input formControlName="image" type="file" id="file" (change)="onFileChange($event)" accept=".jpg, .jpeg, .png" class="form-control">
+        </div>
+
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+  
+        <div class="row mb-4">
+            <div class="col-5">
+                <label for="category" class="form-label fw-bold fs-5">Κατηγορία Συνταγής</label>
+                <select id="category" formControlName="category" class="form-select" (change)="onCategoryChange()">
+                    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                </select>
+            </div>
+        
+            <!-- Subcategory Dropdown -->
+            <div *ngIf="subcategories.length > 0" class="col-5">
+                <label for="subcategory" class="form-label fw-bold fs-5">Υποκατηγορία Συνταγής</label>
+                <select id="subcategory" formControlName="subcategory" class="form-select">
+                    <option *ngFor="let subcat of subcategories" [value]="subcat._id">{{ subcat.name }}</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Add more margin and lines between fields -->
+        <hr class="my-4">
+
+        <!-- Tags -->
+        <div class="mb-12">
+            <label class="form-label fw-bold fs-5">Ετικέτες</label>
+            <!-- Tags section here -->
+            <mat-form-field class="example-chip-list" appearance="fill">
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                  <mat-chip *ngFor="let tag of tagsArray" (removed)="remove(tag)">
+                    {{tag.name}}
+                    <button matChipRemove>
+                      <mat-icon>x</mat-icon>
+                    </button>
+                  </mat-chip>
+                  <input placeholder="Προσθέστε Ετικέτα..."
+                         [matChipInputFor]="chipList"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+              </mat-form-field>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg d-block mx-auto mt-5">Υποβολή</button>
+               
+    </form>
+  </div>
+</div>

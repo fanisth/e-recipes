@@ -1,9 +1,11 @@
-import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { categories } from '../models/categories.model';
 import { RecipesService } from '../services/recipes.service';
-import { Observable, of } from 'rxjs';
+import { Observable, firstValueFrom, of } from 'rxjs';
 import { Dictionary } from '../models/dictionary.model';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,25 +13,18 @@ import { Dictionary } from '../models/dictionary.model';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+
+
   
+  // @ViewChild('firstDropDown')
+  // firstDropDown!: NgbDropdown; 
 
   public currentRoute = "home"
   public loggedIn :Observable<boolean> = of(false);
   public categories: any[] | undefined;
-//   public categories :categories[] = [{
-//     category : 'gluka',
-//     subcategory: ['kok','negraki'] 
-//   },
-//   {
-//     category : 'almyra',
-//     subcategory: ['krepes'] 
-//   },
-//   {
-//     category : 'poytsa',
-//     subcategory: ['']
-//   }
-// ]
-  constructor(public authService:AuthService,private recipesService:RecipesService) { 
+
+  constructor(public authService:AuthService,private recipesService:RecipesService,private router:Router) { 
     this.loggedIn = this.authService.isLoggenIn
   }
   
@@ -46,5 +41,20 @@ export class HomeComponent implements OnInit {
     )
   }
 
+  onHover(drop:NgbDropdown) {
+    drop.open();
+    }
   
+    onHoverout(drop: NgbDropdown) {
+      drop.close();
+      }
+   
+
+      over(drop:NgbDropdown){
+        drop.open()
+      }
+      out(drop:NgbDropdown){
+        drop.close()
+      }
+     
 }

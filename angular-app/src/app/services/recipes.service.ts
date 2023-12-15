@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import {  Observable, map } from 'rxjs';
 import { categories } from '../models/categories.model';
 import {  Recipes } from '../models/recipes.model';
 import { HttpClient } from '@angular/common/http';
-import { PostRecipes } from '../models/postRecipes.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +17,7 @@ export class RecipesService {
   // getCategories(): Observable<categories[]>{
   //   return this.http.get<categories[]>(this.Categories_URL + '/categories' )
   // }
+
 
   getRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL)
@@ -35,11 +35,11 @@ export class RecipesService {
   }
 
   getUserRecipes(): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/userRecipes' )
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/my-recipes' )
   }
 
   getRecipeCategories(categoryId:string): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/recipes/categories/' + categoryId )
+    return this.http.get<Recipes[]>(this.Recipe_URL + '/categories/' + categoryId )
   }
 
 
