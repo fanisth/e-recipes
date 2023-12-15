@@ -2,6 +2,7 @@ import { Dictionary } from "./dictionary.model";
 import { PhotoUrlDict } from "./photourl-dict.model";
 
 export class Recipes{
+    _id?: string
     title?: string;
     instructions?: Dictionary[];
     ingredients?: string[];

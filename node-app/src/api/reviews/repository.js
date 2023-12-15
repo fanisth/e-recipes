@@ -3,7 +3,7 @@ const Review = require('../../models/reviewSchema');
 
 async function getRecipeReviews(recipeId) {
   try {
-    const reviews = await Review.find({ recipeId });
+    const reviews = await Review.find({ recipeId }).lean();
     return reviews;
   } catch (err) {
     console.error(err);

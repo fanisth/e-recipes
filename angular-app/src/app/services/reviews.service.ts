@@ -13,7 +13,11 @@ export class ReviewsService {
   constructor(private http: HttpClient) { }
 
 
-  getReviews(reviewId: string): Observable<Reviews[]>{
-    return this.http.get<Reviews[]>(this.Review_URL + reviewId)
+  getReviews(recipeId: string): Observable<Reviews[]>{
+    return this.http.get<Reviews[]>(this.Review_URL + recipeId)
+  }
+
+  addReview(review: Reviews, recipeId: string): Observable<any>{
+    return this.http.post<any>(this.Review_URL + recipeId,review )
   }
 }

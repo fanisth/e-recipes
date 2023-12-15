@@ -11,7 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthService } from './services/auth.service';
 import { ExpirationModalComponent } from './modals/expiration-modal/expiration-modal.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecipesComponent } from './recipes/recipes.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { EditUserComponent } from './modals/edit-user/edit-user.component';
@@ -50,6 +50,7 @@ import {NoopAnimationsModule } from '@angular/platform-browser/animations'
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgbRatingModule,
     HttpClientModule,
     MatChipsModule,
     MatFormFieldModule,
