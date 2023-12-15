@@ -16,22 +16,22 @@ export class HomeComponent implements OnInit {
 
 
 
-  
+
   // @ViewChild('firstDropDown')
-  // firstDropDown!: NgbDropdown; 
+  // firstDropDown!: NgbDropdown;
 
   public currentRoute = "home"
   public loggedIn :Observable<boolean> = of(false);
   public categories: any[] | undefined;
 
-  constructor(public authService:AuthService,private recipesService:RecipesService,private router:Router) { 
+  constructor(public authService:AuthService,private recipesService:RecipesService,private router:Router) {
     this.loggedIn = this.authService.isLoggenIn
   }
-  
+
   ngOnInit(): void {
       this.authService.isUserLoggedIn();
-      
-       
+
+
     this.recipesService.getCategories().subscribe(
       (cat => {
         if(cat){
@@ -43,18 +43,22 @@ export class HomeComponent implements OnInit {
 
   onHover(drop:NgbDropdown) {
     drop.open();
-    }
-  
-    onHoverout(drop: NgbDropdown) {
-      drop.close();
-      }
-   
+  }
 
-      over(drop:NgbDropdown){
-        drop.open()
-      }
-      out(drop:NgbDropdown){
-        drop.close()
-      }
-     
+  onHoverout(drop: NgbDropdown) {
+    drop.close();
+  }
+
+
+  over(drop:NgbDropdown){
+    drop.open()
+  }
+  out(drop:NgbDropdown){
+    drop.close()
+  }
+
+  logout(): void {
+    this.authService.logout('');
+  }
+
 }

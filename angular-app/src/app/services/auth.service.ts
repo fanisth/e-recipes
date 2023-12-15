@@ -13,7 +13,7 @@ export class AuthService {
 
   private readonly TOKEN_KEY = 'token';
   private readonly USERNAME_KEY = 'username';
-  private readonly LOGIN_URL = 'http://localhost:3000/api/auth'; 
+  private readonly LOGIN_URL = 'http://localhost:3000/api/auth';
   private ngbModalOptions: NgbModalOptions = {
     backdrop : 'static',
     keyboard : false
@@ -45,7 +45,7 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
   isUserLoggedIn(): void {
     const token = this.getToken();
     this.isLoggedInSubject.next(token !== null);
-  
+
   }
 
   // Method to log out the user
@@ -60,10 +60,11 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     this.router.navigate(['/login'])
     });
     }
+    this.isLoggedInSubject.next(false);
     sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USERNAME_KEY);
     this.router.navigate([''])
-    
+
   }
 
   // Method to authenticate the user and retrieve a JWT token
