@@ -16,13 +16,13 @@
             <button    class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               ΦΑΓΗΤΑ
             </button>
-            <ul ngbDropdownMenu (mouseenter)="onHover(firstDropDown)"(mouseleave)="onHoverout(firstDropDown)" #dropdown class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+            <ul ngbDropdownMenu (mouseenter)="onHover(firstDropDown)"(mouseleave)="onHoverout(firstDropDown)" #dropdown class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li *ngFor="let cat of categories" class="dropend">
                 <div *ngIf="cat.type == 'food'" ngbDropdown  #subdrop="ngbDropdown" (mouseover)='over(subdrop)' (mouseout)='out(subdrop)' class="dropend">
                   <a  *ngIf="cat.type == 'food'" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" href="categories/{{cat.id}}" >
                     {{cat.name}}
                   </a>
-                  <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'food'" class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                  <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'food'" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                     <li *ngFor="let sub of cat['subCategory']" ><a class="dropdown-item" href="categories/{{sub._id}}">{{sub.name}}</a></li>
                   </ul>
                 </div>
@@ -33,16 +33,16 @@
 
         <li class="nav-item dropdown">
           <div ngbDropdown   #secDropDown="ngbDropdown" (mouseenter)="onHover(secDropDown)" (mouseenter)="onHoverout(firstDropDown)"  class="dropdown">
-            <button    class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <button    class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
               ΓΛΥΚΑ
             </button>
-            <ul ngbDropdownMenu (mouseenter)="onHover(secDropDown)"(mouseleave)="onHoverout(secDropDown)" #dropdown class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+            <ul ngbDropdownMenu (mouseenter)="onHover(secDropDown)"(mouseleave)="onHoverout(secDropDown)" #dropdown class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li *ngFor="let cat of categories" class="dropend">
                 <div *ngIf="cat.type == 'desserts'" ngbDropdown  #secsubdrop="ngbDropdown" (mouseover)='over(secsubdrop)' (mouseout)='out(secsubdrop)' class="dropend">
-                  <a  *ngIf="cat.type == 'desserts'" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" href="categories/{{cat.id}}" >
+                  <a  *ngIf="cat.type == 'desserts'" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false" href="categories/{{cat.id}}" >
                     {{cat.name}}
                   </a>
-                  <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'desserts'"  class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                  <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'desserts'"  class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                     <li *ngFor="let sub of cat['subCategory']" ><a  class="dropdown-item" href="categories/{{sub._id}}">{{sub.name}}</a></li>
                   </ul>
                 </div>
@@ -57,13 +57,16 @@
       </form>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item" *ngIf="!(this.loggedIn | async)">
-          <a class="nav-link" routerLink="login"><span class="btn-label"><i class="fa fa-sign-in" aria-hidden="true"></i></span>Log in</a>
+          <a class="nav-link" routerLink="login"><span class="btn-label"><i class="fa fa-sign-in" aria-hidden="true"></i></span>Σύνδεση</a>
         </li>
         <li class="nav-item" *ngIf="!(this.loggedIn | async)">
-          <a class="nav-link" routerLink="register"><span class="btn-label"><i class="fa fa-user-plus" aria-hidden="true"></i></span>Sign up</a>
+          <a class="nav-link" routerLink="register"><span class="btn-label"><i class="fa fa-user-plus" aria-hidden="true"></i></span>Εγγραφή</a>
         </li>
         <li class="nav-item" *ngIf="(this.loggedIn | async)">
-          <a class="nav-link" routerLink="profile"><span class="btn-label"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>My Profile</a>
+          <a class="nav-link" routerLink="profile"><span class="btn-label"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>Προφίλ</a>
+        </li>
+        <li class="nav-item" *ngIf="(this.loggedIn | async)">
+          <button class="nav-link" (click)="logout()"><span class="btn-label"><i class="fa fa-sign-out" aria-hidden="true"></i></span>Αποσύνδεση</button>
         </li>
       </ul>
     </div>
@@ -72,6 +75,6 @@
 
 <div class="router bgImage">
 <router-outlet ></router-outlet>
-<app-catalogue [previousRoute]="currentRoute"></app-catalogue> 
+<app-catalogue [previousRoute]="currentRoute"></app-catalogue>
 </div>
 
