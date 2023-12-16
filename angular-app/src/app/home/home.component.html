@@ -51,8 +51,16 @@
           </div>
         </li>
       </ul>
-      <form class="d-flex me-auto">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="d-flex me-auto" autocomplete="off" (ngSubmit)="onSearch($event)">
+        <div class="search-container">
+          <input #searchInput name="searchQuery" (input)="onSearchInput($event)" class="form-control me-2" placeholder="Search" aria-label="Search">
+          <div class="search-dropdown list-group" *ngIf="showSuggestions">
+            <ul>
+              <li class="list-group-item"*ngFor="let suggestion of searchSuggestions" (click)="OnSuggestionClick(getSuggestionId(suggestion))">{{ getSuggestionTitle(suggestion) }}</li>
+            </ul>
+          </div>
+        </div>
+
         <button class="btn btn-outline-success" type="submit"><span class="btn-label"><i class="fa fa-cutlery" aria-hidden="true"></i></span></button>
       </form>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

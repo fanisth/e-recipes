@@ -11,6 +11,7 @@ import { RecipePageComponent } from './recipePage/recipePage.component';
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { AuthGuard } from './guards/authguard.guard';
 import { AllReceipesComponent } from './all-receipes/all-receipes.component';
+import { searchResultsComponent } from './searchResults/searchResults.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -45,6 +46,9 @@ const routes: Routes = [
       {
         path: 'allReceipes', component: AllReceipesComponent
       },
+      {
+        path: 'search-results', component: searchResultsComponent
+      }
 
     ] },
   { path: '**', redirectTo : '' },

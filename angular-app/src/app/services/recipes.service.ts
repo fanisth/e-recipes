@@ -45,6 +45,15 @@ export class RecipesService {
     return this.http.get<Recipes[]>(this.Recipe_URL + '/categories/' + categoryId )
   }
 
+  getSearchSuggestions(keyword: string): Observable<Recipes[]> {
+    const urlWithParams = `${this.Recipe_URL}/search-suggestions?keyword=${keyword}`;
+    return this.http.get<Recipes[]>(urlWithParams);
+  }
+
+  getSearchResults(keyword: string): Observable<Recipes[]> {
+    const urlWithParams = `${this.Recipe_URL}/search?keyword=${keyword}`;
+    return this.http.get<Recipes[]>(urlWithParams);
+  }
 
   addReceipe(recipe : any): Observable<any>{
     return this.http.post<any>(this.Recipe_URL ,recipe )
