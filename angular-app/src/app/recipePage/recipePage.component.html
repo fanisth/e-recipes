@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div *ngIf="(this.authService.isLoggenIn | async)" class="row">
       <div class="col-md-12">
         <div class="rating-form-container mt-4">
           <form (ngSubmit)="submitReview()">
