@@ -13,6 +13,7 @@ import { AuthGuard } from './guards/authguard.guard';
 import { AllReceipesComponent } from './all-receipes/all-receipes.component';
 import { searchResultsComponent } from './searchResults/searchResults.component';
 import { TagPageComponent } from './tagPage/tagPage.component';
+import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -43,6 +44,9 @@ const routes: Routes = [
       },
       {
         path: 'profile/add-recipe', component: AddRecipeComponent
+      },
+      {
+        path: 'profile/edit-recipe/:id', component: EditRecipeComponent
       },
       {
         path: 'allReceipes', component: AllReceipesComponent

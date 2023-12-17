@@ -37,8 +37,6 @@ export class AddRecipeComponent implements OnInit {
   
   tagsArray: TagArrayItem[] = [];
 
-  private closeWitingMOdalSubject = new BehaviorSubject(false);
-  public closeWitingMOdal:Observable<boolean> = this.closeWitingMOdalSubject.asObservable();
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();

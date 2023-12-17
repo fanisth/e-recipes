@@ -30,6 +30,7 @@ import {NoopAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AllReceipesComponent } from './all-receipes/all-receipes.component';
 import { WaitingComponent } from './modals/waiting/waiting.component';
+import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { WaitingComponent } from './modals/waiting/waiting.component';
     searchResultsComponent,
     TagPageComponent,
     WaitingComponent,
+    EditRecipeComponent,
   ],
   imports: [
     CommonModule,

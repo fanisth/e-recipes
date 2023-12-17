@@ -5,6 +5,7 @@ import { Reviews } from '../models/reviews.model';
 import { RecipesService } from '../services/recipes.service';
 import { ReviewsService } from '../services/reviews.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-recipePage',
@@ -22,16 +23,19 @@ export class RecipePageComponent implements AfterViewInit {
   public comments: string = '';
   public editPermission: boolean = false;
 
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private recipeService: RecipesService,
-    private reviewsService: ReviewsService
+    private reviewsService: ReviewsService,
+    public authService: AuthService
   ) {
     this.param = this.activatedRoute.snapshot.params['id'];
     console.log('param', this.param);
+
   }
 
   extendedInstructions: ExtendedDictionary[] = [];
