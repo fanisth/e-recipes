@@ -19,5 +19,4 @@ export class Recipes{
         sum: number,
         counter: number
     };
-    user_id?: string;
 }
