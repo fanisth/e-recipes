@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -26,7 +27,14 @@ async function login(body) {
     }
 
     const token = generateToken(user);
-    return ({ data: { token, username } });
+    return ({
+      data: {
+        token,
+        username,
+        id: user._id,
+      },
+    }
+    );
   } catch (error) {
     fLogger.warn('Unmapped error at user login', { error });
     return { error: errors.COULD_NOT_LOGIN_USER };

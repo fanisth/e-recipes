@@ -12,6 +12,7 @@ import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { AuthGuard } from './guards/authguard.guard';
 import { AllReceipesComponent } from './all-receipes/all-receipes.component';
 import { searchResultsComponent } from './searchResults/searchResults.component';
+import { TagPageComponent } from './tagPage/tagPage.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent,
@@ -48,6 +49,9 @@ const routes: Routes = [
       },
       {
         path: 'search-results', component: searchResultsComponent
+      },
+      {
+        path: 'tags', component: TagPageComponent
       }
 
     ] },

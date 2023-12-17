@@ -21,6 +21,7 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { RecipePageComponent } from './recipePage/recipePage.component';
 import { searchResultsComponent } from './searchResults/searchResults.component';
+import { TagPageComponent } from './tagPage/tagPage.component';
 import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,6 +48,7 @@ import { WaitingComponent } from './modals/waiting/waiting.component';
     RecipePageComponent,
     AllReceipesComponent,
     searchResultsComponent,
+    TagPageComponent,
     WaitingComponent,
   ],
   imports: [

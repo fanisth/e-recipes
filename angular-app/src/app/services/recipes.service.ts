@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {  Observable, map } from 'rxjs';
 import { categories } from '../models/categories.model';
+import { AuthService } from './auth.service';
 import {  Recipes } from '../models/recipes.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +13,7 @@ export class RecipesService {
   Categories_URL = "http://localhost:3000/api"
   Recipe_URL = "http://localhost:3000/api/recipes"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   // getCategories(): Observable<categories[]>{
   //   return this.http.get<categories[]>(this.Categories_URL + '/categories' )
@@ -22,8 +23,18 @@ export class RecipesService {
   getRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL)
   }
-  getRecipe(recipeId: string): Observable<Recipes>{
-    return this.http.get<Recipes>(this.Recipe_URL + `/${recipeId}`)
+  getRecipe(recipeId: string): Observable<any> {
+    return this.http.get<any>(this.Recipe_URL + `/${recipeId}`).pipe(
+      map((recipe) => {
+        const currentUserId = this.authService.getUserId();
+        if (currentUserId) {
+          recipe.permission = recipe.payload.recipe.user_id.toString() === currentUserId.toString() ? 'edit' : 'view';
+        } else {
+          recipe.permission = 'view';
+        }
+        return recipe;
+      })
+    );
   }
   getLatestRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL + '/latest')
@@ -55,6 +66,12 @@ export class RecipesService {
     return this.http.get<Recipes[]>(urlWithParams);
   }
 
+
+  getTagResults(keyword: string): Observable<Recipes[]> {
+    const urlWithParams = `${this.Recipe_URL}/tags?tag=${keyword}`;
+    return this.http.get<Recipes[]>(urlWithParams);
+  }
+
   addReceipe(recipe : any): Observable<any>{
     return this.http.post<any>(this.Recipe_URL ,recipe )
   }
@@ -64,9 +81,6 @@ export class RecipesService {
       map((receivedData: any) => {
         const transformedData: any[] = [];
         const payload: categories[] = receivedData.payload.data;
-
-        //console.log('######', receivedData)
-        // Helper function to find a category by ID
         
         payload.forEach((category:categories) => {
           if (!category.parentCategory) {

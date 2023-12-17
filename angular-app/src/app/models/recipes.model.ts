@@ -15,5 +15,6 @@ export class Recipes{
     rating?: {
         sum: number,
         counter: number
-    }
+    };
+    user_id?: string;
 }

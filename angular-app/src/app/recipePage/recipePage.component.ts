@@ -4,7 +4,7 @@ import { Recipes } from '../models/recipes.model';
 import { Reviews } from '../models/reviews.model';
 import { RecipesService } from '../services/recipes.service';
 import { ReviewsService } from '../services/reviews.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recipePage',
@@ -20,15 +20,17 @@ export class RecipePageComponent implements AfterViewInit {
   public reviews: Reviews[] = []
   public selectedRating: number = 0;
   public comments: string = '';
+  public editPermission: boolean = false;
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private router: ActivatedRoute,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private recipeService: RecipesService,
     private reviewsService: ReviewsService
   ) {
-    this.param = this.router.snapshot.params['id'];
+    this.param = this.activatedRoute.snapshot.params['id'];
     console.log('param', this.param);
   }
 
@@ -55,6 +57,17 @@ export class RecipePageComponent implements AfterViewInit {
     return Array.from({ length }, (_, index) => index);
   }
 
+  getRecipeTags(recipe: Recipes): string[] {
+    if(recipe.tags) return recipe.tags
+    return []
+  }
+
+  getRecipeDifficulty(recipe: Recipes): string {
+    if(recipe.difficulty === 'hard') return 'Δύσκολη'
+    if(recipe.difficulty === 'medium') return 'Απαιτητική'
+    return 'Εύκολη'
+  }
+
   ngAfterViewInit() {}
 
   toggleSector(sector: ExtendedDictionary): void {
@@ -69,6 +82,9 @@ export class RecipePageComponent implements AfterViewInit {
       this.recipe = (fetchedRecipe.payload.recipe);
       if (this.recipe.instructions) {
         this.extendedInstructions = this.recipe.instructions.map(instruction => ({ ...instruction, show: true }));
+      }
+      if (fetchedRecipe.permission === 'edit'){
+        this.editPermission = true;
       }
     });
 
@@ -93,5 +109,9 @@ export class RecipePageComponent implements AfterViewInit {
     } else {
       console.error('Please provide both rating and comments.');
     }
+  }
+
+  onTagClick(tag: any): void {
+    this.router.navigate(['/tags'], { queryParams: { tag } });
   }
 }
