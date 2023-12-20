@@ -1,10 +1,12 @@
 <!-- app.component.html -->  
     <!-- Carousel for recipes -->
-    <ngb-carousel *ngIf="recipes.length > 0">
+    <ngb-carousel *ngIf="recipes.length > 0" class="custom-carousel">
       <ng-template ngbSlide *ngFor="let recipe of recipes">
-        <img [src]="recipe.photo_url?.imagePath" class="h-100 inline d-block" alt="{{ recipe.title }}">
-        <div class="carousel-caption">
-          <h3>{{ recipe.title }}</h3>
+        <div class="carousel-item">
+          <img [src]="recipe.photo_url?.imagePath" class="d-block mx-auto" alt="{{ recipe.title }}">
+          <div class="carousel-caption">
+            <h3>{{ recipe.title }}</h3>
+          </div>
         </div>
       </ng-template>
     </ngb-carousel>

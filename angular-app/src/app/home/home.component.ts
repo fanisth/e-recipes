@@ -68,6 +68,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     // Implement your search logic here using this.searchQuery
     const searchQuery = event.target.searchQuery.value
     this.router.navigate(['/search-results'], { queryParams: { query: searchQuery } });
+    this.showSuggestions = false
+    if (this.searchInput && this.searchInput.nativeElement) {
+      this.searchInput.nativeElement.value = '';
+    }
   }
 
   onSearchInput(event:any): void {

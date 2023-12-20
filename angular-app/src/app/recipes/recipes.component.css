@@ -1,5 +1,32 @@
+.custom-carousel {
+    height: 100vh; 
+    background: #000; 
+  }
+  
+  .carousel-item {
+    text-align: center;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .carousel-item img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  
+  .carousel-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #fff; /* Text color */
+  }
+  
 
-.recommended{
+  .recommended{
     background-color : #FFDC7D;
     border-radius:20px;
     padding-top: 10px;

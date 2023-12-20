@@ -3,9 +3,8 @@
 }
 
 .bgImage  {
-    background-image: url("../../assets/bg_recipe.jpg");
-    background-size: 30%;
-    background-repeat: repeat;
+  background: #f0efe9;
+  min-height: 100vh;
   }
 
   .search-dropdown {
