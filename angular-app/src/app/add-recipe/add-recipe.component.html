@@ -29,8 +29,12 @@
                         <input [id]="'ingredient' + i" [formControlName]="i" type="text" class="form-control"
                             placeholder="Υλικό {{i+1}}">
                         <button class="btn btn-danger" (click)="removeIngredients(i)">-</button>
+                        
                     </div>
-                    <button type="button" class="btn btn-primary" [disabled]="ingredients.length == 20"
+                    <div *ngIf="ingredients.controls[0]?.invalid && (ingredients.controls[0]?.dirty || ingredients.controls[0]?.touched)" class="text-danger">
+                        <div *ngIf="ingredients.controls[0]?.hasError('required')">Ingredients is required.</div>
+                    </div>
+                    <button *ngIf="ingredients.controls.length < 15" type="button" class="btn btn-primary" [disabled]="ingredients.length == 20"
                         (click)="addIngredients()">+</button>
                 </div>
             </div>
@@ -49,7 +53,7 @@
                         </div>
                     </div>
   
-                    <button type="button" class="btn btn-primary" (click)="addEquipments()">+</button>
+                    <button *ngIf="ingredients.controls.length < 20" type="button" class="btn btn-primary" (click)="addEquipments()">+</button>
                 </div>
             </div>
         </div>
@@ -97,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" (click)="addInstruction()">Προσθήκη Παρασκευής
+                <button *ngIf="ingredients.controls.length < 20" type="button" class="btn btn-primary" (click)="addInstruction()">Προσθήκη Παρασκευής
                 </button>
             </div>
         </div>
