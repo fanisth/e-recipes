@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service';
 import { HttpClient } from '@angular/common/http';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css']
 })
-export class RecipesComponent implements OnInit {
+export class RecipesComponent implements OnInit,OnDestroy {
 
   popularRecipes = []
 
@@ -17,6 +18,8 @@ export class RecipesComponent implements OnInit {
 
   public recipes: Recipes[] = []
   public topRecipes: Recipes[] = []
+
+  private destroyed$ = new Subject();
  
   
 
@@ -28,20 +31,23 @@ export class RecipesComponent implements OnInit {
     carouselConfig.wrap = true; // Wrap the carousel items
     carouselConfig.keyboard = true; // Allow keyboard navigation
   }
+  
+  ngOnDestroy(): void {
+    this.destroyed$.next(null)
+    this.destroyed$.complete()
+  }
 
   ngOnInit() {
     //Make an HTTP call to fetch recipes from the server
-    this.recipesService.getLatestRecipes()
+    this.recipesService.getLatestRecipes().pipe(takeUntil(this.destroyed$))
     .subscribe(
       (dataRecipes:any) => {
-        console.log('getLatest',dataRecipes.payload.recipes)
         this.recipes = dataRecipes.payload.recipes
       }
     )
 
-    this.recipesService.getPopularRecipes().subscribe(
+    this.recipesService.getPopularRecipes().pipe(takeUntil(this.destroyed$)).subscribe(
       (dataRecipes:any) => {
-        console.log('getPopular',dataRecipes.payload.recipes)
         this.topRecipes = dataRecipes.payload.recipes
       }
     )
@@ -53,17 +59,7 @@ export class RecipesComponent implements OnInit {
     
   
 
-     //this.recipesService.getPopularRecipes().subscribe(
-    //   (dataRecipes:Recipes[]) => {
-    //   this.popularRecipes = dataRecipes
-    //   }
-    // )
-
-    //this.recipesService.getSectionRecipes().subscribe(
-    //   (dataRecipes:Recipes[]) => {
-    //   this.sectionRecipes = dataRecipes
-    //   }
-    // )
+    
 
 
   

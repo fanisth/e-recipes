@@ -80,7 +80,6 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     return this.http.post(this.LOGIN_URL + '/login', credentials).pipe(
       tap((response:any) => {
         if (response) {
-          console.log(response)
           this.isLoggedInSubject.next(true);
           this.setToken(response.payload.data.token);
           this.setUsername(response.payload.data.username);

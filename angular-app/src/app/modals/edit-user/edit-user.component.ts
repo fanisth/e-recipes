@@ -1,6 +1,7 @@
-import { AfterContentInit, AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 import { UserRegistration } from 'src/app/models/user.model';
 import { UserProfile } from 'src/app/models/userProfile.model';
 import { UserService } from 'src/app/services/user.service';
@@ -10,13 +11,19 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit,OnDestroy {
   @Input() public user: UserRegistration | undefined
 
   public userForm : FormGroup | any;
 
+  private destroyed$ = new Subject();
+
   constructor(private userService : UserService,public activeModal:NgbActiveModal,private formBuilder: FormBuilder) {
    }
+   ngOnDestroy(): void {
+    this.destroyed$.next(null)
+    this.destroyed$.complete()
+  }
   
 
   get form(){
@@ -24,9 +31,8 @@ export class EditUserComponent implements OnInit {
   }
   ngOnInit(): void {
     this.userForm = this.createUserForm(new UserRegistration());
-    this.userService.getUserProfile().subscribe(
+    this.userService.getUserProfile().pipe(takeUntil(this.destroyed$)).subscribe(
       (profile: any) =>{
-        console.log('???????????',profile.payload)
         this.user = profile.payload; 
         this.userForm = this.createUserForm(profile.payload)
       } 
@@ -40,11 +46,9 @@ export class EditUserComponent implements OnInit {
 
     const user: UserRegistration = this.userForm?.value;
     user.username = this.user?.username;
-    this.userService.updateProfile(user).subscribe((response:any)=>{
-      console.log(response);
+    this.userService.updateProfile(user).pipe(takeUntil(this.destroyed$)).subscribe((response:any)=>{
       this.activeModal.close(user);
     })
-    console.log(user);
   }
 
   private createUserForm(user: UserRegistration | undefined): FormGroup{

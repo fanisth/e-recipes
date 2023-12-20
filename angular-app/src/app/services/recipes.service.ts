@@ -76,6 +76,7 @@ export class RecipesService {
     return this.http.post<any>(this.Recipe_URL ,recipe )
   }
 
+  //Categories tranformation to manipulate and serve them to front
   getCategories(): Observable<any[]> {
     return this.http.get<categories[]>(this.Categories_URL + '/categories').pipe(
       map((receivedData: any) => {
@@ -92,14 +93,12 @@ export class RecipesService {
               subCategory: []
             });
           }});
-          console.log(transformedData);
           payload.forEach((category:categories) => {
                // Subcategory 
                if (category.parentCategory != null) {
                 
                 const parentIndex = transformedData.findIndex(cat => cat.id == category.parentCategory);
                 if (parentIndex != -1) {
-                  console.log(transformedData[parentIndex])
                     transformedData[parentIndex].subCategory.push(category);
                 }
                }

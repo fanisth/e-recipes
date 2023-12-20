@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from 'src/app/interfaces/category';
 import { Subcategory } from 'src/app/interfaces/subcategory';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import {  NgbModal, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WaitingComponent } from '../modals/waiting/waiting.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 
 class TagArrayItem {
   constructor(public name: string) {}
@@ -24,7 +24,7 @@ class TagArrayItem {
   templateUrl: './add-recipe.component.html',
   styleUrls: ['./add-recipe.component.css']
 })
-export class AddRecipeComponent implements OnInit {
+export class AddRecipeComponent implements OnInit,OnDestroy {
 
   public modalRef: NgbModalRef | undefined;
   public subcategories: Subcategory[] = [] ;
@@ -72,18 +72,25 @@ public recipeForm: FormGroup = this.fb.group({
   subcategory: [''],
 });
 
+  private destroyed$ = new Subject();
   
   constructor(private fb: FormBuilder, private recipeService:RecipesService,private router:Router, private modalService:NgbModal) { }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next(null)
+    this.destroyed$.complete()
+  }
+
   ngOnInit(): void {
     // Fetch categories
-    this.recipeService.getCategories().subscribe(
+    this.recipeService.getCategories().pipe(takeUntil(this.destroyed$)).subscribe(
       (cat => {
         if(cat){
           this.categories = cat;
         }
       })
     )
+
     
     this.recipeForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
@@ -175,7 +182,7 @@ public recipeForm: FormGroup = this.fb.group({
       this.recipeForm.get('subcategory')?.setValue(''); // Clear subcategory when category changes
       if(selectedCategory.subCategory){
         this.subcategories = selectedCategory.subCategory;
-        console.log('BEFORE:',this.recipeForm.value, this.recipeForm.value.category, this.subcategories)
+       
       }
       
     }
@@ -276,7 +283,7 @@ public recipeForm: FormGroup = this.fb.group({
 
       this.openWaitingModal(formData);
       // Log or send the data to the server as needed
-      this.recipeService.addReceipe(formData).subscribe(
+      this.recipeService.addReceipe(formData).pipe(takeUntil(this.destroyed$)).subscribe(
         {next:() => {
           this.modalRef?.close();
           this.router.navigate(['/profile'])
@@ -319,3 +326,4 @@ public recipeForm: FormGroup = this.fb.group({
     
   }
 }
+

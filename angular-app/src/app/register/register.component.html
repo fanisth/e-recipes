@@ -83,7 +83,7 @@
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid">Submit</button>
               </div>
-              <div *ngIf="errorMessage.length && userForm.invalid " class=" mt-2 errorMessage">
+              <div *ngIf="errorMessage.length  " class=" mt-2 errorMessage">
                 {{errorMessage}}
               </div>
             </div>

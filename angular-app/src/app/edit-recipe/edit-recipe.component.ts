@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Dictionary } from '../models/dictionary.model';
+import { Subject, takeUntil } from 'rxjs';
 
 
 
@@ -23,7 +24,7 @@ class TagArrayItem {
   templateUrl: './edit-recipe.component.html',
   styleUrls: ['./edit-recipe.component.css']
 })
-export class EditRecipeComponent implements OnInit {
+export class EditRecipeComponent implements OnInit,OnDestroy {
 
   @Input() public recipe: Recipes | undefined
   public recipeForm: FormGroup 
@@ -57,15 +58,18 @@ export class EditRecipeComponent implements OnInit {
  
   
   tagsArray: TagArrayItem[] = [];
+  private destroyed$ = new Subject();
 
   constructor(private fb: FormBuilder, private recipeService:RecipesService, private modalService:NgbModal,private router:Router) { }
+  ngOnDestroy(): void {
+    this.destroyed$.next(null)
+    this.destroyed$.complete()
+  }
 
-  // get form(){
-  //   return this.recipeForm.controls;
-  // }
+ 
   ngOnInit(): void {
 
-    this.recipeService.getCategories().subscribe({
+    this.recipeService.getCategories().pipe(takeUntil(this.destroyed$)).subscribe({
       next: (cat => {
         if(cat){
           
@@ -76,17 +80,14 @@ export class EditRecipeComponent implements OnInit {
       complete: (()=> this.prefillValues())
   })
     
-  
-    // Rest of your ngOnInit code...
   }
 
   prefillValues(){
-    this.recipeService.getRecipe('657a20f91912ec3268a0bb72').subscribe(
+    this.recipeService.getRecipe('657a20f91912ec3268a0bb72').pipe(takeUntil(this.destroyed$)).subscribe(
       (recipe : any)  => {
         
         if (recipe) {
           recipe = recipe.payload.recipe;
-          console.log('##############',recipe)
           // Patch the form with existing recipe data
           this.recipeForm.patchValue({
             title: recipe.title,
@@ -102,7 +103,6 @@ export class EditRecipeComponent implements OnInit {
           if(recipe.categories.length > 1){
             this.startCategory = this.categories.find(cat => cat.id == recipe.categories[1])
             this.recipeForm.get('category')?.setValue(this.startCategory?.id)
-            console.log('categry',this.categories)
             this.findSubcategoryName(recipe)
             if(this.startCategory?.subCategory){
               this.subcategories = this.startCategory?.subCategory 
@@ -245,7 +245,6 @@ export class EditRecipeComponent implements OnInit {
       this.recipeForm.get('subcategory')?.setValue(''); // Clear subcategory when category changes
       if(selectedCategory.subCategory){
         this.subcategories = selectedCategory.subCategory;
-        console.log('BEFORE:',this.recipeForm.value, this.recipeForm.value.category, this.subcategories)
       }
       
     }
@@ -274,7 +273,6 @@ export class EditRecipeComponent implements OnInit {
     }
   
     // Add new values to the array
-    //console.log('formarray' , formArray)
     data?.forEach((item) => {
       formArray.push(new FormControl(item));
     });
@@ -286,7 +284,6 @@ export class EditRecipeComponent implements OnInit {
     }
   
     // Add new values to the array
-    //console.log('formarrayInstruction',formArray)
     data?.forEach((item) => {
       formArray.push(this.createInstructionforSet(item,formArray));
     });
@@ -304,13 +301,10 @@ export class EditRecipeComponent implements OnInit {
     });
     valuesArray.removeAt(0)
     for (let i =0; i < instructions.value.length;i++) {
-      console.log('instructions',instructions.value[i])
       valuesArray.push(new FormControl(instructions.value[i]))
     }
     
-    //console.log('instructions',instructions)
     return instruction
-    //return this.instructionForms.push(instruction);
   }
 
   onSubmit() {
@@ -368,7 +362,7 @@ export class EditRecipeComponent implements OnInit {
 
       this.openWaitingModal(formData);
       // Log or send the data to the server as needed
-      this.recipeService.addReceipe(formData).subscribe(
+      this.recipeService.addReceipe(formData).pipe(takeUntil(this.destroyed$)).subscribe(
         {next:() => {
           this.modalRef?.close();
           this.router.navigate(['/profile'])
