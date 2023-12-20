@@ -18,5 +18,5 @@ export class Recipes{
     rating?: {
         sum: number,
         counter: number
-    }
+    };
 }

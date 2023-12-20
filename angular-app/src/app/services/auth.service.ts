@@ -13,6 +13,7 @@ export class AuthService {
 
   private readonly TOKEN_KEY = 'token';
   private readonly USERNAME_KEY = 'username';
+  private readonly USER_ID_KEY = 'userId';
   private readonly LOGIN_URL = 'http://localhost:3000/api/auth';
   private ngbModalOptions: NgbModalOptions = {
     backdrop : 'static',
@@ -31,6 +32,9 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
   setUsername(token: string): void {
     sessionStorage.setItem(this.USERNAME_KEY, token);
   }
+  setUserId(token: string): void {
+    sessionStorage.setItem(this.USER_ID_KEY, token);
+  }
 
   // Method to retrieve JWT token from session storage
   getToken(): string | null {
@@ -41,11 +45,15 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     return sessionStorage.getItem(this.USERNAME_KEY);
   }
 
+
+  public getUserId(): string | null {
+    return sessionStorage.getItem(this.USER_ID_KEY);
+  }
+
   //Method to check if the user is logged in
   isUserLoggedIn(): void {
     const token = this.getToken();
     this.isLoggedInSubject.next(token !== null);
-
   }
 
   // Method to log out the user
@@ -72,10 +80,10 @@ public isLoggenIn:Observable<boolean> = this.isLoggedInSubject.asObservable();
     return this.http.post(this.LOGIN_URL + '/login', credentials).pipe(
       tap((response:any) => {
         if (response) {
-          console.log(response)
           this.isLoggedInSubject.next(true);
           this.setToken(response.payload.data.token);
           this.setUsername(response.payload.data.username);
+          this.setUserId(response.payload.data.id)
         }
       })
     );

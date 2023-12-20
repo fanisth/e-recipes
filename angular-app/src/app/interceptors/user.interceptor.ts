@@ -56,7 +56,6 @@ export class UserInterceptor implements HttpInterceptor {
   }
 
   handleUnauthorized(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('>>>>>>>>>>');
     this.authService.logout("expiration");
     return next.handle(req)}
 

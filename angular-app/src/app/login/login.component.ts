@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
 
   public hidePassword: boolean = false;
   public loginForm: UntypedFormGroup = new UntypedFormGroup({
@@ -18,10 +19,17 @@ export class LoginComponent implements OnInit {
   public errorMessage: string = '';
   public mediaDetected = false;
 
+  private destroyed$ = new Subject();
+
   constructor(
     private router: Router,
     private authService: AuthService
   ) {}
+  
+  ngOnDestroy(): void {
+    this.destroyed$.next(null)
+    this.destroyed$.complete()
+  }
 
   ngOnInit() {
     this.loginForm = new UntypedFormGroup({
@@ -39,21 +47,18 @@ export class LoginComponent implements OnInit {
     }
     const username = this.loginForm?.get('username')?.value;
     const password = this.loginForm?.get('password')?.value;
-    this.authService.login({username,password}).subscribe({
+    this.authService.login({username,password}).pipe(takeUntil(this.destroyed$)).subscribe({
       next: (response =>{
-        console.log("######", response)
         this.router.navigate(['']);
       }),
       error: (error =>{
         
         if(error.error.error.userMessage){
-          console.log("@@@@@@@@@",error.error.error.userMessage)
           this.errorMessage = error.error.error.userMessage;
         }
         this.handleError(error.error.error.userMessage)
       }),
     });
-    console.log(username, password)
   }
 
   passwordHide() {
@@ -65,7 +70,6 @@ export class LoginComponent implements OnInit {
 
   private handleError(message:string) {
     this.errorMessage = message;
-    //this.loginForm?.markAsUntouched();
     this.loginForm?.reset()
   }
 }
