@@ -318,13 +318,8 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   onSubmit() {
 
     
-    // Handle form submission logic here
-    if (!this.fileToUpload) {
-      console.error('No file selected.');
-      this.erroMessage = 'Η επιλογή εικόνας είναι απαραίτητη'
-      return;
-    }
-    if( !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
+    
+    if(this.fileToUpload && !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
       this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
       return;
     }
