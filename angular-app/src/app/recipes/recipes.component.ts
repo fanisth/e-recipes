@@ -4,6 +4,7 @@ import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-recipes',
@@ -26,7 +27,7 @@ export class RecipesComponent implements OnInit,OnDestroy {
  
   
   
-  constructor(private recipesService:RecipesService, private carouselConfig: NgbCarouselConfig, private http:HttpClient) {
+  constructor(private recipesService:RecipesService, private carouselConfig: NgbCarouselConfig, private http:HttpClient, private router: Router) {
     carouselConfig.interval = 5000; // Carousel interval in milliseconds
     carouselConfig.wrap = true; // Wrap the carousel items
     carouselConfig.keyboard = true; // Allow keyboard navigation
@@ -50,17 +51,9 @@ export class RecipesComponent implements OnInit,OnDestroy {
       (dataRecipes:any) => {
         this.topRecipes = dataRecipes.payload.recipes
       }
-    )
-  
+    )}  
 
-    
-  
+    goToRecipe(recipeId: any) {
+      this.router.navigate(['/recipes', recipeId]);
     }
-    
-  
-
-    
-
-
-  
 }

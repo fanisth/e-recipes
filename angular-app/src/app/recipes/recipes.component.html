@@ -3,22 +3,27 @@
     <ngb-carousel *ngIf="recipes.length > 0" class="custom-carousel">
       <ng-template ngbSlide *ngFor="let recipe of recipes">
         <div class="carousel-item">
-          <img [src]="recipe.photo_url?.imagePath" class="d-block mx-auto" alt="{{ recipe.title }}">
+          <a [routerLink]="['/recipes', recipe._id]" class="d-block mx-auto">
+            <img [src]="recipe.photo_url?.imagePath" alt="{{ recipe.title }}">
+          </a>
           <div class="carousel-caption">
             <h3>{{ recipe.title }}</h3>
           </div>
         </div>
       </ng-template>
     </ngb-carousel>
+    
+    
   
   
   <div class="recommended mt-5">
-    <h3 class="text-center text-danger">Προτάσεις για σήμερα</h3>
-    <div class="row mt-3">
-        <div class="col-md-4" *ngFor="let recipe of topRecipes">
-            <button type="button" class="btn">
-            <img [src]="recipe.photo_url?.thumbnailPath" class="d-block w-100 shadow-5g" alt="{{ recipe.title }}">
-            </button>
-          </div>
+  <h3 class="text-center text-danger">Προτάσεις για σήμερα</h3>
+  <div class="row mt-3">
+    <div class="col-md-4" *ngFor="let recipe of topRecipes" (click)="goToRecipe(recipe._id)">
+      <button type="button" class="btn">
+        <img [src]="recipe.photo_url?.thumbnailPath" class="d-block w-100 shadow-5g" alt="{{ recipe.title }}">
+      </button>
     </div>
   </div>
+</div>
+
