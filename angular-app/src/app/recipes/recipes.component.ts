@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig,} from '@ng-bootstrap/ng-bootstrap';
 import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+
 
 @Component({
   selector: 'app-recipes',
@@ -12,6 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class RecipesComponent implements OnInit,OnDestroy {
 
+  
   popularRecipes = []
 
   sectionRecipes = []
@@ -50,12 +52,9 @@ export class RecipesComponent implements OnInit,OnDestroy {
       (dataRecipes:any) => {
         this.topRecipes = dataRecipes.payload.recipes
       }
-    )
-  
-
-    
-  
+      )
     }
+    
     
   
 

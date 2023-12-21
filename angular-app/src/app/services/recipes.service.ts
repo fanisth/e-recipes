@@ -40,6 +40,10 @@ export class RecipesService {
     return this.http.get<Recipes[]>(this.Recipe_URL + '/latest')
   }
 
+  deleteRecipe(recipeId : string | undefined){
+    return this.http.delete(this.Recipe_URL + `/${recipeId}`)
+  }
+
   getPopularRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL + '/top-rated' )
   }
