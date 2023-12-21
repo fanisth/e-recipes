@@ -14,8 +14,8 @@
             <span>{{ getRecipeDifficulty(recipe) }}</span>
           </div>
           <div class="col-lg-4 text-right" *ngIf="editPermission">
-            <a href="#" class="btn btn-primary mr-2">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
+            <button type="button"  class="btn btn-primary mr-2" (click)="editReceipe(recipe._id)">Edit</button>
+            <button type="button" href="#" class="btn btn-danger" (click)="deleteRecipe(recipe._id)">Delete</button>
           </div>
         </div>
       </div>

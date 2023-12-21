@@ -31,6 +31,7 @@ import {NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { AllReceipesComponent } from './all-receipes/all-receipes.component';
 import { WaitingComponent } from './modals/waiting/waiting.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
+import { DeleteConfirmationComponent } from './modals/delete-confirmation/delete-confirmation.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
     TagPageComponent,
     WaitingComponent,
     EditRecipeComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     CommonModule,

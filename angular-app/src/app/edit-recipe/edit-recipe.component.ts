@@ -7,7 +7,7 @@ import { Category } from '../interfaces/category';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subcategory } from '../interfaces/subcategory';
 import { WaitingComponent } from '../modals/waiting/waiting.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Dictionary } from '../models/dictionary.model';
@@ -25,15 +25,16 @@ class TagArrayItem {
   styleUrls: ['./edit-recipe.component.css']
 })
 export class EditRecipeComponent implements OnInit,OnDestroy {
+  private param:string
 
   @Input() public recipe: Recipes | undefined
   public recipeForm: FormGroup 
   = this.fb.group({
-    title: ['', [Validators.required, Validators.maxLength(50)]],
+    title: ['', [Validators.required, Validators.maxLength(150)]],
     ingredients: this.fb.array(['', [Validators.required]]),
     instructions: this.fb.array([]),
     equipment: this.fb.array(['', [Validators.required]]),
-    description: ['',Validators.maxLength(150)],
+    description: ['',Validators.maxLength(500)],
     tags: this.fb.array([]),
     preperation_time: [0, [Validators.required, Validators.min(0)]],
     cooking_time: [0, [Validators.required, Validators.min(0)]],
@@ -47,6 +48,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   public subcategories: Subcategory[] = [] ;
   public startCategory: Category |undefined;
   public startSubCategory: string |undefined;
+  erroMessage = ''
   
   public fileToUpload: File | null = null;
 
@@ -60,7 +62,9 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   tagsArray: TagArrayItem[] = [];
   private destroyed$ = new Subject();
 
-  constructor(private fb: FormBuilder, private recipeService:RecipesService, private modalService:NgbModal,private router:Router) { }
+  constructor(private fb: FormBuilder, private recipeService:RecipesService, private modalService:NgbModal,private router:Router,private route:ActivatedRoute,) {
+    this.param = this.route.snapshot.params['id'];
+   }
   ngOnDestroy(): void {
     this.destroyed$.next(null)
     this.destroyed$.complete()
@@ -83,14 +87,16 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   }
 
   prefillValues(){
-    this.recipeService.getRecipe('657a20f91912ec3268a0bb72').pipe(takeUntil(this.destroyed$)).subscribe(
+    this.recipeService.getRecipe(this.param).pipe(takeUntil(this.destroyed$)).subscribe(
       (recipe : any)  => {
         
         if (recipe) {
           recipe = recipe.payload.recipe;
+          console.log('recipe',recipe)
           // Patch the form with existing recipe data
           this.recipeForm.patchValue({
             title: recipe.title,
+            description: recipe.description
             // ... other properties
           });
   
@@ -101,7 +107,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
           this.tagsArray = recipe.tags
           // Handle category and subcategory separately
           if(recipe.categories.length > 1){
-            this.startCategory = this.categories.find(cat => cat.id == recipe.categories[1])
+            this.startCategory = this.categories.find(cat => cat.id == recipe.categories[0])
             this.recipeForm.get('category')?.setValue(this.startCategory?.id)
             this.findSubcategoryName(recipe)
             if(this.startCategory?.subCategory){
@@ -130,7 +136,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
 
   findSubcategoryName(recipe :any){
     this.categories.forEach(cat => cat.subCategory.find(subcat => {
-      if(recipe.categories[0] == subcat._id){
+      if(recipe.categories[1] == subcat._id){
         this.startSubCategory = subcat._id
       }
     }))
@@ -170,13 +176,15 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   get description() {
     return this.recipeForm.get('description');
   }
+
+  get category() {
+    return this.recipeForm.get('category');
+  }
+
+  get subCategory() {
+    return this.recipeForm.get('subcategory');
+  }
   
-  // createInstruction(): FormGroup {
-  //   return this.fb.group({
-  //     step: ['', Validators.required],
-  //     text: ['', Validators.required]
-  //   });
-  // }
 
   get instructionForms() {
     return this.recipeForm.get('instructions') as FormArray;
@@ -310,7 +318,16 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   onSubmit() {
 
     
-
+    // Handle form submission logic here
+    if (!this.fileToUpload) {
+      console.error('No file selected.');
+      this.erroMessage = 'Η επιλογή εικόνας είναι απαραίτητη'
+      return;
+    }
+    if( !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
+      this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
+      return;
+    }
     
     if (this.recipeForm.valid) {
 
@@ -332,10 +349,14 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
       
 
       this.recipeForm.value.ingredients.forEach((element: string , index: any ) => {
-        formData.append(`ingredients[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`ingredients[${index}]`,element)
+        }
       });
       this.recipeForm.value.equipment.forEach((element: string , index: any ) => {
-        formData.append(`equipment[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`equipment[${index}]`,element)
+        } 
       });
       formData.append('description', (this.recipeForm.value.description))
 
@@ -348,10 +369,16 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
         formData.append('file', this.fileToUpload)
       }
        
+      const categoryId = this.recipeForm.value.category;
+       
+      const subcategoryId = this.recipeForm.value.subcategory
+      if(subcategoryId && subcategoryId.trim().length > 0 ){
+         this.recipeForm.value.categories = [categoryId, subcategoryId]
+      }
+      else{
+       this.recipeForm.value.categories = [categoryId]
+      }
 
-       const categoryId = this.recipeForm.value.category;
-       const subcategoryId = this.recipeForm.value.subcategory
-       this.recipeForm.value.categories = [categoryId, subcategoryId]
        this.recipeForm.value.categories.forEach((element: string , index: any ) => {
         formData.append(`categories[${index}]`,element)
       });

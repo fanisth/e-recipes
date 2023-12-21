@@ -2,8 +2,6 @@ import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Category } from 'src/app/interfaces/category';
 import { Subcategory } from 'src/app/interfaces/subcategory';
-import { categories } from 'src/app/models/categories.model';
-import { PostRecipes } from 'src/app/models/postRecipes.model';
 import { RecipesService } from 'src/app/services/recipes.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
@@ -11,7 +9,7 @@ import { Router } from '@angular/router';
 import {  NgbModal, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WaitingComponent } from '../modals/waiting/waiting.component';
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import {  Subject, takeUntil } from 'rxjs';
 
 class TagArrayItem {
   constructor(public name: string) {}
@@ -36,6 +34,7 @@ export class AddRecipeComponent implements OnInit,OnDestroy {
  
   
   tagsArray: TagArrayItem[] = [];
+  erroMessage = ''
 
 
   add(event: MatChipInputEvent): void {
@@ -58,11 +57,11 @@ export class AddRecipeComponent implements OnInit,OnDestroy {
   ];
   
 public recipeForm: FormGroup = this.fb.group({
-  title: ['', [Validators.required, Validators.maxLength(50)]],
+  title: ['', [Validators.required, Validators.maxLength(150)]],
   ingredients: this.fb.array(['', [Validators.required]]),
   instructions: this.fb.array([]),
   equipment: this.fb.array(['', [Validators.required]]),
-  description: ['',Validators.maxLength(150)],
+  description: ['',Validators.maxLength(500)],
   tags: this.fb.array([]),
   preperation_time: [0, [Validators.required, Validators.min(0)]],
   cooking_time: [0, [Validators.required, Validators.min(0)]],
@@ -93,16 +92,16 @@ public recipeForm: FormGroup = this.fb.group({
 
     
     this.recipeForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(50)]],
+      title: ['', [Validators.required, Validators.maxLength(150)]],
       ingredients: this.fb.array([['', [Validators.required]]]),
       instructions: this.fb.array([]),
       equipment: this.fb.array([['', [Validators.required]]]),
-      description: ['',Validators.maxLength(150)],
+      description: ['',Validators.maxLength(1000)],
       category: ['', Validators.required],
       subcategory: [''],
       tags: this.fb.array([]),
-      preperation_time: [0, [Validators.required, Validators.min(0)]],
-      cooking_time: [0, [Validators.required, Validators.min(0)]],
+      preperation_time: [0, [Validators.required, Validators.min(0), Validators.max(150)]],
+      cooking_time: [0, [Validators.required, Validators.min(0), Validators.max(150)]],
       difficulty: ['', Validators.required],
       image: new FormControl(null)
     });    
@@ -143,6 +142,9 @@ public recipeForm: FormGroup = this.fb.group({
 
   get description() {
     return this.recipeForm.get('description');
+  }
+  get category() {
+    return this.recipeForm.get('category');
   }
  
   addTags() {
@@ -202,8 +204,8 @@ public recipeForm: FormGroup = this.fb.group({
 
   addInstruction() {
     const instruction = this.fb.group({
-      key: [''],
-      value: this.fb.array(['']) // Initialize with an empty string
+      key: ['',[Validators.required]],
+      value: this.fb.array([['', [Validators.required]]]) // Initialize with an empty string
     });
     this.instructionForms.push(instruction);
   }
@@ -233,6 +235,11 @@ public recipeForm: FormGroup = this.fb.group({
     // Handle form submission logic here
     if (!this.fileToUpload) {
       console.error('No file selected.');
+      this.erroMessage = 'Η επιλογή εικόνας είναι απαραίτητη'
+      return;
+    }
+    if( !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
+      this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
       return;
     }
 
@@ -248,7 +255,7 @@ public recipeForm: FormGroup = this.fb.group({
       formData.append('title', this.recipeForm.value.title)
       
       this.recipeForm.value.instructions.forEach((item: { key: string | Blob; value: any[]; }, index: any) => {
-        formData.append(`instructions[${index}][key]`, item.key);
+          formData.append(`instructions[${index}][key]`, item.key);
   
         item.value.forEach((value, valueIndex) => {
           formData.append(`instructions[${index}][value][${valueIndex}]`, value);
@@ -257,10 +264,15 @@ public recipeForm: FormGroup = this.fb.group({
       
 
       this.recipeForm.value.ingredients.forEach((element: string , index: any ) => {
-        formData.append(`ingredients[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`ingredients[${index}]`,element)
+        }
+        
       });
       this.recipeForm.value.equipment.forEach((element: string , index: any ) => {
-        formData.append(`equipment[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`equipment[${index}]`,element)
+        }  
       });
       formData.append('description', (this.recipeForm.value.description))
 
@@ -271,8 +283,15 @@ public recipeForm: FormGroup = this.fb.group({
        formData.append('file', this.fileToUpload)
 
        const categoryId = this.recipeForm.value.category;
+       
        const subcategoryId = this.recipeForm.value.subcategory
-       this.recipeForm.value.categories = [categoryId, subcategoryId]
+       if(subcategoryId && subcategoryId.trim().length > 0 ){
+          this.recipeForm.value.categories = [categoryId, subcategoryId]
+       }
+       else{
+        this.recipeForm.value.categories = [categoryId]
+       }
+       
        this.recipeForm.value.categories.forEach((element: string , index: any ) => {
         formData.append(`categories[${index}]`,element)
       });
@@ -314,9 +333,12 @@ public recipeForm: FormGroup = this.fb.group({
 
   onFileChange(event: any) {
     const fileList: FileList | null = event.target.files;
+    this.erroMessage = ''
     if (fileList && fileList.length > 0) {
+      
       this.fileToUpload = fileList[0];
-      if(!this.fileToUpload){
+      console.log(fileList[0].type)
+      if(!this.fileToUpload  ){
         const formData = new FormData();
         formData.append('file', this.fileToUpload );
         this.recipeForm.get('image')?.setValue(formData);

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig,} from '@ng-bootstrap/ng-bootstrap';
 import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router'
+
 
 @Component({
   selector: 'app-recipes',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router'
 })
 export class RecipesComponent implements OnInit,OnDestroy {
 
+  
   popularRecipes = []
 
   sectionRecipes = []

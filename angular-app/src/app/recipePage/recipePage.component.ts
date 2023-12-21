@@ -7,6 +7,8 @@ import { ReviewsService } from '../services/reviews.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { DeleteConfirmationComponent } from '../modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-recipePage',
@@ -17,6 +19,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class RecipePageComponent implements OnInit,OnDestroy {
 
   param: string;
+  public modalRef: NgbModalRef | undefined;
+  public ngbModalOption? : NgbModalOptions; 
 
   public recipe: Recipes = {};
   public reviews: Reviews[] = []
@@ -33,7 +37,8 @@ export class RecipePageComponent implements OnInit,OnDestroy {
     private activatedRoute: ActivatedRoute,
     private recipeService: RecipesService,
     private reviewsService: ReviewsService,
-    public authService: AuthService
+    public authService: AuthService,
+    private modalService:NgbModal
   ) {
     this.param = this.activatedRoute.snapshot.params['id'];
 
@@ -121,5 +126,31 @@ export class RecipePageComponent implements OnInit,OnDestroy {
 
   onTagClick(tag: any): void {
     this.router.navigate(['/tags'], { queryParams: { tag } });
+  }
+
+  editReceipe(recipeId:string | undefined){
+    console.log(recipeId)
+    this.router.navigate([`/profile/edit-recipe/${recipeId}`])
+
+  }
+
+  deleteRecipe(recipeId:string | undefined){
+    this.ngbModalOption = {
+      backdrop: false,
+      keyboard: false,
+    };
+    
+    this.modalRef = this.modalService.open(DeleteConfirmationComponent, this.ngbModalOption);
+    this.modalRef?.result.then((result: string) => {
+      if(result.includes('ok')){
+        console.log(recipeId)
+        this.recipeService.deleteRecipe(recipeId).subscribe(
+          {complete:() => this.router.navigate(['/profile']) }
+        )
+        
+      }
+      
+    })
+
   }
 }
