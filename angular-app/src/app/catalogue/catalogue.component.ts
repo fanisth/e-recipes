@@ -36,6 +36,12 @@ constructor(private recipeService:RecipesService) {
     return Math.round((recipe.rating.sum / recipe.rating.counter) * 10) / 10;
   }
 
+  getRecipeDifficulty(recipe: Recipes): string {
+    if(recipe.difficulty === 'hard') return 'Δύσκολη'
+    if(recipe.difficulty === 'medium') return 'Απαιτητική'
+    return 'Εύκολη'
+  }
+
   ngOnInit() {
 
     // Make an HTTP call to fetch recipes from the server

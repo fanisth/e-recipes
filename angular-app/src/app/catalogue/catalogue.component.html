@@ -1,10 +1,10 @@
 <!-- app.component.html -->
 
-<div class="container mt-5 pt-2"> 
+<div class="container"> 
   
 
   <!-- Container for recipes catalogue -->
-  <div class="container mt-5 mb-5">
+  <div class="container mb-5">
   <div class="d-flex justify-content-center row">
       <div class="col-md-10">
         <!-- Recipes catalogue item -->
@@ -17,13 +17,13 @@
                   <span>{{ calculateAverageRating(recipe) }}</span>
               </div>
               <br>
-              <p class="text-justify para mb-0" style="white-space: pre-line;">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.<br><br></p>
+              <p class="text-justify para mb-0" style="white-space: pre-line;">{{recipe.description}}<br><br></p>
             </div>
             <div class="align-items-center align-content-center col-md-3 border-left mt-1">
               <div class="d-flex flex-row align-items-center">
-                <h5><i class="fa-solid fa-list" aria-hidden="true"></i> {{recipe.difficulty}}</h5>
+                <h5><i class="fa-solid fa-list" aria-hidden="true"></i> {{getRecipeDifficulty(recipe)}}</h5>
               </div>
-              <h5><i class="fa-solid fa-timer"></i> {{recipe.cooking_time}} '</h5>
+              <h5><i class="far fa-clock" aria-hidden="true"></i> {{recipe.cooking_time}} '</h5>
               <div class="d-flex flex-column mt-4"><button class="btn btn-primary btn-sm mt-2" type="button" [routerLink]="['/recipes/' + recipe._id]">Δες τη συνταγή</button></div>
             </div>
         </div>

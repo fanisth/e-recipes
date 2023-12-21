@@ -56,8 +56,8 @@ export class RecipesService {
     return this.http.get<Recipes[]>(this.Recipe_URL + '/my-recipes' )
   }
 
-  getRecipeCategories(categoryId:string): Observable<Recipes[]>{
-    return this.http.get<Recipes[]>(this.Recipe_URL + '/categories/' + categoryId )
+  getRecipeCategories(categoryId:string): Observable<any[]>{
+    return this.http.get<any[]>(this.Recipe_URL + '/categories/' + categoryId )
   }
 
   getSearchSuggestions(keyword: string): Observable<Recipes[]> {

@@ -39,6 +39,16 @@
                   <span class="fst-italic pl-1">{{ ingredient }}</span>
                 </label>
               </div>
+              <hr class="my-4">
+              <div class="d-flex align-items-center mb-4 mt-4 pb-4 border-bottom">
+                <i class="far fa-calendar-alt fa-3x"></i>
+                <div class="ms-3">
+                  <h4 class="text-uppercase fw-weight-bold mb-0">Εξοπλισμός</h4>
+                </div>
+              </div>
+              <div class="form-check mb-3" *ngFor="let equip of recipe.equipment; let i = index">
+                  <span class="fst-italic pl-1">{{ equip }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -57,6 +67,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <h4>Ετικέτες</h4>
       </div>
