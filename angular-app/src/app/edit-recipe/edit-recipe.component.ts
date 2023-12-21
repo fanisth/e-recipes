@@ -29,11 +29,11 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   @Input() public recipe: Recipes | undefined
   public recipeForm: FormGroup 
   = this.fb.group({
-    title: ['', [Validators.required, Validators.maxLength(50)]],
+    title: ['', [Validators.required, Validators.maxLength(150)]],
     ingredients: this.fb.array(['', [Validators.required]]),
     instructions: this.fb.array([]),
     equipment: this.fb.array(['', [Validators.required]]),
-    description: ['',Validators.maxLength(150)],
+    description: ['',Validators.maxLength(500)],
     tags: this.fb.array([]),
     preperation_time: [0, [Validators.required, Validators.min(0)]],
     cooking_time: [0, [Validators.required, Validators.min(0)]],
@@ -47,6 +47,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   public subcategories: Subcategory[] = [] ;
   public startCategory: Category |undefined;
   public startSubCategory: string |undefined;
+  erroMessage = ''
   
   public fileToUpload: File | null = null;
 
@@ -169,6 +170,10 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
 
   get description() {
     return this.recipeForm.get('description');
+  }
+
+  get category() {
+    return this.recipeForm.get('category');
   }
   
   // createInstruction(): FormGroup {
@@ -310,7 +315,16 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   onSubmit() {
 
     
-
+    // Handle form submission logic here
+    if (!this.fileToUpload) {
+      console.error('No file selected.');
+      this.erroMessage = 'Η επιλογή εικόνας είναι απαραίτητη'
+      return;
+    }
+    if( !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
+      this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
+      return;
+    }
     
     if (this.recipeForm.valid) {
 
@@ -332,10 +346,14 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
       
 
       this.recipeForm.value.ingredients.forEach((element: string , index: any ) => {
-        formData.append(`ingredients[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`ingredients[${index}]`,element)
+        }
       });
       this.recipeForm.value.equipment.forEach((element: string , index: any ) => {
-        formData.append(`equipment[${index}]`,element)
+        if(element != null && element.trim().length > 0){
+          formData.append(`equipment[${index}]`,element)
+        } 
       });
       formData.append('description', (this.recipeForm.value.description))
 
@@ -348,10 +366,16 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
         formData.append('file', this.fileToUpload)
       }
        
-
-       const categoryId = this.recipeForm.value.category;
-       const subcategoryId = this.recipeForm.value.subcategory
-       this.recipeForm.value.categories = [categoryId, subcategoryId]
+      const categoryId = this.recipeForm.value.category;
+       
+      const subcategoryId = this.recipeForm.value.subcategory
+      if(subcategoryId && subcategoryId.trim().length > 0 ){
+         this.recipeForm.value.categories = [categoryId, subcategoryId]
+      }
+      else{
+       this.recipeForm.value.categories = [categoryId]
+      }
+      
        this.recipeForm.value.categories.forEach((element: string , index: any ) => {
         formData.append(`categories[${index}]`,element)
       });
