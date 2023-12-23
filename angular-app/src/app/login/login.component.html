@@ -9,14 +9,14 @@
                       <span class="label">Όνομα Χρήστη</span>
                       <input
                           type="text"
-                          placeholder="όνομα χρήστη"
+                          placeholder="Όνομα Χρήστη"
                           autocomplete="off"
                           formControlName="username"
                           class="form-control rounded"
                       />
                       <div *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched"
                           class="requiredUsername position-absolute text-left">
-                          Το όνομα είναι απαραίτητο 
+                          Το Όνομα Χρήστη είναι απαραίτητο
                       </div>
                   </div>
 
@@ -24,7 +24,7 @@
                   <div class="input-wrapper position-relative">
                       <input
                           [type]="hidePassword ? 'text' : 'password'"
-                          placeholder="κωδικός "
+                          placeholder="Κωδικός"
                           formControlName="password"
                           class="form-control rounded"
                           [ngClass]="errorMessage.length > 0 && loginForm.untouched ? 'invalidCredentials' : 'validCredentials'"

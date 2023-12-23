@@ -14,13 +14,13 @@
             <span>{{ getRecipeDifficulty(recipe) }}</span>
           </div>
           <div class="col-lg-4 text-right" *ngIf="editPermission">
-            <button type="button"  class="btn btn-primary mr-2" (click)="editReceipe(recipe._id)">Edit</button>
-            <button type="button" href="#" class="btn btn-danger" (click)="deleteRecipe(recipe._id)">Delete</button>
+            <button type="button"  class="btn btn-primary m-1" (click)="editReceipe(recipe._id)">Επεξεργασία</button>
+            <button type="button" href="#" class="btn btn-danger" (click)="deleteRecipe(recipe._id)">Διαγραφή</button>
           </div>
         </div>
       </div>
-      
-  
+
+
       <!-- Ingredients and Instructions -->
       <div class="row">
         <div class="col-lg-5">
@@ -52,12 +52,12 @@
             </div>
           </div>
         </div>
-  
+
         <div class="col-lg-7">
           <!-- Instructions -->
           <div *ngFor="let instructionSector of extendedInstructions" class="mb-4">
             <h5 class="fw-weight-bold cursor-pointer" (click)="toggleSector(instructionSector)" style="cursor: pointer;">{{ instructionSector.key }}</h5>
-  
+
             <!-- Instructions within the sector (expanded by default) -->
             <div *ngIf="instructionSector.show" class="instructions">
               <ol>
@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  
+
  <!-- Reviews Section -->
 <div class="holder d-flex justify-content-center" style="min-height: 100vh;">
   <div class="container-lg">
@@ -114,14 +114,14 @@
         <div class="rating-form-container mt-4">
           <form (ngSubmit)="submitReview()">
             <div class="form-group">
-              <label for="rating">Βαθμολογία: </label>
+              <label>Βαθμολογία: </label>
               <ngb-rating [(rate)]="selectedRating" [max]="5"></ngb-rating>
             </div>
-    
+
             <div class="form-group">
               <textarea [(ngModel)]="comments" name="comments" class="form-control"></textarea>
             </div>
-    
+
             <button type="submit" class="btn btn-primary mt-2">Submit</button>
           </form>
         </div>

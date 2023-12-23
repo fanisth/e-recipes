@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-8 p-5">
       <div class="card shadow">
         <div class="card-body">
           <form style="padding: 25px" [formGroup]="userForm" (ngSubmit)="onSubmit()">
@@ -14,74 +14,74 @@
             </div>
             <div class="form-group">
               <div>
-                <label for="username">Username:*</label>
+                <label for="username">Όνομα Χρήστη*:</label>
                 <input type="text" id="username" class="form-control" formControlName="username">
                 <div *ngIf="userForm?.get('username')?.hasError('required') && userForm?.get('username')?.touched" class="errorMessage">
-                  Username is required
+                  Το Όνομα Χρήστη είναι υποχρεωτικό πεδίο
                 </div>
                 <div *ngIf="userForm?.get('username')?.hasError('minlength') && userForm?.get('username')?.touched" class="errorMessage">
-                  Username must be at least 3 characters
+                  Το Όνομα Χρήστη πρέπει να είναι τουλάχιστον 3 χαρακτήρες
                 </div>
               </div>
 
               <div>
-                <label for="name">Name:*</label>
+                <label for="name">Όνομα*:</label>
                 <input type="text" id="name" class="form-control" formControlName="name">
                 <div *ngIf="userForm?.get('name')?.hasError('required') && userForm?.get('name')?.touched" class="errorMessage">
-                  Username is required
+                  Το Όνομα είναι υποχρεωτικό πεδίο
                 </div>
                 <div *ngIf="userForm?.get('name')?.hasError('minlength') && userForm?.get('name')?.touched" class="errorMessage">
-                  Username must be at least 3 characters
+                  Το Όνομα πρέπει να είναι τουλάχιστον 3 χαρακτήρες
                 </div>
               </div>
 
               <div>
-                <label for="surname">Surname:*</label>
+                <label for="surname">Επίθετο*:</label>
                 <input type="text" id="surname" class="form-control" formControlName="surname">
                 <div *ngIf="userForm?.get('surname')?.hasError('required') && userForm?.get('surname')?.touched" class="errorMessage">
-                  Username is required
+                  Το Επίθετο είναι υποχρεωτικό πεδίο
                 </div>
                 <div *ngIf="userForm?.get('surname')?.hasError('minlength') && userForm?.get('surname')?.touched" class="errorMessage">
-                  Username must be at least 3 characters
+                  Το Επίθετο πρέπει να είναι τουλάχιστον 3 χαρακτήρες
                 </div>
               </div>
 
               <div>
-                <label for="email">Email:*</label>
+                <label for="email">Email*:</label>
                 <input type="email" id="email" class="form-control" formControlName="email">
                 <div *ngIf="userForm?.get('email')?.hasError('required') && userForm?.get('email')?.touched" class="errorMessage">
-                  Email is required
+                  Το Email είναι υποχρεωτικό πεδίο
                 </div>
                 <div *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched" class="errorMessage">
-                  Please enter a valid email address
+                  Παρακαλώ εισάγεται μία διέυθυνση Email που να ισχύει
                 </div>
               </div>
 
               <div>
-                <label for="phone">Phone:</label>
+                <label for="phone">Τηλέφωνο*:</label>
                 <input type="tel" id="phone" class="form-control" formControlName="phone">
                 <div *ngIf="userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched" class="errorMessage">
-                  Phone number is required
+                  Το Τηλέφωνο είναι υποχρεωτικό
                 </div>
                 <div *ngIf="userForm.get('phone')?.hasError('pattern') && userForm.get('phone')?.touched" class="errorMessage">
-                  Please enter a valid 10-digit phone number
+                 Παρακαλώ εισάγεται ένα τηλέφωνο που να ισχύει
                 </div>
               </div>
 
               <div>
-                <label for="password">Password:*</label>
+                <label for="password">Κωδικός Πρόσβασης*:</label>
                 <input type="password" id="password" class="form-control" formControlName="password">
                 <div *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched" class="errorMessage">
-                  Password is required
+                  Ο Κωδικός Πρόσβασης είναι υποχρεωτικός
                 </div>
                 <div *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.touched" class="errorMessage">
-                  Password must be at least 6 characters
+                  Ο Κωδικός Πρόσβασης πρέπει να είναι τουλάχιστον 6 χαρακτήρες
                 </div>
               </div>
-              
+
 
               <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid">Submit</button>
+                <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid">Εγγραφή</button>
               </div>
               <div *ngIf="errorMessage.length  " class=" mt-2 errorMessage">
                 {{errorMessage}}
