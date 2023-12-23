@@ -129,7 +129,6 @@ export class RecipePageComponent implements OnInit,OnDestroy {
   }
 
   editReceipe(recipeId:string | undefined){
-    console.log(recipeId)
     this.router.navigate([`/profile/edit-recipe/${recipeId}`])
 
   }

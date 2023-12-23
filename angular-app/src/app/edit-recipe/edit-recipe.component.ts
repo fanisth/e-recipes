@@ -122,7 +122,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
           }
           else{
             this.startCategory = this.categories.find(cat => cat.id == recipe.categories[0])
-            this.recipeForm.get('category')?.setValue(this.startCategory);
+            this.recipeForm.get('category')?.setValue(this.startCategory?.id);
           }
           
   

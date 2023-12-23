@@ -55,13 +55,12 @@ export class RegisterComponent implements OnInit,OnDestroy {
         }  
     })
       // Process the form data
-      console.log(this.userForm.value);
+    
     }
   }
 
   errorhandle(message:string){
             this.userForm.disable;
-            console.log(message)
             this.errorMessage = message;
   }
 }
