@@ -1,7 +1,4 @@
 <div  class="custom-background">
-    <div class="header">
-      <h4 class="modal-title">Προσθήκη Συνταγής</h4>
-    </div>
     
     <div class="modal-body">
       <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" class="container p-5">
@@ -159,9 +156,9 @@
               <label for="difficulty" class="form-label fw-bold fs-5">Επίπεδο Δυσκολίας</label>
               <div class="input-group">
                 <select formControlName="difficulty" class="form-select">
-                    <option value="easy">Εύκολο</option>
-                    <option value="medium">Μέτριο</option>
-                    <option value="hard">Δύσκολο</option>
+                    <option value="easy">Εύκολη</option>
+                    <option value="medium">Απαιτητική</option>
+                    <option value="hard">Δύσκολη</option>
                 </select>
               </div>
               <div *ngIf="difficulty?.invalid && (difficulty?.dirty || difficulty?.touched)" class="text-danger">
