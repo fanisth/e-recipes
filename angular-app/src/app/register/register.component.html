@@ -53,7 +53,7 @@
                   Το Email είναι υποχρεωτικό πεδίο
                 </div>
                 <div *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched" class="errorMessage">
-                  Παρακαλώ εισάγεται μία διέυθυνση Email που να ισχύει
+                  Παρακαλώ εισάγετε μία διέυθυνση Email που να ισχύει
                 </div>
               </div>
 
@@ -64,7 +64,7 @@
                   Το Τηλέφωνο είναι υποχρεωτικό
                 </div>
                 <div *ngIf="userForm.get('phone')?.hasError('pattern') && userForm.get('phone')?.touched" class="errorMessage">
-                 Παρακαλώ εισάγεται ένα τηλέφωνο που να ισχύει
+                 Παρακαλώ εισάγετε ένα τηλέφωνο που να ισχύει
                 </div>
               </div>
 

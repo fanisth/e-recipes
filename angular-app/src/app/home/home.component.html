@@ -1,11 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5" (mouseleave)="onHoverout(firstDropDown)" (mouseleave)="onHoverout(secDropDown)">
   <div class="container-fluid container py-3">
     <a class="navbar-brand" href="#">E-Recipes</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item active">
           <a class="nav-link" href="/allReceipes">ΟΛΕΣ ΟΙ ΣΥΝΤΑΓΕΣ <span class="sr-only">(current)</span></a>
@@ -65,13 +64,13 @@
       </form>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item" *ngIf="!(this.loggedIn | async)">
-          <a class="nav-link" routerLink="login"><span class="btn-label"><i class="fa fa-sign-in" aria-hidden="true"></i></span>Σύνδεση</a>
+          <a class="nav-link" href="/login"><span class="btn-label"><i class="fa fa-sign-in" aria-hidden="true"></i></span>Σύνδεση</a>
         </li>
         <li class="nav-item" *ngIf="!(this.loggedIn | async)">
-          <a class="nav-link" routerLink="register"><span class="btn-label"><i class="fa fa-user-plus" aria-hidden="true"></i></span>Εγγραφή</a>
+          <a class="nav-link" href="/register"><span class="btn-label"><i class="fa fa-user-plus" aria-hidden="true"></i></span>Εγγραφή</a>
         </li>
         <li class="nav-item" *ngIf="(this.loggedIn | async)">
-          <a class="nav-link" routerLink="profile"><span class="btn-label"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>Προφίλ</a>
+          <a class="nav-link" href="/profile"><span class="btn-label"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>Προφίλ</a>
         </li>
         <li class="nav-item" *ngIf="(this.loggedIn | async)">
           <button class="nav-link" (click)="logout()"><span class="btn-label"><i class="fa fa-sign-out" aria-hidden="true"></i></span>Αποσύνδεση</button>
@@ -83,6 +82,6 @@
 
 <div class="router bgImage">
 <router-outlet ></router-outlet>
-<app-catalogue [previousRoute]="currentRoute"></app-catalogue>
+<!--<app-catalogue [previousRoute]="currentRoute"></app-catalogue>-->
 </div>
 

@@ -1,14 +1,10 @@
 <!-- app.component.html -->
-
-<div class="container"> 
-  
-
   <!-- Container for recipes catalogue -->
   <div class="container mb-5">
   <div class="d-flex justify-content-center row">
       <div class="col-md-10">
         <!-- Recipes catalogue item -->
-        <div class="row p-2 bg-white border rounded mt-2" *ngFor="let recipe of myRecipes">
+        <div class="row p-2 bg-white border rounded mb-2" *ngFor="let recipe of myRecipes">
             <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" [src]="recipe.photo_url?.thumbnailPath"></div>
             <div class="col-md-6 mt-1">
               <h4>{{ recipe?.title }}</h4>

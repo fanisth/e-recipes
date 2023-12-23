@@ -1,21 +1,21 @@
 .custom-carousel {
-    height: 100vh; 
-    background: #000; 
+    height: 90vh;
+    background: #000;
   }
-  
+
   .carousel-item {
     text-align: center;
-    height: 100vh; 
+    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
+
   .carousel-item img {
     max-height: 100%;
     max-width: 100%;
   }
-  
+
   .carousel-caption {
     position: absolute;
     bottom: 20px;
@@ -24,9 +24,19 @@
     text-align: center;
     color: #fff; /* Text color */
   }
-  
+
 
   .recommended{
     background-color : #FFDC7D;
     border-radius:20px;
 }
+
+  @media (max-width: 600px) {
+    .custom-carousel{
+      height: 500px;
+    }
+
+    .carousel-item{
+      height: 500px;
+    }
+  }

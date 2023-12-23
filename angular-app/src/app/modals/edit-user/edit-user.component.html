@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Hello, {{ this.user?.username }}!</h4>
+    <h4 class="modal-title">Καλησπέρα, {{ this.user?.username }}!</h4>
 </div>
 <div class="modal-body">
 
@@ -12,61 +12,60 @@
               <div class="row">
                 <div style="text-align: center">
                   <header>
-                    <h2>Είσαι νέος Χρήστης;</h2>
-                    <h3>ΕΓΓΡΑΦΗ</h3>
+                    <h2>Εισάγετε τα στοιχεία σας</h2>
                   </header>
                 </div>
               </div>
               <div class="form-group">
                 <div>
-                  <label for="username">Username:</label>
+                  <label for="username">Όνομα Χρήστη*:</label>
                   <input type="text" id="username" class="form-control" formControlName="username" aria-disabled="true">
                 </div>
-  
+
                 <div>
-                  <label for="name">Name:*</label>
+                  <label for="name">Όνομα*:</label>
                   <input type="text" id="name" class="form-control" formControlName="name">
                   <div *ngIf="userForm?.get('name')?.hasError('required') && userForm?.get('name')?.touched">
-                    Username is required
+                    Το Όνομα είναι υποχρεωτικό πεδίο
                   </div>
                   <div *ngIf="userForm?.get('username')?.hasError('minlength') && userForm?.get('name')?.touched">
-                    Username must be at least 3 characters
+                    Το Όνομα πρέπει να είναι τουλάχιστον 3 χαρακτήρες
                   </div>
                 </div>
-  
+
                 <div>
-                  <label for="surname">Surname:*</label>
+                  <label for="surname">Επίθετο*:</label>
                   <input type="text" id="surname" class="form-control" formControlName="surname">
                   <div *ngIf="userForm?.get('surname')?.hasError('required') && userForm?.get('surname')?.touched">
-                    Username is required
+                    Το Επίθετο είναι υποχρεωτικό πεδίο
                   </div>
                   <div *ngIf="userForm?.get('surname')?.hasError('minlength') && userForm?.get('surname')?.touched">
-                    Username must be at least 3 characters
+                    Το Επίθετο πρέπει να είναι τουλάχιστον 3 χαρακτήρες
                   </div>
                 </div>
-  
+
                 <div>
-                  <label for="email">Email:*</label>
+                  <label for="email">Email*:</label>
                   <input type="email" id="email" class="form-control" formControlName="email">
                   <div *ngIf="userForm?.get('email')?.hasError('required') && userForm?.get('email')?.touched">
-                    Email is required
+                    Το Email είναι υποχρεωτικό πεδίο
                   </div>
                   <div *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched">
-                    Please enter a valid email address
+                    Παρακαλώ εισάγετε μία διέυθυνση Email που να ισχύει
                   </div>
                 </div>
-  
+
                 <div>
-                  <label for="phone">Phone:</label>
+                  <label for="phone">Τηλέφωνο*:</label>
                   <input type="tel" id="phone" class="form-control" formControlName="phone">
                   <div *ngIf="userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched">
-                    Phone number is required
+                    Το Τηλέφωνο είναι υποχρεωτικό
                   </div>
                   <div *ngIf="userForm.get('phone')?.hasError('pattern') && userForm.get('phone')?.touched">
-                    Please enter a valid 10-digit phone number
+                    Παρακαλώ εισάγετε ένα τηλέφωνο που να ισχύει
                   </div>
                 </div>
-  
+
                 <!-- <div>
                   <label for="password">Password:*</label>
                   <input type="password" id="password" class="form-control" formControlName="password">
@@ -77,9 +76,9 @@
                     Password must be at least 6 characters
                   </div>
                 </div> -->
-  
+
                 <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid" >Submit</button>
+                  <button type="submit" class="btn btn-primary btn-lg mt-4"  [disabled]="userForm.invalid" >Αποθήκευση</button>
                 </div>
               </div>
             </form>
@@ -90,5 +89,5 @@
   <!-- </div> -->
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(null)">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(null)">Κλείσιμο</button>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Recipes } from '../models/recipes.model';
-import { RecipesService } from '../services/recipes.service' 
+import { RecipesService } from '../services/recipes.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -12,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class TagPageComponent implements OnInit,OnDestroy {
 
   public recipes: Recipes[] = []
+  public tagName: string = '';
   private destroyed$ = new Subject();
 
   constructor(private route: ActivatedRoute, private recipesService:RecipesService, private router:Router) { }
@@ -31,6 +32,7 @@ export class TagPageComponent implements OnInit,OnDestroy {
       .subscribe(
         (dataRecipes:any) => {
           this.recipes = dataRecipes.payload.recipes
+          this.tagName = tagQuery
         }
       )
     });

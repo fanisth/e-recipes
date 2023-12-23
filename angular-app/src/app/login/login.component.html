@@ -33,12 +33,6 @@
                           class="requiredUsername position-absolute text-left">
                           Ο κωδικός είναι απαραίτητος
                       </div>
-                      <span class="p-viewer position-absolute">
-                          <a class="hide-button">
-                              <i [ngClass]="hidePassword ? 'fa fa-eye ' : 'fa fa-eye-slash'" class="fa fa-eye"
-                                  id="eye" (click)="passwordHide()"></i>
-                          </a>
-                      </span>
 
                   </div>
               </div>
@@ -54,7 +48,7 @@
                   </div>
 
                   <button type="submit" [disabled]="loginForm.invalid && loginForm.dirty"
-                      class="btn btn-primary w-100 mt-4">Login</button>
+                      class="btn btn-primary w-100 mt-4">Σύνδεση</button>
               </div>
           </form>
       </div>
