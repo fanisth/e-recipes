@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5" (mouseleave)="onHoverout(firstDropDown)" (mouseleave)="onHoverout(secDropDown)">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light " (mouseleave)="onHoverout(firstDropDown)" (mouseleave)="onHoverout(secDropDown)">
   <div class="container-fluid container py-3">
     <a class="navbar-brand" href="#">E-Recipes</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
             <ul ngbDropdownMenu (mouseenter)="onHover(firstDropDown)"(mouseleave)="onHoverout(firstDropDown)" #dropdown class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li *ngFor="let cat of categories" class="dropend">
                 <div *ngIf="cat.type == 'food'" ngbDropdown  #subdrop="ngbDropdown" (mouseover)='over(subdrop)' (mouseout)='out(subdrop)' class="dropend">
-                  <a  *ngIf="cat.type == 'food'" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" href="categories/{{cat.id}}" >
+                  <a  *ngIf="cat.type == 'food'" class="nav-link dropdown-toggle" id="dropdownMenuButton2"  aria-expanded="false" href="categories/{{cat.id}}" >
                     {{cat.name}}
                   </a>
                   <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'food'" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
@@ -38,7 +38,7 @@
             <ul ngbDropdownMenu (mouseenter)="onHover(secDropDown)"(mouseleave)="onHoverout(secDropDown)" #dropdown class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li *ngFor="let cat of categories" class="dropend">
                 <div *ngIf="cat.type == 'desserts'" ngbDropdown  #secsubdrop="ngbDropdown" (mouseover)='over(secsubdrop)' (mouseout)='out(secsubdrop)' class="dropend">
-                  <a  *ngIf="cat.type == 'desserts'" class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false" href="categories/{{cat.id}}" >
+                  <a  *ngIf="cat.type == 'desserts'" class="nav-link dropdown-toggle"  id="dropdownMenuButton4"  aria-expanded="false" href="categories/{{cat.id}}" >
                     {{cat.name}}
                   </a>
                   <ul ngbDropdownMenu *ngIf="cat.subCategory.length  > 0  && cat.type == 'desserts'"  class="dropdown-menu" aria-labelledby="dropdownMenuButton2">

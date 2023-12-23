@@ -16,7 +16,7 @@ import { TagPageComponent } from './tagPage/tagPage.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent,
+  { path: '', 
     children : [
       {
         path: '', redirectTo: 'home', pathMatch: 'full'
