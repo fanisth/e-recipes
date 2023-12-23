@@ -238,7 +238,8 @@ public recipeForm: FormGroup = this.fb.group({
       this.erroMessage = 'Η επιλογή εικόνας είναι απαραίτητη'
       return;
     }
-    if( !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png')){
+    
+    if( !this.fileToUpload.type.includes('jpeg') && !this.fileToUpload.type.includes('png')){
       this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
       return;
     }
