@@ -319,7 +319,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
 
     
     
-    if(this.fileToUpload && !this.fileToUpload.type.includes('jpg') && !this.fileToUpload.type.includes('png') &&  !this.fileToUpload.type.includes('jpg')){
+    if(this.fileToUpload && !this.fileToUpload.type.includes('jpeg') && !this.fileToUpload.type.includes('png') &&  !this.fileToUpload.type.includes('jpg')){
       this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
       return;
     }
