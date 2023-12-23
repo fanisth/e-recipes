@@ -338,7 +338,7 @@ public recipeForm: FormGroup = this.fb.group({
     if (fileList && fileList.length > 0) {
       
       this.fileToUpload = fileList[0];
-      console.log(fileList[0].type)
+      
       if(!this.fileToUpload  ){
         const formData = new FormData();
         formData.append('file', this.fileToUpload );
