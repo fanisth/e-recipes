@@ -4,6 +4,7 @@ const logger = require('../../common/logger')();
 
 const ErrorHandler = require('../errorHandler');
 const controller = require('./controller');
+const categoriesController = require('../categories/controller')
 
 const validations = require('./validation');
 const errors = require('./errors');
@@ -81,10 +82,13 @@ async function getCategoryRecipes(req, res) {
     if (error) {
       return ErrorHandler.send(req, res, error);
     }
+    const result = await categoriesController.getCategoryNames([categoryId])
+    const categoryName = result[0]
 
     res.status(200).json({
       payload: {
         recipes: data,
+        categoryName
       },
     });
   } catch (error) {

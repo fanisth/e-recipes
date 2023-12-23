@@ -13,6 +13,7 @@ export class CategoriesComponent implements OnInit,OnDestroy {
   param :string 
 
   public recipes:Recipes[] =[];
+  public categoryName: string = ''
 
   private destroyed$ = new Subject();
 
@@ -30,7 +31,7 @@ export class CategoriesComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.recipeService.getRecipeCategories(this.param).pipe(takeUntil(this.destroyed$)).subscribe((recipes:any) =>{
       this.recipes = recipes.payload.recipes
-    
+      this.categoryName = recipes.payload.categoryName
     })
   }
 

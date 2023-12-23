@@ -2,10 +2,10 @@ import { Component, ElementRef, OnChanges, OnInit, ChangeDetectorRef, ViewChild,
 import { AuthService } from '../services/auth.service';
 import { categories } from '../models/categories.model';
 import { RecipesService } from '../services/recipes.service';
-import { Observable, Subject, firstValueFrom, of, takeUntil } from 'rxjs';
+import { Observable, Subject, filter, firstValueFrom, of, takeUntil } from 'rxjs';
 import { Dictionary } from '../models/dictionary.model';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
 import { Recipes } from '../models/recipes.model';
 
 @Component({
@@ -25,6 +25,12 @@ export class HomeComponent implements OnInit,OnDestroy {
 
   constructor(public authService:AuthService,private recipesService:RecipesService,private router:Router) {
     this.loggedIn = this.authService.isLoggenIn
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      // Scroll to the top on route changes
+      window.scrollTo(0, 0);
+    });
   }
   ngOnDestroy(): void {
     this.destroyed$.next(null)
@@ -68,6 +74,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     // Implement your search logic here using this.searchQuery
     const searchQuery = event.target.searchQuery.value
     this.router.navigate(['/search-results'], { queryParams: { query: searchQuery } });
+    this.showSuggestions = false
+    if (this.searchInput && this.searchInput.nativeElement) {
+      this.searchInput.nativeElement.value = '';
+    }
   }
 
   onSearchInput(event:any): void {

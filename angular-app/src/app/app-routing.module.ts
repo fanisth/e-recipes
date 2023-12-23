@@ -31,9 +31,6 @@ const routes: Routes = [
         path: 'register', component: RegisterComponent
       },
       {
-        path: 'profile', component: UserProfileComponent,canActivate:[AuthGuard]
-      },
-      {
         path: 'catalogue', component: CatalogueComponent
       },
       {
@@ -43,10 +40,13 @@ const routes: Routes = [
         path: 'recipes/:id', component: RecipePageComponent
       },
       {
-        path: 'profile/add-recipe', component: AddRecipeComponent
+        path: 'profile', component: UserProfileComponent,canActivate:[AuthGuard]
       },
       {
-        path: 'profile/edit-recipe/:id', component: EditRecipeComponent
+        path: 'profile/add-recipe', component: AddRecipeComponent,canActivate:[AuthGuard]
+      },
+      {
+        path: 'profile/edit-recipe/:id', component: EditRecipeComponent,canActivate:[AuthGuard]
       },
       {
         path: 'allReceipes', component: AllReceipesComponent
@@ -63,7 +63,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'disabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
