@@ -384,7 +384,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
 
       this.openWaitingModal(formData);
       // Log or send the data to the server as needed
-      this.recipeService.addReceipe(formData).pipe(takeUntil(this.destroyed$)).subscribe(
+      this.recipeService.ediRecipe(this.recipe?._id,formData).pipe(takeUntil(this.destroyed$)).subscribe(
         {next:() => {
           this.modalRef?.close();
           this.router.navigate(['/profile'])

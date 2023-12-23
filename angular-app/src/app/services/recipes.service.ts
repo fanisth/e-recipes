@@ -44,6 +44,10 @@ export class RecipesService {
     return this.http.delete(this.Recipe_URL + `/${recipeId}`)
   }
 
+  ediRecipe(recipeId : string | undefined, formData:FormData){
+    return this.http.put(this.Recipe_URL + `/${recipeId}`,formData)
+  }
+
   getPopularRecipes(): Observable<Recipes[]>{
     return this.http.get<Recipes[]>(this.Recipe_URL + '/top-rated' )
   }
