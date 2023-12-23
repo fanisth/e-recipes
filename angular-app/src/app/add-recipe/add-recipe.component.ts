@@ -239,7 +239,7 @@ public recipeForm: FormGroup = this.fb.group({
       return;
     }
     
-    if( !this.fileToUpload.type.includes('jpeg') && !this.fileToUpload.type.includes('png')){
+    if( !this.fileToUpload.type.includes('jpeg') && !this.fileToUpload.type.includes('png') && !this.fileToUpload.type.includes('jpg')){
       this.erroMessage = 'Ο τύπος του αρχείου είναι λανθασμένος'
       return;
     }
