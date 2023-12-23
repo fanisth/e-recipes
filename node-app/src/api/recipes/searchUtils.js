@@ -1,4 +1,8 @@
+/* eslint-disable no-useless-escape */
 const categoryController = require('../categories/controller');
+
+const stopWords = ['το', 'τον', 'τη', 'την', 'τα', 'με', 'κ.γ.', 'κ.σ.', 'γρ', 'γρ.', 'γραμ.', 'γραμμάρια', 'φλ.', 'φλ', 'σκελ.', 'σκελ', 'kg', 'ματσ.', 'καθενα', 'ενα', 'δυο', 'του', 'της'];
+const specialCharacters = /[\/()]/g;
 
 function normalizeGreek(text) {
   const revisedText = text.replace(/Ά|Α|ά/g, 'α')
@@ -12,9 +16,20 @@ function normalizeGreek(text) {
   return revisedText;
 }
 
+function removeStopWords(text) {
+  const withoutNumbers = text.replace(/\d+/g, '');
+  const withoutSpecialChars = withoutNumbers.replace(specialCharacters, '');
+  let wordsArray = withoutSpecialChars.split(/\s+/);
+  wordsArray = wordsArray.filter((word) => !stopWords.includes(word));
+  const resultString = wordsArray.join(' ');
+  return resultString;
+}
+
 function getTerm(term) {
   const normalized = normalizeGreek(term);
-  return normalized.toLowerCase();
+  const lowered = normalized.toLowerCase();
+  const cleared = removeStopWords(lowered);
+  return cleared;
 }
 
 async function getSearchTerms(recipe) {
@@ -38,4 +53,5 @@ async function getSearchTerms(recipe) {
 module.exports = {
   getTerm,
   getSearchTerms,
+  removeStopWords,
 };
