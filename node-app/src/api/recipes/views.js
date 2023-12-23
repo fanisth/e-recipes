@@ -144,7 +144,7 @@ async function createRecipe(req, res) {
     if (validationError) {
       return ErrorHandler.send(req, res, validationError);
     }
-    const { data, error } = await controller.createRecipe(body, user, file.path, thumbnailPath, fileId);
+    const { data, error } = await controller.createRecipe(body, user, file?.path, thumbnailPath, fileId);
     if (error) {
       return ErrorHandler.send(req, res, error);
     }
@@ -172,7 +172,7 @@ async function updateRecipe(req, res) {
 
     const { body, params, user, file, thumbnailPath, fileId } = req;
     fLogger.info('Going to update recipe', { body, params, user });
-    const { data, error } = await controller.updateRecipe(body, params, user, file.path, thumbnailPath, fileId);
+    const { data, error } = await controller.updateRecipe(body, params, user, file?.path, thumbnailPath, fileId);
     if (error) {
       return ErrorHandler.send(req, res, error);
     }

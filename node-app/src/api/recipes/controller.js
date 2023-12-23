@@ -135,15 +135,15 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath, fileId
     if (recipeInDB.user_id.toString() !== user._id.toString()) return { error: errors.RECIPE_UNAUT_USER };
 
     // delete images
-    if (recipeInDB?.photo_url?.imagePath) {
+    if (recipeInDB?.photo_url?.imagePath && imagePath && fileId) {
       await imagekit.deleteFile(recipeInDB.photo_url.fileId);
     }
 
-    const photo_url = {
+    const photo_url = (imagePath && fileId) ? {
       imagePath,
       thumbnailPath,
       fileId,
-    };
+    } : recipeInDB?.photo_url;
     const updatedRecipe = { ...recipeInDB, ...body, photo_url };
     // updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
     const savedRecipe = await recipeRepository.updateRecipe(updatedRecipe);

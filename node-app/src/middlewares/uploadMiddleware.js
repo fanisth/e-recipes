@@ -22,13 +22,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const uploadMiddleware = (req, res, next) => {
-  upload.single('file')(req, res, async (err) => {
+  upload.any()(req, res, async (err) => {
     try {
+      if (!req?.files.length) {
+        return next();
+      }
       if (err) {
         return res.status(400).json({ error: err.message });
       }
 
-      const { file } = req;
+      const file = req.files[0];
       let error = null;
 
       const allowedTypes = ['image/jpeg', 'image/png'];
