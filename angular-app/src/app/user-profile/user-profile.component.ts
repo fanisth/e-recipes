@@ -33,7 +33,6 @@ export class UserProfileComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.userService.getUserProfile().pipe(takeUntil(this.destroyed$)).subscribe(
       (profile: any ) =>{
-        console.log(profile.payload)
         this.userProfile = profile.payload; 
       } 
     )

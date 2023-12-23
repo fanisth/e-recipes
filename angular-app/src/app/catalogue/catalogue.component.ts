@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Recipes } from '../models/recipes.model';
 import { RecipesService } from '../services/recipes.service' 
 import { Subject, takeUntil } from 'rxjs';
@@ -23,8 +23,9 @@ export class CatalogueComponent implements OnInit,OnDestroy {
 
 
 constructor(private recipeService:RecipesService) {
- 
+  
 }
+  
   ngOnDestroy(): void {
     this.destroyed$.next(null)
     this.destroyed$.complete()
@@ -43,7 +44,7 @@ constructor(private recipeService:RecipesService) {
   }
 
   ngOnInit() {
-
+    
     // Make an HTTP call to fetch recipes from the server
     if(this.previousRoute == "home"){
       this.recipeService.getRecipes().pipe(takeUntil(this.destroyed$)).subscribe(

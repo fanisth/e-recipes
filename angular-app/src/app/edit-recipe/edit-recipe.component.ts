@@ -92,7 +92,6 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
         
         if (recipe) {
           recipe = recipe.payload.recipe;
-          console.log('recipe',recipe)
           // Patch the form with existing recipe data
           this.recipeForm.patchValue({
             title: recipe.title,
@@ -104,7 +103,13 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
           this.patchArray(this.ingredients, recipe.ingredients);
           this.patchInstruction(this.instructions, recipe.instructions);
           this.patchArray(this.equipment, recipe.equipment);
-          this.tagsArray = recipe.tags
+          //this.patchArray(this.tags,recipe.tags)
+          
+          recipe.tags?.forEach((tag: string) => {
+            this.tagsArray.push(new TagArrayItem(tag))
+          })
+          
+          
           // Handle category and subcategory separately
           if(recipe.categories.length > 1){
             this.startCategory = this.categories.find(cat => cat.id == recipe.categories[0])
@@ -384,7 +389,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
 
       this.openWaitingModal(formData);
       // Log or send the data to the server as needed
-      this.recipeService.ediRecipe(this.recipe?._id,formData).pipe(takeUntil(this.destroyed$)).subscribe(
+      this.recipeService.ediRecipe(this.param,formData).pipe(takeUntil(this.destroyed$)).subscribe(
         {next:() => {
           this.modalRef?.close();
           this.router.navigate(['/profile'])
