@@ -142,7 +142,6 @@ export class RecipePageComponent implements OnInit,OnDestroy {
     this.modalRef = this.modalService.open(DeleteConfirmationComponent, this.ngbModalOption);
     this.modalRef?.result.then((result: string) => {
       if(result.includes('ok')){
-        console.log(recipeId)
         this.recipeService.deleteRecipe(recipeId).subscribe(
           {complete:() => this.router.navigate(['/profile']) }
         )

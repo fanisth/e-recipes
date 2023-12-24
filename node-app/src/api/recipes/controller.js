@@ -145,7 +145,7 @@ async function updateRecipe(body, params, user, imagePath, thumbnailPath, fileId
       fileId,
     } : recipeInDB?.photo_url;
     const updatedRecipe = { ...recipeInDB, ...body, photo_url };
-    // updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updateRecipe);
+    updatedRecipe.searchTerms = await searchUtils.getSearchTerms(updatedRecipe);
     const savedRecipe = await recipeRepository.updateRecipe(updatedRecipe);
 
     if (!savedRecipe) return { error: errors.RECIPE_UPDATE };

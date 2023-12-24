@@ -34,10 +34,10 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
     ingredients: this.fb.array(['', [Validators.required]]),
     instructions: this.fb.array([]),
     equipment: this.fb.array(['', [Validators.required]]),
-    description: ['',Validators.maxLength(500)],
+    description: ['',[Validators.maxLength(1000),Validators.required]],
     tags: this.fb.array([]),
-    preperation_time: [0, [Validators.required, Validators.min(0)]],
-    cooking_time: [0, [Validators.required, Validators.min(0)]],
+    preperation_time: [0, [Validators.required, Validators.min(0), Validators.max(150)]],
+    cooking_time: [0,[Validators.required, Validators.min(0), Validators.max(150)]],
     difficulty: ['', Validators.required],
     image: new FormControl(null),
     category: ['', Validators.required],
@@ -287,7 +287,7 @@ export class EditRecipeComponent implements OnInit,OnDestroy {
   
     // Add new values to the array
     data?.forEach((item) => {
-      formArray.push(new FormControl(item));
+      formArray.push(new FormControl(item,Validators.required));
     });
   }
 

@@ -6,7 +6,7 @@
         <!-- Title -->
         <div class="mb-4">
             <label for="title" class="form-label fw-bold fs-5">Τίτλος</label>
-            <input formControlName="title" type="text" class="form-control" id="title" placeholder="Title">
+            <input formControlName="title" type="text" class="form-control" id="title" placeholder="Τίτλος">
             <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="text-danger">
                 <div *ngIf="title?.hasError('required')">Ο τίτλος είναι υποχρεωτικός</div>
                 <div *ngIf="title?.hasError('maxLength')">Ο τίτλος δεν μπορέι να ξεπερναέι τους 100 χαρακτήρες</div>
@@ -159,7 +159,7 @@
               </select>
             </div>
             <div *ngIf="difficulty?.invalid && (difficulty?.dirty || difficulty?.touched)" class="text-danger">
-                <div *ngIf="difficulty?.hasError('required')">Difficulty is required.</div>
+                <div *ngIf="difficulty?.hasError('required')">Το πεδιο δυσκολία είναι απαραίτητο</div>
             </div>
           </div>
         </div>
@@ -170,9 +170,10 @@
         <!-- Description -->
         <div class="mb-4">
             <label for="description" class="form-label fw-bold fs-5">Περιγραφή</label>
-            <textarea formControlName="description" class="form-control" id="description" rows="4" placeholder="Description"></textarea>
+            <textarea formControlName="description" class="form-control" id="description" rows="4" placeholder="Περιγραφή"></textarea>
             <div *ngIf="description?.invalid && (description?.dirty || description?.touched)"
                 class="text-danger">
+                <div *ngIf="description?.hasError('required')">Το πεδιο περιγραφή είναι απαραίτητο</div>
                 <div *ngIf="description?.hasError('maxLength')">Η περιγραφή δεν πρέπει να ξεπερνάει τους 1000 χαρακτήρες</div>
             </div>
         </div>

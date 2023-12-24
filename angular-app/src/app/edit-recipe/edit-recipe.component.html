@@ -42,20 +42,15 @@
                   
                   <div formArrayName="equipment">
                       <div *ngFor="let equip of equipment.controls; let i=index" >
-                        <div  *ngIf="equip?.invalid && (equip?.dirty || equip?.touched)"
+                        <div  *ngIf="equipment.controls[i]?.invalid && (equipment.controls[i]?.dirty || equipment.controls[i]?.touched)"
                             class="text-danger">
-                        <div *ngIf="equip?.hasError('required')">Το πεδίο σκεύος είναι υποχρεωτικό</div>
+                        <div *ngIf="equipment.controls[i]?.hasError('required')">Το πεδίο σκεύος είναι υποχρεωτικό</div>
                     </div>  
                         <div class="input-group mb-4">
                             <input [id]="'equipment' + i" [formControlName]="i" type="text" class="form-control"
                             placeholder="Σκεύος {{i+1}}">
                             <button type="button" [disabled]="equipment.controls.length == 1" class="btn btn-danger" (click)="removeEquipments(i)">-</button>   
                         </div>
-                          
-                          <div *ngIf="equip[i]?.invalid && (equip[i]?.dirty || equip[i]?.touched)"
-                              class="text-danger">
-                              <div *ngIf="equip[i]?.hasError('required')">Preparation Time is required.</div>
-                          </div>
                       </div>
     
                       <button type="button" class="btn btn-primary" (click)="addEquipments()">+</button>
@@ -162,7 +157,7 @@
                 </select>
               </div>
               <div *ngIf="difficulty?.invalid && (difficulty?.dirty || difficulty?.touched)" class="text-danger">
-                <div *ngIf="difficulty?.hasError('required')">Difficulty is required.</div>
+                <div *ngIf="difficulty?.hasError('required')">Το πεδιο δυσκολία είναι απαραίτητο</div>
             </div>
             </div>
           </div>
@@ -176,7 +171,8 @@
               <textarea formControlName="description" class="form-control" id="description" rows="4" placeholder="Description"></textarea>
               <div *ngIf="description?.invalid && (description?.dirty || description?.touched)"
                   class="text-danger">
-                  <div *ngIf="description?.hasError('required')">Description is required.</div>
+                  <div *ngIf="description?.hasError('required')">Το πεδιο περιγραφή είναι απαραίτητο</div>
+                <div *ngIf="description?.hasError('maxLength')">Η περιγραφή δεν πρέπει να ξεπερνάει τους 1000 χαρακτήρες</div>
               </div>
           </div>
   
@@ -240,7 +236,7 @@
                 </mat-form-field>
           </div>
           
-          <button type="submit" class="btn btn-primary btn-lg d-block mx-auto mt-5">Υποβολή</button>
+          <button type="submit" [disabled]="recipeForm.invalid" class="btn btn-primary btn-lg d-block mx-auto mt-5">Υποβολή</button>
                  
       </form>
     </div>
